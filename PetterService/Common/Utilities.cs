@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -114,6 +115,25 @@ namespace PetterService.Common
             {
                 throw ex;
             }
+        }
+
+        public static void ResizeImage(string fullPath, string thumbnamilName, int width,  int  height , ImageFormat imageFormat)
+        {
+            //imageFormat.Png
+        }
+
+        public static string additionFileName(string fileName)
+        {
+            //string fullname = headers.ContentDisposition.FileName;
+            string fullname = fileName;
+            string name = string.Empty;
+            string ext = string.Empty;
+
+            fullname = fullname.Replace("\"", string.Empty);
+            name = fullname.Substring(0, fullname.LastIndexOf('.'));
+            ext = fullname.Substring(fullname.LastIndexOf('.'));
+
+            return name + "_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ext;
         }
     }
 }

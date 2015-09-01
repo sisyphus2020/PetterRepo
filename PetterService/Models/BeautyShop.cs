@@ -26,6 +26,7 @@ namespace PetterService.Models
         public int Bookmark { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
+        
         // Navigation property
         [ForeignKey("CompanyNo")]
         public Company Company { get; set; }
