@@ -78,3 +78,9 @@ D:\12. Repository\PetterService\PetterService\obj\Debug\PetterService.pdb
 D:\12. Repository\PetterService\PetterService\obj\Debug\PetterService.Migrations.Initial.resources
 D:\12. Repository\PetterService\PetterService\obj\Debug\PetterService.csproj.GenerateResource.Cache
 D:\12. Repository\PetterService\PetterService\obj\Debug\PetterService.Migrations.BeautyShop.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.csprojResolveAssemblyReference.cache
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Initial.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShop.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.csproj.GenerateResource.Cache
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.dll
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.pdb

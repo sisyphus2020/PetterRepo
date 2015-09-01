@@ -13,6 +13,9 @@ using PetterService.Models;
 using System.Data.Entity.Spatial;
 using PetterService.Common;
 using System.Web.Hosting;
+using System.Web;
+using System.IO;
+using System.Diagnostics;
 
 namespace PetterService.Controllers
 {
@@ -109,7 +112,7 @@ namespace PetterService.Controllers
         }
 
         // PUT: api/Pensions/5
-        [ResponseType(typeof(void))]
+        [ResponseType(typeof(PetterResultType<Pension>))]
         public async Task<IHttpActionResult> PutPension(int id, Pension pension)
         {
             PetterResultType<Pension> PetterResultType = new PetterResultType<Pension>();
@@ -118,21 +121,21 @@ namespace PetterService.Controllers
             string pensionService = string.Empty;
             string pensionHoliday = string.Empty;
 
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
+
             BeautyShop beautyShop = await db.BeautyShops.FindAsync(id);
             if (beautyShop == null)
             {
                 return NotFound();
             }
 
-            if (!Request.Content.IsMimeMultipartContent())
-            {
-                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
-            }
-
             var folder = HostingEnvironment.MapPath(UploadPath.BeautyShopPath);
             Utilities.CreateDirectory(folder);
 
-            var provider = new CustomMultipartFormDataStreamProvider(folder);
+            //var provider = new CustomMultipartFormDataStreamProvider(folder);
 
             try
             {
@@ -290,18 +293,194 @@ namespace PetterService.Controllers
         }
 
         // POST: api/Pensions
-        [ResponseType(typeof(Pension))]
-        public async Task<IHttpActionResult> PostPension(Pension pension)
+        [ResponseType(typeof(PetterResultType<Pension>))]
+        public async Task<IHttpActionResult> PostPension()
         {
-            if (!ModelState.IsValid)
+            PetterResultType<Pension> PetterResultType = new PetterResultType<Pension>();
+            List<PensionService> pensionServices = new List<PensionService>();
+            List<PensionHoliday> pensionHolidays = new List<PensionHoliday>();
+            Pension pension = new Pension();
+            string pensionService = string.Empty;
+            string pensionHoliday = string.Empty;
+
+            IHttpActionResult ihttpActionResult;
+
+            if (Request.Content.IsMimeMultipartContent())
             {
-                return BadRequest(ModelState);
+                string folder = HostingEnvironment.MapPath(UploadPath.PensionPath);
+                Utilities.CreateDirectory(folder);
+                var  provider = new MultipartMemoryStreamProvider();
+                MultipartMemoryStreamProvider memoryStreamProvider = await (Task<MultipartMemoryStreamProvider>)HttpContentMultipartExtensions.ReadAsMultipartAsync<MultipartMemoryStreamProvider>(this.get_Request().Content, (M0)provider);
+                foreach (var content in provider.Contents)
+                {
+                    string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
+                    if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
+                    {
+                        byte[] numArray = await content.ReadAsByteArrayAsync();
+                        byte[] file = numArray;
+                        numArray = (byte[])null;
+                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+                        if (!Enumerable.Any<string>((IEnumerable<string>)FileExtension.PensionExtensions, (Func<string, bool>)(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase))))
+                        {
+                            PetterResultType.IsSuccessful = false;
+                            PetterResultType.JsonDataSet = null;
+                            PetterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            
+                        }
+                        string fullPath = Path.Combine(folder, fileName);
+                        File.WriteAllBytes(fullPath, file);
+                        string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
+                        //Utilities.ResizeImage(fullPath, thumbnamil, 980.0, 360.0, ImageFormat.Png);
+                        pension.PictureName = fileName;
+                        pension.PicturePath = folder;
+                        file = (byte[])null;
+                        fullPath = (string)null;
+                        thumbnamil = (string)null;
+                    }
+                    else
+                    {
+                        string str = await content.ReadAsStringAsync();
+                        string item = HttpUtility.UrlDecode(str);
+                        str = (string)null;
+                        string s = fieldName.ToString();
+                        // ISSUE: reference to a compiler-generated method
+                        uint stringHash = \u003CPrivateImplementationDetails\u003E.ComputeStringHash(s);
+                        string[] geography;
+                        string point;
+                        if (stringHash <= 2709835700U)
+                        {
+                            if (stringHash <= 1485049058U)
+                            {
+                                if (stringHash <= 663770264U)
+                                {
+                                    if ((int)stringHash != 499144555)
+                                    {
+                                        if ((int)stringHash == 663770264 && s == "ReviewCount")
+                                            pension.ReviewCount = int.Parse(item);
+                                    }
+                                    else if (s == "Coordinate")
+                                    {
+                                        geography = item.Split(',');
+                                        if (geography.Length != 2)
+                                        {
+                                            ihttpActionResult = (IHttpActionResult)this.BadRequest();
+                                            goto label_74;
+                                        }
+                                        else
+                                        {
+                                            point = string.Format("POINT({0} {1})", (object)geography[0], (object)geography[1]);
+                                            pension.Coordinate = DbGeography.FromText(point);
+                                        }
+                                    }
+                                }
+                                else if ((int)stringHash != 833590459)
+                                {
+                                    if ((int)stringHash == 1485049058 && s == "PictureName")
+                                        pension.PictureName = item;
+                                }
+                                else if (s == "CompanyNo")
+                                    pension.CompanyNo = int.Parse(item);
+                            }
+                            else if (stringHash <= 1702902297U)
+                            {
+                                if ((int)stringHash != 1644290004)
+                                {
+                                    if ((int)stringHash == 1702902297 && s == "Introduction")
+                                        pension.Introduction = item;
+                                }
+                                else if (s == "Grade")
+                                    pension.Grade = (Decimal)int.Parse(item);
+                            }
+                            else if ((int)stringHash != 1985364884)
+                            {
+                                if ((int)stringHash == -1585131596 && s == "PensionHolidays")
+                                    pensionHoliday = item;
+                            }
+                            else if (s == "EndPension")
+                                pension.EndPension = item;
+                        }
+                        else if (stringHash <= 3247220935U)
+                        {
+                            if (stringHash <= 2782850510U)
+                            {
+                                if ((int)stringHash != -1549514183)
+                                {
+                                    if ((int)stringHash == -1512116786 && s == "PensionNo")
+                                        pension.PensionNo = int.Parse(item);
+                                }
+                                else if (s == "Bookmark")
+                                    pension.Bookmark = int.Parse(item);
+                            }
+                            else if ((int)stringHash != -1509863178)
+                            {
+                                if ((int)stringHash == -1047746361 && s == "StartPension")
+                                    pension.StartPension = item;
+                            }
+                            else if (s == "PensionAddr")
+                                pension.PensionAddr = item;
+                        }
+                        else if (stringHash <= 3852676210U)
+                        {
+                            if ((int)stringHash != -929768346)
+                            {
+                                if ((int)stringHash == -442291086 && s == "PicturePath")
+                                    pension.PicturePath = item;
+                            }
+                            else if (s == "DateModified")
+                                pension.DateModified = DateTime.Now;
+                        }
+                        else if ((int)stringHash != -378585865)
+                        {
+                            if ((int)stringHash != -224587967)
+                            {
+                                if ((int)stringHash == -57857742 && s == "PensionName")
+                                    pension.PensionName = item;
+                            }
+                            else if (s == "PensionServices")
+                                pensionService = item;
+                        }
+                        else if (s == "DateCreated")
+                            pension.DateCreated = DateTime.Now;
+                        geography = (string[])null;
+                        point = (string)null;
+                        item = (string)null;
+                    }
+                    fieldName = (string)null;
+                    content = (HttpContent)null;
+                }
+                pension.DateCreated = DateTime.Now;
+                pension.DateModified = DateTime.Now;
+                this.db.Pensions.Add(pension);
+                int num = await this.db.SaveChangesAsync();
+                folder = (string)null;
+                provider = (MultipartMemoryStreamProvider)null;
+                if (!string.IsNullOrWhiteSpace(pensionService))
+                {
+                    List<PensionService> list = await this.AddPensionService(pension, pensionService);
+                    pensionServices = list;
+                    list = (List<PensionService>)null;
+                    pension.PensionServices = (ICollection<PensionService>)Enumerable.ToList<PensionService>((IEnumerable<PensionService>)pensionServices);
+                }
+                if (!string.IsNullOrWhiteSpace(pensionHoliday))
+                {
+                    List<PensionHoliday> list = await this.AddPensionHoliday(pension, pensionHoliday);
+                    pensionHolidays = list;
+                    list = (List<PensionHoliday>)null;
+                    pension.PensionHolidays = (ICollection<PensionHoliday>)Enumerable.ToList<PensionHoliday>((IEnumerable<PensionHoliday>)pensionHolidays);
+                }
+                PetterResultType.IsSuccessful = true;
+                PetterResultType.JsonDataSet = pension;
+
+                //return PetterResultType;
+            }
+            else
+            {
+                PetterResultType.IsSuccessful = false;
+                PetterResultType.JsonDataSet = (Pension)null;
+               
             }
 
-            db.Pensions.Add(pension);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = pension.PensionNo }, pension);
+            //return PetterResultType;
         }
 
         // DELETE: api/Pensions/5
@@ -318,6 +497,80 @@ namespace PetterService.Controllers
             await db.SaveChangesAsync();
 
             return Ok(pension);
+        }
+
+        private async Task<List<PensionService>> AddPensionService(Pension Pension, string pensionService)
+        {
+            List<PensionService> PensionServices = new List<PensionService>();
+            string[] arr = HttpUtility.UrlDecode(pensionService.ToString()).Split(',');
+            string[] strArray = arr;
+            for (int index = 0; index < strArray.Length; ++index)
+            {
+                string item = strArray[index];
+                PensionService PensionService = new PensionService();
+                PensionService.PensionNo = Pension.PensionNo;
+                PensionService.PensionServiceCode = int.Parse(item);
+                this.db.PensionServices.Add(PensionService);
+                int num = await this.db.SaveChangesAsync();
+                PensionServices.Add(PensionService);
+                PensionService = (PensionService)null;
+                item = (string)null;
+            }
+            strArray = (string[])null;
+            return PensionServices;
+        }
+
+        private async Task DeletePensionService(Pension Pension)
+        {
+            List<PensionService> PensionService = new List<PensionService>();
+            List<PensionService> list = await (Task<List<PensionService>>)QueryableExtensions.ToListAsync<PensionService>((IQueryable<M0>)Queryable.Where<PensionService>((IQueryable<PensionService>)this.db.PensionServices, (Expression<Func<PensionService, bool>>)(p => p.PensionNo == Pension.PensionNo)));
+            PensionService = list;
+            list = (List<PensionService>)null;
+            foreach (PensionService pensionService in PensionService)
+            {
+                PensionService item = pensionService;
+                this.db.PensionServices.Remove(item);
+                int num = await this.db.SaveChangesAsync();
+                item = (PensionService)null;
+            }
+            List<PensionService>.Enumerator enumerator = new List<PensionService>.Enumerator();
+        }
+
+        private async Task<List<PensionHoliday>> AddPensionHoliday(Pension Pension, string pensionHoliday)
+        {
+            List<PensionHoliday> PensionHolidays = new List<PensionHoliday>();
+            string[] arr = HttpUtility.UrlDecode(pensionHoliday.ToString()).Split(',');
+            string[] strArray = arr;
+            for (int index = 0; index < strArray.Length; ++index)
+            {
+                string item = strArray[index];
+                PensionHoliday PensionHoliday = new PensionHoliday();
+                PensionHoliday.PensionNo = Pension.PensionNo;
+                PensionHoliday.PensionHolidayCode = int.Parse(item);
+                this.db.PensionHolidays.Add(PensionHoliday);
+                int num = await this.db.SaveChangesAsync();
+                PensionHolidays.Add(PensionHoliday);
+                PensionHoliday = (PensionHoliday)null;
+                item = (string)null;
+            }
+            strArray = (string[])null;
+            return PensionHolidays;
+        }
+
+        private async Task DeletePensionHoliday(Pension Pension)
+        {
+            List<PensionHoliday> PensionHolidays = new List<PensionHoliday>();
+            List<PensionHoliday> list = await (Task<List<PensionHoliday>>)QueryableExtensions.ToListAsync<PensionHoliday>((IQueryable<M0>)Queryable.Where<PensionHoliday>((IQueryable<PensionHoliday>)this.db.PensionHolidays, (Expression<Func<PensionHoliday, bool>>)(p => p.PensionNo == Pension.PensionNo)));
+            PensionHolidays = list;
+            list = (List<PensionHoliday>)null;
+            foreach (PensionHoliday pensionHoliday in PensionHolidays)
+            {
+                PensionHoliday item = pensionHoliday;
+                this.db.PensionHolidays.Remove(item);
+                int num = await this.db.SaveChangesAsync();
+                item = (PensionHoliday)null;
+            }
+            List<PensionHoliday>.Enumerator enumerator = new List<PensionHoliday>.Enumerator();
         }
 
         protected override void Dispose(bool disposing)
