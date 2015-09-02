@@ -16,8 +16,8 @@ namespace PetterService.Models
         public string PensionAddr { get; set; }
         public string PictureName { get; set; }
         public string PicturePath { get; set; }
-        public string StartPension { get; set; }
-        public string EndPension { get; set; }
+        public string StartPensionHours { get; set; }
+        public string EndPensionHours { get; set; }
         public string Introduction { get; set; }
         public DbGeography Coordinate { get; set; }
         [Range(0, 10)]

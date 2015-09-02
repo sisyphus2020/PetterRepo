@@ -28,7 +28,7 @@ namespace PetterService.Controllers
         public IEnumerable<Pension> GetPensions([FromUri] PetterRequestType petterRequestType)
         {
             List<Pension> list = new List<Pension>();
-            DbGeography currentLocation = DbGeography.FromText(string.Format("POINT({0} {1})", (object)petterRequestType.Latitude, (object)petterRequestType.Longitude));
+            DbGeography currentLocation = DbGeography.FromText(string.Format("POINT({0} {1})", petterRequestType.Latitude, petterRequestType.Longitude));
             int distance = petterRequestType.Distance;
             IEnumerable<Pension> source = Enumerable.AsEnumerable<Pension>((IEnumerable<Pension>)this.db.Pensions);
 
@@ -100,16 +100,19 @@ namespace PetterService.Controllers
         }
 
         // GET: api/Pensions/5
-        [ResponseType(typeof(Pension))]
+        [ResponseType(typeof(PetterResultType<Pension>))]
         public async Task<IHttpActionResult> GetPension(int id)
         {
+            PetterResultType<Pension> petterResultType = new PetterResultType<Pension>();
             Pension pension = await db.Pensions.FindAsync(id);
             if (pension == null)
             {
                 return NotFound();
             }
 
-            return Ok(pension);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = pension;
+            return Ok(petterResultType);
         }
 
         // PUT: api/Pensions/5
@@ -298,7 +301,7 @@ namespace PetterService.Controllers
         [ResponseType(typeof(PetterResultType<Pension>))]
         public async Task<IHttpActionResult> PostPension()
         {
-            PetterResultType<Pension> PetterResultType = new PetterResultType<Pension>();
+            PetterResultType<Pension> petterResultType = new PetterResultType<Pension>();
             List<PensionService> pensionServices = new List<PensionService>();
             List<PensionHoliday> pensionHolidays = new List<PensionHoliday>();
             Pension pension = new Pension();
@@ -320,14 +323,14 @@ namespace PetterService.Controllers
                     if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
                     {
                         var file = await content.ReadAsByteArrayAsync();
-                       
+
                         string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
 
                         if (!Enumerable.Any<string>((IEnumerable<string>)FileExtension.PensionExtensions, (Func<string, bool>)(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase))))
                         {
-                            PetterResultType.IsSuccessful = false;
-                            PetterResultType.JsonDataSet = null;
-                            PetterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            petterResultType.IsSuccessful = false;
+                            petterResultType.JsonDataSet = null;
+                            petterResultType.ErrorMessage = ErrorMessage.FileTypeError;
                         }
 
                         string fullPath = Path.Combine(folder, fileName);
@@ -339,124 +342,82 @@ namespace PetterService.Controllers
                     }
                     else
                     {
-                    //    string str = await content.ReadAsStringAsync();
-                    //    string item = HttpUtility.UrlDecode(str);
-                    //    str = (string)null;
-                    //    string s = fieldName.ToString();
-                    //    // ISSUE: reference to a compiler-generated method
-                    //    //uint stringHash = \u003CPrivateImplementationDetails\u003E.ComputeStringHash(s);
-                    //    string[] geography;
-                    //    string point;
-                    //    if (stringHash <= 2709835700U)
-                    //    {
-                    //        if (stringHash <= 1485049058U)
-                    //        {
-                    //            if (stringHash <= 663770264U)
-                    //            {
-                    //                if ((int)stringHash != 499144555)
-                    //                {
-                    //                    if ((int)stringHash == 663770264 && s == "ReviewCount")
-                    //                        pension.ReviewCount = int.Parse(item);
-                    //                }
-                    //                else if (s == "Coordinate")
-                    //                {
-                    //                    geography = item.Split(',');
-                    //                    if (geography.Length != 2)
-                    //                    {
-                    //                        ihttpActionResult = (IHttpActionResult)this.BadRequest();
-                    //                        goto label_74;
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        point = string.Format("POINT({0} {1})", (object)geography[0], (object)geography[1]);
-                    //                        pension.Coordinate = DbGeography.FromText(point);
-                    //                    }
-                    //                }
-                    //            }
-                    //            else if ((int)stringHash != 833590459)
-                    //            {
-                    //                if ((int)stringHash == 1485049058 && s == "PictureName")
-                    //                    pension.PictureName = item;
-                    //            }
-                    //            else if (s == "CompanyNo")
-                    //                pension.CompanyNo = int.Parse(item);
-                    //        }
-                    //        else if (stringHash <= 1702902297U)
-                    //        {
-                    //            if ((int)stringHash != 1644290004)
-                    //            {
-                    //                if ((int)stringHash == 1702902297 && s == "Introduction")
-                    //                    pension.Introduction = item;
-                    //            }
-                    //            else if (s == "Grade")
-                    //                pension.Grade = (Decimal)int.Parse(item);
-                    //        }
-                    //        else if ((int)stringHash != 1985364884)
-                    //        {
-                    //            if ((int)stringHash == -1585131596 && s == "PensionHolidays")
-                    //                pensionHoliday = item;
-                    //        }
-                    //        else if (s == "EndPension")
-                    //            pension.EndPension = item;
-                    //    }
-                    //    else if (stringHash <= 3247220935U)
-                    //    {
-                    //        if (stringHash <= 2782850510U)
-                    //        {
-                    //            if ((int)stringHash != -1549514183)
-                    //            {
-                    //                if ((int)stringHash == -1512116786 && s == "PensionNo")
-                    //                    pension.PensionNo = int.Parse(item);
-                    //            }
-                    //            else if (s == "Bookmark")
-                    //                pension.Bookmark = int.Parse(item);
-                    //        }
-                    //        else if ((int)stringHash != -1509863178)
-                    //        {
-                    //            if ((int)stringHash == -1047746361 && s == "StartPension")
-                    //                pension.StartPension = item;
-                    //        }
-                    //        else if (s == "PensionAddr")
-                    //            pension.PensionAddr = item;
-                    //    }
-                    //    else if (stringHash <= 3852676210U)
-                    //    {
-                    //        if ((int)stringHash != -929768346)
-                    //        {
-                    //            if ((int)stringHash == -442291086 && s == "PicturePath")
-                    //                pension.PicturePath = item;
-                    //        }
-                    //        else if (s == "DateModified")
-                    //            pension.DateModified = DateTime.Now;
-                    //    }
-                    //    else if ((int)stringHash != -378585865)
-                    //    {
-                    //        if ((int)stringHash != -224587967)
-                    //        {
-                    //            if ((int)stringHash == -57857742 && s == "PensionName")
-                    //                pension.PensionName = item;
-                    //        }
-                    //        else if (s == "PensionServices")
-                    //            pensionService = item;
-                    //    }
-                    //    else if (s == "DateCreated")
-                    //        pension.DateCreated = DateTime.Now;
-                    //    geography = (string[])null;
-                    //    point = (string)null;
-                    //    item = (string)null;
-                    }
+                        string str = await content.ReadAsStringAsync();
+                        string item = HttpUtility.UrlDecode(str);
+                        string[] geography;
+                        string point = string.Empty;
 
-                    //fieldName = (string)null;
-                    ///content = (HttpContent)null;
+                        #region switch case
+                        switch (str.ToString())
+                        {
+                            case "PensionNo":
+                                pension.PensionNo = int.Parse(item);
+                                break;
+                            case "CompanyNo":
+                                pension.CompanyNo = int.Parse(item);
+                                break;
+                            case "PensionName":
+                                pension.PensionName = item;
+                                break;
+                            case "PensionAddr":
+                                pension.PensionAddr = item;
+                                break;
+                            case "PictureName":
+                                pension.PictureName = item;
+                                break;
+                            case "PicturePath":
+                                pension.PicturePath = item;
+                                break;
+                            case "StartPensionHours":
+                                pension.StartPensionHours = item;
+                                break;
+                            case "EndPensionHours":
+                                pension.EndPensionHours = item;
+                                break;
+                            case "Introduction":
+                                pension.Introduction = item;
+                                break;
+                            case "Coordinate":
+                                geography = item.Split(',');
+                                if (geography.Length != 2)
+                                {
+                                    return BadRequest();
+                                }
+                                point = string.Format("POINT({0} {1})", geography[0], geography[1]);
+                                pension.Coordinate = DbGeography.FromText(point);
+                                break;
+                            case "Grade":
+                                pension.Grade = int.Parse(item);
+                                break;
+                            case "ReviewCount":
+                                pension.ReviewCount = int.Parse(item);
+                                break;
+                            case "Bookmark":
+                                pension.Bookmark = int.Parse(item);
+                                break;
+                            case "DateCreated":
+                                pension.DateCreated = DateTime.Now;
+                                break;
+                            case "DateModified":
+                                pension.DateModified = DateTime.Now;
+                                break;
+                            case "BeautyShopServices":
+                                pensionService = item;
+                                break;
+                            case "BeautyShopHolidays":
+                                pensionHoliday = item;
+                                break;
+                            default:
+                                break;
+                        }
+                        #endregion switch case
+                    }
                 }
 
                 pension.DateCreated = DateTime.Now;
                 pension.DateModified = DateTime.Now;
-                this.db.Pensions.Add(pension);
+                db.Pensions.Add(pension);
                 int num = await this.db.SaveChangesAsync();
-
-                folder = (string)null;
-                provider = (MultipartMemoryStreamProvider)null;
 
                 if (!string.IsNullOrWhiteSpace(pensionService))
                 {
@@ -474,18 +435,18 @@ namespace PetterService.Controllers
                     pension.PensionHolidays = (ICollection<PensionHoliday>)Enumerable.ToList<PensionHoliday>((IEnumerable<PensionHoliday>)pensionHolidays);
                 }
 
-                PetterResultType.IsSuccessful = true;
-                PetterResultType.JsonDataSet = pension;
+                petterResultType.IsSuccessful = true;
+                petterResultType.JsonDataSet = pension;
 
                 //return PetterResultType;
             }
             else
             {
-                PetterResultType.IsSuccessful = false;
-                PetterResultType.JsonDataSet = null;
+                petterResultType.IsSuccessful = false;
+                petterResultType.JsonDataSet = null;
             }
 
-            return Ok(PetterResultType);
+            return Ok(petterResultType);
         }
 
         // DELETE: api/Pensions/5
