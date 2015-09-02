@@ -345,19 +345,27 @@ namespace PetterService.Controllers
 
                         string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
 
-                        if (!Enumerable.Any<string>((IEnumerable<string>)FileExtension.PensionExtensions, (Func<string, bool>)(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase))))
+                        //if (!Enumerable.Any<string>((IEnumerable<string>)FileExtension.PensionExtensions, (Func<string, bool>)(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase))))
+                        if (!FileExtension.PensionExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
                             petterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            return Ok(petterResultType);
                         }
 
                         string fullPath = Path.Combine(folder, fileName);
                         File.WriteAllBytes(fullPath, file);
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
+                        //var a = Request.MapPath("~");
+                        //var b = Server.MapPath("~");
+
+                        string folder1 = HostingEnvironment.MapPath("~/Files");
+
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PensionWidth, FileSize.PensionHeight, ImageFormat.Png);
                         pension.PictureName = fileName;
-                        pension.PicturePath = folder;
+                        //pension.PicturePath = folder;
+                        pension.PicturePath = UploadPath.PensionPath;
                     }
                     else
                     {

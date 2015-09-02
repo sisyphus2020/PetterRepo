@@ -138,6 +138,8 @@ namespace PetterService.Common
                 }
 
                 string thumbnailPath = Path.GetDirectoryName(fullPath);
+                string rootPath = Path.GetPathRoot(fullPath);
+             
                 newImage.Save(Path.Combine(thumbnailPath, thumbnamilName), ImageFormat.Png);
                 newImage.Dispose();
             }

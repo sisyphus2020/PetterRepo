@@ -16,7 +16,7 @@ namespace PetterService.Common
         public static string PATH { get { return "~/App_Data" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string BeautyShopPath { get { return "~/App_Data" + "/" + "BeautyShop" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string PetSitterPath { get { return "~/App_Data" + "/" + "PetSitter" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string PensionPath { get { return "~/App_Data" + "/" + "Pension" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
+        public static string PensionPath { get { return "/Files" + "/" + "Pension" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
     }
 
     public sealed class Encription
@@ -53,6 +53,6 @@ namespace PetterService.Common
 
     public static class ErrorMessage
     {
-        public static readonly string FileTypeError = "파일 형식이 맞지 않습니다.";
+        public static readonly string FileTypeError = "첨부파일 형식이 맞지 않습니다.";
     }
 }
