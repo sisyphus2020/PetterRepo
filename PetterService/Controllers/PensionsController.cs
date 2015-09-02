@@ -355,7 +355,7 @@ namespace PetterService.Controllers
                         string fullPath = Path.Combine(folder, fileName);
                         File.WriteAllBytes(fullPath, file);
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
-                        //Utilities.ResizeImage(fullPath, thumbnamil, 980.0, 360.0, ImageFormat.Png);
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PensionWidth, FileSize.PensionHeight, ImageFormat.Png);
                         pension.PictureName = fileName;
                         pension.PicturePath = folder;
                     }
