@@ -100,18 +100,39 @@ namespace PetterService.Controllers
         }
 
         // GET: api/Pensions/5
-        [ResponseType(typeof(PetterResultType<Pension>))]
+        [ResponseType(typeof(PetterResultType<PensionDTO>))]
         public async Task<IHttpActionResult> GetPension(int id)
         {
-            PetterResultType<Pension> petterResultType = new PetterResultType<Pension>();
-            Pension pension = await db.Pensions.FindAsync(id);
-            if (pension == null)
+            PetterResultType<PensionDTO> petterResultType = new PetterResultType<PensionDTO>();
+          
+            var pensionDatail = await db.Pensions.Where(p => p.PensionNo == id).Select(p => new PensionDTO
+            {
+                PensionNo = p.PensionNo,
+                CompanyNo = p.CompanyNo,
+                PensionName = p.PensionName,
+                PensionAddr = p.PensionAddr,
+                PictureName = p.PictureName,
+                PicturePath = p.PicturePath,
+                StartPensionHours = p.StartPensionHours,
+                EndPensionHours = p.EndPensionHours,
+                Introduction = p.Introduction,
+                Coordinate = p.Coordinate,
+                Grade = p.Grade,
+                ReviewCount = p.ReviewCount,
+                Bookmark = p.Bookmark,
+                DateCreated = p.DateCreated,
+                DateModified = p.DateModified,
+                PensionServices = p.PensionServices.ToList(),
+                PensionHolidays = p.PensionHolidays.ToList()
+            }).SingleOrDefaultAsync();
+
+            if (pensionDatail == null)
             {
                 return NotFound();
             }
 
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = pension;
+            petterResultType.JsonDataSet = pensionDatail;
             return Ok(petterResultType);
         }
 
@@ -312,8 +333,6 @@ namespace PetterService.Controllers
             {
                 string folder = HostingEnvironment.MapPath(UploadPath.PensionPath);
                 Utilities.CreateDirectory(folder);
-                //var  provider = new MultipartMemoryStreamProvider();
-                //MultipartMemoryStreamProvider memoryStreamProvider = await (Task<MultipartMemoryStreamProvider>)HttpContentMultipartExtensions.ReadAsMultipartAsync<MultipartMemoryStreamProvider>(this.get_Request().Content, (M0)provider);
 
                 var provider = await Request.Content.ReadAsMultipartAsync();
 
@@ -348,7 +367,7 @@ namespace PetterService.Controllers
                         string point = string.Empty;
 
                         #region switch case
-                        switch (str.ToString())
+                        switch (fieldName)
                         {
                             case "PensionNo":
                                 pension.PensionNo = int.Parse(item);
@@ -401,10 +420,10 @@ namespace PetterService.Controllers
                             case "DateModified":
                                 pension.DateModified = DateTime.Now;
                                 break;
-                            case "BeautyShopServices":
+                            case "PensionServices":
                                 pensionService = item;
                                 break;
-                            case "BeautyShopHolidays":
+                            case "PensionHolidays":
                                 pensionHoliday = item;
                                 break;
                             default:

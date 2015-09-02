@@ -16,8 +16,8 @@ namespace PetterService.Models
         public string BeautyShopAddr { get; set; }
         public string PictureName { get; set; }
         public string PicturePath { get; set; }
-        public string StartBeautyShop { get; set; }
-        public string EndBeautyShop { get; set; }
+        public string StartBeautyShopHours { get; set; }
+        public string EndBeautyShopHours { get; set; }
         public string Introduction { get; set; }
         public DbGeography Coordinate { get; set; }
         [Range(0, 10)]

@@ -158,3 +158,5 @@ D:\12. Repository\PetterRepo\PetterService\bin\Microsoft.Owin.Security.Google.xm
 D:\12. Repository\PetterRepo\PetterService\bin\Microsoft.Owin.Security.Twitter.xml
 D:\12. Repository\PetterRepo\PetterService\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 D:\12. Repository\PetterRepo\PetterService\bin\System.Web.Http.Owin.xml
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Pension.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PensionType.resources
