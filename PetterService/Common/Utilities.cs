@@ -119,59 +119,6 @@ namespace PetterService.Common
             }
         }
 
-        //public static void ResizeImage(string fullPath, string thumbnamilName, int maxWidth,  int maxHeight, ImageFormat imageFormat)
-        //{
-        //    // Get the image's original width and height
-        //    int originalWidth = image.Width;
-        //    int originalHeight = image.Height;
-
-        //    // To preserve the aspect ratio
-        //    float ratioX = (float)maxWidth / (float)originalWidth;
-        //    float ratioY = (float)maxHeight / (float)originalHeight;
-        //    float ratio = Math.Min(ratioX, ratioY);
-
-        //    // New width and height based on aspect ratio
-        //    int thumbWidth = (int)(originalWidth * ratio);
-        //    int thumbHeight = (int)(originalHeight * ratio);
-
-        //    // Convert other formats (including CMYK) to RGB.
-        //    Bitmap newImage = new Bitmap(thumbWidth, thumbHeight, PixelFormat.Format24bppRgb);
-
-        //    // Draws the image in the specified size with quality mode set to HighQuality
-        //    using (Graphics graphics = Graphics.FromImage(newImage))
-        //    {
-        //        graphics.CompositingQuality = CompositingQuality.HighQuality;
-        //        graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-        //        graphics.SmoothingMode = SmoothingMode.HighQuality;
-        //        graphics.DrawImage(image, 0, 0, thumbWidth, thumbHeight);
-        //    }
-
-        //    // Get an ImageCodecInfo object that represents the JPEG codec.
-        //    ImageCodecInfo imageCodecInfo = this.GetEncoderInfo(ImageFormat.Jpeg);
-
-        //    // Create an Encoder object for the Quality parameter.
-        //    Encoder encoder = Encoder.Quality;
-
-        //    // Create an EncoderParameters object. 
-        //    EncoderParameters encoderParameters = new EncoderParameters(1);
-
-        //    // Save the image as a JPEG file with quality level.
-        //    EncoderParameter encoderParameter = new EncoderParameter(encoder, quality);
-        //    encoderParameters.Param[0] = encoderParameter;
-        //    newImage.Save(filePath, imageCodecInfo, encoderParameters);
-        //}
-
-        //private ImageCodecInfo GetEncoderInfo(ImageFormat format)
-        //{
-        //    return ImageCodecInfo.GetImageDecoders().SingleOrDefault(c => c.FormatID == format.Guid);
-        //}
-
-        //public bool ThumbnailCallback()
-        //{
-        //    return false;
-        //}
-
-        //public void Example_GetThumb(PaintEventArgs e)
         public static void ResizeImage(string fullPath, string thumbnamilName, int thumbWidth, int thumbHeight, ImageFormat imageFormat)
         {
             using (Image image = Image.FromFile(fullPath))
@@ -190,15 +137,11 @@ namespace PetterService.Common
                     graphics.DrawImage(image, 0, 0, newWidth, newHeight);
                 }
 
-                newImage.Save(thumbnamilName, ImageFormat.Png);
+                string thumbnailPath = Path.GetDirectoryName(fullPath);
+                newImage.Save(Path.Combine(thumbnailPath, thumbnamilName), ImageFormat.Png);
                 newImage.Dispose();
             }
 
-        }
-
-        public bool ThumbnailCallback()
-        {
-            return false;
         }
 
         public static string additionFileName(string fileName)
