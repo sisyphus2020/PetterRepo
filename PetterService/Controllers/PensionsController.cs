@@ -30,7 +30,7 @@ namespace PetterService.Controllers
             List<Pension> list = new List<Pension>();
             DbGeography currentLocation = DbGeography.FromText(string.Format("POINT({0} {1})", petterRequestType.Latitude, petterRequestType.Longitude));
             int distance = petterRequestType.Distance;
-            IEnumerable<Pension> source = Enumerable.AsEnumerable<Pension>((IEnumerable<Pension>)this.db.Pensions);
+            //IEnumerable<Pension> source = Enumerable.AsEnumerable<Pension>((IEnumerable<Pension>)this.db.Pensions);
 
             var Pension = db.Pensions.AsEnumerable();
 
@@ -137,185 +137,167 @@ namespace PetterService.Controllers
         }
 
         // PUT: api/Pensions/5
-        //[ResponseType(typeof(PetterResultType<Pension>))]
-        //public async Task<IHttpActionResult> PutPension(int id, Pension pension)
-        //{
-        //    PetterResultType<Pension> PetterResultType = new PetterResultType<Pension>();
-        //    List<PensionService> pensionServices = new List<PensionService>();
-        //    List<PensionHoliday> PensionHolidays = new List<PensionHoliday>();
-        //    string pensionService = string.Empty;
-        //    string pensionHoliday = string.Empty;
+        [ResponseType(typeof(PetterResultType<Pension>))]
+        public async Task<IHttpActionResult> PutPension(int id)
+        {
+            PetterResultType<Pension> petterResultType = new PetterResultType<Pension>();
+            List<PensionService> pensionServices = new List<PensionService>();
+            List<PensionHoliday> PensionHolidays = new List<PensionHoliday>();
+            string pensionService = string.Empty;
+            string pensionHoliday = string.Empty;
 
-        //    if (!Request.Content.IsMimeMultipartContent())
-        //    {
-        //        throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
-        //    }
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
 
-        //    BeautyShop beautyShop = await db.BeautyShops.FindAsync(id);
-        //    if (beautyShop == null)
-        //    {
-        //        return NotFound();
-        //    }
+            Pension pension = await this.db.Pensions.FindAsync(id);
+            if (pension == null)
+            {
+                return NotFound();
+            }
 
-        //    var folder = HostingEnvironment.MapPath(UploadPath.BeautyShopPath);
-        //    Utilities.CreateDirectory(folder);
+            if (Request.Content.IsMimeMultipartContent())
+            {
+                string folder = HostingEnvironment.MapPath(UploadPath.PensionPath);
+                Utilities.CreateDirectory(folder);
 
-        //    var provider = await Request.Content.ReadAsMultipartAsync();
+                var provider = await Request.Content.ReadAsMultipartAsync();
 
-        //    try
-        //    {
-        //        await Request.Content.ReadAsMultipartAsync(provider);
+                foreach (var content in provider.Contents)
+                {
+                    string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
+                    if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
+                    {
+                        var file = await content.ReadAsByteArrayAsync();
 
-        //        // Show all the key-value pairs.
-        //        foreach (var key in provider.FormData)
-        //        {
-        //            foreach (var val in provider.FormData.GetValues(key.ToString()))
-        //            {
-        //                var item = HttpUtility.UrlDecode(val);
-        //                #region case
-        //                switch (key.ToString())
-        //                {
-        //                    case "BeautyShopNo":
-        //                        beautyShop.BeautyShopNo = int.Parse(item);
-        //                        break;
-        //                    case "CompanyNo":
-        //                        beautyShop.CompanyNo = int.Parse(item);
-        //                        break;
-        //                    case "BeautyShopName":
-        //                        beautyShop.BeautyShopName = item;
-        //                        break;
-        //                    case "BeautyShopAddr":
-        //                        beautyShop.BeautyShopAddr = item;
-        //                        break;
-        //                    case "PictureName":
-        //                        beautyShop.PictureName = item;
-        //                        break;
-        //                    case "PicturePath":
-        //                        beautyShop.PicturePath = item;
-        //                        break;
-        //                    case "StartBeautyShop":
-        //                        beautyShop.StartBeautyShop = item;
-        //                        break;
-        //                    case "EndBeautyShop":
-        //                        beautyShop.EndBeautyShop = item;
-        //                        break;
-        //                    case "Introduction":
-        //                        beautyShop.Introduction = item;
-        //                        break;
-        //                    case "Coordinate":
-        //                        //beautyShop.Coordinate = item;
-        //                        break;
-        //                    case "Grade":
-        //                        beautyShop.Grade = int.Parse(item);
-        //                        break;
-        //                    case "ReviewCount":
-        //                        beautyShop.ReviewCount = int.Parse(item);
-        //                        break;
-        //                    case "Bookmark":
-        //                        beautyShop.Bookmark = int.Parse(item);
-        //                        break;
-        //                    case "BeautyShopServices":
-        //                        shopService = item;
-        //                        break;
-        //                    case "BeautyShopHolidays":
-        //                        shopHoliday = item;
-        //                        break;
-        //                    default:
-        //                        break;
-        //                }
-        //                #endregion case
-        //            }
-        //        }
+                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
 
-        //        foreach (MultipartFileData file in provider.FileData)
-        //        {
-        //            Trace.WriteLine("Server file name: " + file.Headers.ContentDisposition.FileName);
-        //            Trace.WriteLine("Server file path: " + file.LocalFileName);
-        //            beautyShop.PictureName = file.Headers.ContentDisposition.FileName;
-        //            beautyShop.PicturePath = file.LocalFileName;
-        //            //beautyShop.DateCreated = DateTime.Now;
-        //            beautyShop.DateModified = DateTime.Now;
+                        if (!FileExtension.PensionExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        {
+                            petterResultType.IsSuccessful = false;
+                            petterResultType.JsonDataSet = null;
+                            petterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            return Ok(petterResultType);
+                        }
 
-        //            string thumbnamil = Path.GetFileNameWithoutExtension(file.LocalFileName) + "_thumbnail" + Path.GetExtension(file.LocalFileName);
+                        string fullPath = Path.Combine(folder, fileName);
+                        File.WriteAllBytes(fullPath, file);
+                        string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
-        //            Utilities.ResizeImage(file.LocalFileName, thumbnamil, FileSize.BeautyShopWidth, FileSize.BeautyShopHeight, System.Drawing.Imaging.ImageFormat.Png);
-        //        }
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PensionWidth, FileSize.PensionHeight, ImageFormat.Png);
+                        pension.PictureName = fileName;
+                        pension.PicturePath = UploadPath.PensionPath;
+                    }
+                    else
+                    {
+                        string str = await content.ReadAsStringAsync();
+                        string item = HttpUtility.UrlDecode(str);
+                        string[] geography;
+                        string point = string.Empty;
 
-        //        db.Entry(beautyShop).State = EntityState.Modified;
+                        #region switch case
+                        switch (fieldName)
+                        {
+                            case "PensionNo":
+                                pension.PensionNo = int.Parse(item);
+                                break;
+                            case "CompanyNo":
+                                pension.CompanyNo = int.Parse(item);
+                                break;
+                            case "PensionName":
+                                pension.PensionName = item;
+                                break;
+                            case "PensionAddr":
+                                pension.PensionAddr = item;
+                                break;
+                            case "PictureName":
+                                pension.PictureName = item;
+                                break;
+                            case "PicturePath":
+                                pension.PicturePath = item;
+                                break;
+                            case "StartPensionHours":
+                                pension.StartPensionHours = item;
+                                break;
+                            case "EndPensionHours":
+                                pension.EndPensionHours = item;
+                                break;
+                            case "Introduction":
+                                pension.Introduction = item;
+                                break;
+                            case "Coordinate":
+                                geography = item.Split(',');
+                                if (geography.Length != 2)
+                                {
+                                    return BadRequest();
+                                }
+                                point = string.Format("POINT({0} {1})", geography[0], geography[1]);
+                                pension.Coordinate = DbGeography.FromText(point);
+                                break;
+                            case "Grade":
+                                pension.Grade = int.Parse(item);
+                                break;
+                            case "ReviewCount":
+                                pension.ReviewCount = int.Parse(item);
+                                break;
+                            case "Bookmark":
+                                pension.Bookmark = int.Parse(item);
+                                break;
+                            case "DateCreated":
+                                pension.DateCreated = DateTime.Now;
+                                break;
+                            case "DateModified":
+                                pension.DateModified = DateTime.Now;
+                                break;
+                            case "PensionServices":
+                                pensionService = item;
+                                break;
+                            case "PensionHolidays":
+                                pensionHoliday = item;
+                                break;
+                            default:
+                                break;
+                        }
+                        #endregion switch case
+                    }
+                }
 
-        //        try
-        //        {
-        //            await db.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!BeautyShopExists(id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
+                pension.DateCreated = DateTime.Now;
+                pension.DateModified = DateTime.Now;
+                db.Pensions.Add(pension);
+                int num = await this.db.SaveChangesAsync();
 
-        //        // BeautyShopServic 
-        //        #region Insert BeautyShopServic
-        //        var sc = new BeautyShopServicesController();
-        //        await sc.DeleteBeautyShopServicByBeautyShopNo(beautyShop.BeautyShopNo);
+                if (!string.IsNullOrWhiteSpace(pensionService))
+                {
+                    List<PensionService> list = await this.AddPensionService(pension, pensionService);
+                    pensionServices = list;
+                    list = (List<PensionService>)null;
+                    pension.PensionServices = (ICollection<PensionService>)Enumerable.ToList<PensionService>((IEnumerable<PensionService>)pensionServices);
+                }
 
-        //        if (!string.IsNullOrEmpty(shopService))
-        //        {
-        //            var arr = HttpUtility.UrlDecode(shopService.ToString()).Split(',');
+                if (!string.IsNullOrWhiteSpace(pensionHoliday))
+                {
+                    List<PensionHoliday> list = await this.AddPensionHoliday(pension, pensionHoliday);
+                    pensionHolidays = list;
+                    list = (List<PensionHoliday>)null;
+                    pension.PensionHolidays = (ICollection<PensionHoliday>)Enumerable.ToList<PensionHoliday>((IEnumerable<PensionHoliday>)pensionHolidays);
+                }
 
-        //            if (arr.Count() > 0)
-        //            {
-        //                foreach (var item in arr)
-        //                {
-        //                    beautyShopService.BeautyShopNo = beautyShop.BeautyShopNo;
-        //                    beautyShopService.BeautyShopServiceCode = int.Parse(item);
+                petterResultType.IsSuccessful = true;
+                petterResultType.JsonDataSet = pension;
 
-        //                    db.BeautyShopServices.Add(beautyShopService);
-        //                    await db.SaveChangesAsync();
-        //                }
-        //            }
-        //        }
-        //        #endregion Insert BeautyShopServic
+                //return PetterResultType;
+            }
+            else
+            {
+                petterResultType.IsSuccessful = false;
+                petterResultType.JsonDataSet = null;
+            }
 
-        //        // BeautyShopServic 
-        //        #region Insert BeautyShopHoliday
-        //        var hc = new BeautyShopHolidaysController();
-        //        await hc.DeleteBeautyShopHolidayByBeautyShopNo(beautyShop.BeautyShopNo);
+            return Ok(petterResultType);
 
-        //        if (!string.IsNullOrEmpty(shopHoliday))
-        //        {
-        //            var arr = HttpUtility.UrlDecode(shopHoliday.ToString()).Split(',');
-
-        //            if (arr.Count() > 0)
-        //            {
-        //                foreach (var item in arr)
-        //                {
-        //                    beautyShopHoliday.BeautyShopNo = beautyShop.BeautyShopNo;
-        //                    beautyShopHoliday.BeautyShopHolidayCode = int.Parse(item);
-
-        //                    db.BeautyShopHolidays.Add(beautyShopHoliday);
-        //                    await db.SaveChangesAsync();
-        //                }
-        //            }
-        //        }
-        //        #endregion Insert BeautyShopHoliday
-
-        //        PetterResultType.IsSuccessful = true;
-        //        PetterResultType.JsonDataSet = beautyShop;
-
-        //        return Ok(PetterResultType);
-        //    }
-        //    catch (System.Exception e)
-        //    {
-        //        return InternalServerError(e);
-        //    }
-
-        //}
+        }
 
 
         // POST: api/Pensions
@@ -345,7 +327,6 @@ namespace PetterService.Controllers
 
                         string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
 
-                        //if (!Enumerable.Any<string>((IEnumerable<string>)FileExtension.PensionExtensions, (Func<string, bool>)(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase))))
                         if (!FileExtension.PensionExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
                             petterResultType.IsSuccessful = false;
@@ -357,14 +338,9 @@ namespace PetterService.Controllers
                         string fullPath = Path.Combine(folder, fileName);
                         File.WriteAllBytes(fullPath, file);
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
-                        //var a = Request.MapPath("~");
-                        //var b = Server.MapPath("~");
-
-                        string folder1 = HostingEnvironment.MapPath("~/Files");
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PensionWidth, FileSize.PensionHeight, ImageFormat.Png);
                         pension.PictureName = fileName;
-                        //pension.PicturePath = folder;
                         pension.PicturePath = UploadPath.PensionPath;
                     }
                     else
