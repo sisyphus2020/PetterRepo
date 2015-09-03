@@ -18,6 +18,8 @@ namespace PetterService.Models
         public string EndPensionHours { get; set; }
         public string Introduction { get; set; }
         public DbGeography Coordinate { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
         public Decimal Grade { get; set; }
         public int ReviewCount { get; set; }
         public int Bookmark { get; set; }

@@ -117,6 +117,8 @@ namespace PetterService.Controllers
                 EndPensionHours = p.EndPensionHours,
                 Introduction = p.Introduction,
                 Coordinate = p.Coordinate,
+                Latitude = p.Latitude,
+                Longitude = p.Longitude,
                 Grade = p.Grade,
                 ReviewCount = p.ReviewCount,
                 Bookmark = p.Bookmark,
@@ -193,8 +195,6 @@ namespace PetterService.Controllers
                     {
                         string str = await content.ReadAsStringAsync();
                         string item = HttpUtility.UrlDecode(str);
-                        string[] geography;
-                        string point = string.Empty;
 
                         #region switch case
                         switch (fieldName)
@@ -211,12 +211,6 @@ namespace PetterService.Controllers
                             case "PensionAddr":
                                 pension.PensionAddr = item;
                                 break;
-                            case "PictureName":
-                                //pension.PictureName = item;
-                                break;
-                            case "PicturePath":
-                                //pension.PicturePath = item;
-                                break;
                             case "StartPensionHours":
                                 pension.StartPensionHours = item;
                                 break;
@@ -226,14 +220,11 @@ namespace PetterService.Controllers
                             case "Introduction":
                                 pension.Introduction = item;
                                 break;
-                            case "Coordinate":
-                                geography = item.Split(',');
-                                if (geography.Length != 2)
-                                {
-                                    return BadRequest();
-                                }
-                                point = string.Format("POINT({0} {1})", geography[0], geography[1]);
-                                pension.Coordinate = DbGeography.FromText(point);
+                            case "Latitude":
+                                pension.Latitude = Convert.ToDouble(item);
+                                break;
+                            case "Longitude":
+                                pension.Longitude = Convert.ToDouble(item);
                                 break;
                             case "Grade":
                                 pension.Grade = int.Parse(item);
@@ -243,12 +234,6 @@ namespace PetterService.Controllers
                                 break;
                             case "Bookmark":
                                 pension.Bookmark = int.Parse(item);
-                                break;
-                            case "DateCreated":
-                                //pension.DateCreated = DateTime.Now;
-                                break;
-                            case "DateModified":
-                                //pension.DateModified = DateTime.Now;
                                 break;
                             case "PensionServices":
                                 pensionService = item;
@@ -263,10 +248,10 @@ namespace PetterService.Controllers
                     }
                 }
 
-                //pension.DateCreated = DateTime.Now;
+                string point = string.Format("POINT({0} {1})", pension.Latitude, pension.Longitude);
+                pension.Coordinate = DbGeography.FromText(point);
                 pension.DateModified = DateTime.Now;
                 db.Entry(pension).State = EntityState.Modified;
-                db.Pensions.Add(pension);
                 
                 try
                 {
@@ -358,8 +343,6 @@ namespace PetterService.Controllers
                     {
                         string str = await content.ReadAsStringAsync();
                         string item = HttpUtility.UrlDecode(str);
-                        string[] geography;
-                        string point = string.Empty;
 
                         #region switch case
                         switch (fieldName)
@@ -391,14 +374,11 @@ namespace PetterService.Controllers
                             case "Introduction":
                                 pension.Introduction = item;
                                 break;
-                            case "Coordinate":
-                                geography = item.Split(',');
-                                if (geography.Length != 2)
-                                {
-                                    return BadRequest();
-                                }
-                                point = string.Format("POINT({0} {1})", geography[0], geography[1]);
-                                pension.Coordinate = DbGeography.FromText(point);
+                            case "Latitude":
+                                pension.Latitude = Convert.ToDouble(item);
+                                break;
+                            case "Longitude":
+                                pension.Longitude = Convert.ToDouble(item);
                                 break;
                             case "Grade":
                                 pension.Grade = int.Parse(item);
@@ -408,12 +388,6 @@ namespace PetterService.Controllers
                                 break;
                             case "Bookmark":
                                 pension.Bookmark = int.Parse(item);
-                                break;
-                            case "DateCreated":
-                                pension.DateCreated = DateTime.Now;
-                                break;
-                            case "DateModified":
-                                pension.DateModified = DateTime.Now;
                                 break;
                             case "PensionServices":
                                 pensionService = item;
@@ -428,6 +402,8 @@ namespace PetterService.Controllers
                     }
                 }
 
+                string point = string.Format("POINT({0} {1})", pension.Latitude, pension.Longitude);
+                pension.Coordinate = DbGeography.FromText(point);
                 pension.DateCreated = DateTime.Now;
                 pension.DateModified = DateTime.Now;
                 db.Pensions.Add(pension);
@@ -451,8 +427,6 @@ namespace PetterService.Controllers
 
                 petterResultType.IsSuccessful = true;
                 petterResultType.JsonDataSet = pension;
-
-                //return PetterResultType;
             }
             else
             {

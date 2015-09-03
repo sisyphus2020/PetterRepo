@@ -100,6 +100,8 @@ namespace PetterService.Controllers
                 EndBeautyShopHours = p.EndBeautyShopHours,
                 Introduction = p.Introduction,
                 Coordinate = p.Coordinate,
+                Latitude = p.Latitude,
+                Longitude = p.Longitude,
                 Grade = p.Grade,
                 ReviewCount = p.ReviewCount,
                 Bookmark = p.Bookmark,

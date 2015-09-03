@@ -20,6 +20,8 @@ namespace PetterService.Models
         public string EndBeautyShopHours { get; set; }
         public string Introduction { get; set; }
         public DbGeography Coordinate { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
         [Range(0, 10)]
         public Decimal Grade { get; set; }
         public int ReviewCount { get; set; }
