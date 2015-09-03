@@ -151,7 +151,7 @@ namespace PetterService.Controllers
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
-            Pension pension = await this.db.Pensions.FindAsync(id);
+            Pension pension = await db.Pensions.FindAsync(id);
             if (pension == null)
             {
                 return NotFound();
@@ -212,10 +212,10 @@ namespace PetterService.Controllers
                                 pension.PensionAddr = item;
                                 break;
                             case "PictureName":
-                                pension.PictureName = item;
+                                //pension.PictureName = item;
                                 break;
                             case "PicturePath":
-                                pension.PicturePath = item;
+                                //pension.PicturePath = item;
                                 break;
                             case "StartPensionHours":
                                 pension.StartPensionHours = item;
@@ -245,10 +245,10 @@ namespace PetterService.Controllers
                                 pension.Bookmark = int.Parse(item);
                                 break;
                             case "DateCreated":
-                                pension.DateCreated = DateTime.Now;
+                                //pension.DateCreated = DateTime.Now;
                                 break;
                             case "DateModified":
-                                pension.DateModified = DateTime.Now;
+                                //pension.DateModified = DateTime.Now;
                                 break;
                             case "PensionServices":
                                 pensionService = item;
@@ -263,31 +263,43 @@ namespace PetterService.Controllers
                     }
                 }
 
-                pension.DateCreated = DateTime.Now;
+                //pension.DateCreated = DateTime.Now;
                 pension.DateModified = DateTime.Now;
+                db.Entry(pension).State = EntityState.Modified;
                 db.Pensions.Add(pension);
-                int num = await this.db.SaveChangesAsync();
-
-                if (!string.IsNullOrWhiteSpace(pensionService))
+                
+                try
                 {
-                    List<PensionService> list = await this.AddPensionService(pension, pensionService);
-                    pensionServices = list;
-                    list = (List<PensionService>)null;
-                    pension.PensionServices = (ICollection<PensionService>)Enumerable.ToList<PensionService>((IEnumerable<PensionService>)pensionServices);
+                    await db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PensionExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
 
+                await DeletePensionService(pension);
+                if (!string.IsNullOrWhiteSpace(pensionService))
+                {
+                    List<PensionService> list = await AddPensionService(pension, pensionService);
+                    pension.PensionServices = list;
+                }
+
+                await this.DeletePensionHoliday(pension);
                 if (!string.IsNullOrWhiteSpace(pensionHoliday))
                 {
-                    List<PensionHoliday> list = await this.AddPensionHoliday(pension, pensionHoliday);
-                    pensionHolidays = list;
-                    list = (List<PensionHoliday>)null;
-                    pension.PensionHolidays = (ICollection<PensionHoliday>)Enumerable.ToList<PensionHoliday>((IEnumerable<PensionHoliday>)pensionHolidays);
+                    List<PensionHoliday> list = await AddPensionHoliday(pension, pensionHoliday);
+                    pension.PensionHolidays = list;
                 }
 
                 petterResultType.IsSuccessful = true;
                 petterResultType.JsonDataSet = pension;
-
-                //return PetterResultType;
             }
             else
             {
@@ -296,7 +308,6 @@ namespace PetterService.Controllers
             }
 
             return Ok(petterResultType);
-
         }
 
 
@@ -490,19 +501,31 @@ namespace PetterService.Controllers
 
         //private async Task DeletePensionService(Pension Pension)
         //{
-        //    List<PensionService> PensionService = new List<PensionService>();
-        //    List<PensionService> list = await (Task<List<PensionService>>)QueryableExtensions.ToListAsync<PensionService>((IQueryable<M0>)Queryable.Where<PensionService>((IQueryable<PensionService>)this.db.PensionServices, (Expression<Func<PensionService, bool>>)(p => p.PensionNo == Pension.PensionNo)));
-        //    PensionService = list;
-        //    list = (List<PensionService>)null;
-        //    foreach (PensionService pensionService in PensionService)
+        //    //List<PensionService> PensionService = new List<PensionService>();
+        //    //List<PensionService> list = await (Task<List<PensionService>>)QueryableExtensions.ToListAsync<PensionService>((IQueryable<M0>)Queryable.Where<PensionService>((IQueryable<PensionService>)this.db.PensionServices, (Expression<Func<PensionService, bool>>)(p => p.PensionNo == Pension.PensionNo)));
+            
+        //    //PensionService = list;
+        //    //list = (List<PensionService>)null;
+
+        //    List<PensionService> pensionService = await db.PensionServices.Where(p => p.PensionNo == Pension.PensionNo).ToListAsync();
+        //    foreach (var item in pensionService)
         //    {
-        //        PensionService item = pensionService;
-        //        this.db.PensionServices.Remove(item);
-        //        int num = await this.db.SaveChangesAsync();
-        //        item = (PensionService)null;
+        //        //PensionService item = pensionService;
+        //        db.PensionServices.Remove(item);
+        //        int num = await db.SaveChangesAsync();
         //    }
-        //    List<PensionService>.Enumerator enumerator = new List<PensionService>.Enumerator();
+        //    //List<PensionService>.Enumerator enumerator = new List<PensionService>.Enumerator();
         //}
+
+        private async Task DeletePensionService(Pension Pension)
+        {
+            var pensionService = await db.PensionServices.Where(p => p.PensionNo == Pension.PensionNo).ToListAsync();
+            foreach (var item in pensionService)
+            {
+                db.PensionServices.Remove(item);
+                int num = await db.SaveChangesAsync();
+            }
+        }
 
         private async Task<List<PensionHoliday>> AddPensionHoliday(Pension pension, string holiday)
         {
@@ -539,6 +562,17 @@ namespace PetterService.Controllers
         //    }
         //    List<PensionHoliday>.Enumerator enumerator = new List<PensionHoliday>.Enumerator();
         //}
+
+
+        private async Task DeletePensionHoliday(Pension Pension)
+        {
+            var pensionHolidays = await db.PensionHolidays.Where(p => p.PensionNo == Pension.PensionNo).ToListAsync();
+            foreach (var item in pensionHolidays)
+            {
+                db.PensionHolidays.Remove(item);
+                int num = await this.db.SaveChangesAsync();
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {
