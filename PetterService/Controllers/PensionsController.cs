@@ -445,11 +445,11 @@ namespace PetterService.Controllers
         private async Task<List<PensionService>> AddPensionService(Pension pension, string service)
         {
             List<PensionService> pensionServices = new List<PensionService>();
+            PensionService pensionService = new PensionService();
             var arr = HttpUtility.UrlDecode(service.ToString()).Split(',');
 
             for (int i = 0; i < arr.Length; i++)
             {
-                PensionService pensionService = new PensionService();
                 pensionService.PensionNo = pension.PensionNo;
                 pensionService.PensionServiceCode = int.Parse(arr[i].ToString());
 
@@ -489,11 +489,11 @@ namespace PetterService.Controllers
         private async Task<List<PensionHoliday>> AddPensionHoliday(Pension pension, string holiday)
         {
             List<PensionHoliday> pensionHolidays = new List<PensionHoliday>();
+            PensionHoliday pensionHoliday = new PensionHoliday();
             var arr = HttpUtility.UrlDecode(holiday.ToString()).Split(',');
 
             for (int i = 0; i < arr.Length; i++)
             {
-                PensionHoliday pensionHoliday = new PensionHoliday();
                 pensionHoliday.PensionNo = pension.PensionNo;
                 pensionHoliday.PensionHolidayCode = int.Parse(arr[i].ToString());
 

@@ -343,10 +343,10 @@ namespace PetterService.Controllers
                             case "CompanyNo":
                                 beautyShop.CompanyNo = int.Parse(item);
                                 break;
-                            case "PensionName":
+                            case "BeautyShopName":
                                 beautyShop.BeautyShopName = item;
                                 break;
-                            case "PensionAddr":
+                            case "BeautyShopAddr":
                                 beautyShop.BeautyShopAddr = item;
                                 break;
                             case "PictureName":
@@ -379,10 +379,10 @@ namespace PetterService.Controllers
                             case "Bookmark":
                                 beautyShop.Bookmark = int.Parse(item);
                                 break;
-                            case "PensionServices":
+                            case "BeautyShopServices":
                                 beautyShopService = item;
                                 break;
-                            case "PensionHolidays":
+                            case "BeautyShopHolidays":
                                 beautyShopHoliday = item;
                                 break;
                             default:
@@ -442,12 +442,11 @@ namespace PetterService.Controllers
         private async Task<List<BeautyShopService>> AddBeautyShopService(BeautyShop beautyShop, string service)
         {
             List<BeautyShopService> beautyShopServices = new List<BeautyShopService>();
-            var arr = HttpUtility.UrlDecode(service.ToString()).Split(',');
             BeautyShopService beautyShopService = new BeautyShopService();
+            var arr = HttpUtility.UrlDecode(service.ToString()).Split(',');
 
             for (int i = 0; i < arr.Length; i++)
             {
-                //BeautyShopService beautyShopService = new BeautyShopService();
                 beautyShopService.BeautyShopNo = beautyShop.BeautyShopNo;
                 beautyShopService.BeautyShopServiceCode = int.Parse(arr[i].ToString());
 
@@ -469,12 +468,11 @@ namespace PetterService.Controllers
         private async Task<List<BeautyShopHoliday>> AddBeautyShopHoliday(BeautyShop beautyShop, string holiday)
         {
             List<BeautyShopHoliday> beautyShopHolidays = new List<BeautyShopHoliday>();
-            var arr = HttpUtility.UrlDecode(holiday.ToString()).Split(',');
             BeautyShopHoliday beautyShopHoliday = new BeautyShopHoliday();
+            var arr = HttpUtility.UrlDecode(holiday.ToString()).Split(',');
 
             for (int i = 0; i < arr.Length; i++)
             {
-                //BeautyShopService beautyShopService = new BeautyShopService();
                 beautyShopHoliday.BeautyShopNo = beautyShop.BeautyShopNo;
                 beautyShopHoliday.BeautyShopHolidayCode = int.Parse(arr[i].ToString());
 
