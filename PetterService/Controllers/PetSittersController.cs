@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PetterService.Models;
+using System.Data.Entity.Spatial;
+using PetterService.Common;
 
 namespace PetterService.Controllers
 {
@@ -18,28 +20,123 @@ namespace PetterService.Controllers
         private PetterServiceContext db = new PetterServiceContext();
 
         // GET: api/PetSitters
-        public IQueryable<PetSitter> GetPetSitters()
+        public IEnumerable<PetSitter> GetPensions([FromUri] PetterRequestType petterRequestType)
         {
-            return db.PetSitters;
+            List<PetSitter> list = new List<PetSitter>();
+            DbGeography currentLocation = DbGeography.FromText(string.Format("POINT({0} {1})", petterRequestType.Latitude, petterRequestType.Longitude));
+            int distance = petterRequestType.Distance;
+
+            var PetSitter = db.PetSitters.AsEnumerable();
+
+            // 검색 조건 
+            if (!String.IsNullOrWhiteSpace(petterRequestType.Search))
+            {
+                PetSitter = PetSitter.Where(p => p.PetSitterName != null && p.PetSitterName.Contains(petterRequestType.Search));
+            }
+
+            #region 정렬 방식
+            switch (petterRequestType.SortBy)
+            {
+                // 거리
+                case "distance":
+                    {
+                        list = PetSitter
+                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
+                            .OrderBy(p => p.Coordinate.Distance(currentLocation))
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToList();
+                        break;
+                    }
+                // 리뷰수
+                case "reviewcount":
+                    {
+                        list = PetSitter
+                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
+                            .OrderByDescending(p => p.ReviewCount)
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToList();
+                        break;
+                    }
+                // 점수
+                case "grade":
+                    {
+                        list = PetSitter
+                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
+                            .OrderByDescending(p => p.Grade)
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToList();
+                        break;
+                    }
+                // 즐겨찾기
+                case "bookmark":
+                    {
+                        list = PetSitter
+                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
+                            .OrderByDescending(p => p.Bookmark)
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToList();
+                        break;
+                    }
+                // 기본
+                default:
+                    {
+                        list = PetSitter
+                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
+                            .OrderByDescending(p => p.CompanyNo)
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToList();
+                        break;
+                    }
+            }
+            #endregion 정렬방식
+
+            return list;
         }
 
         // GET: api/PetSitters/5
-        [ResponseType(typeof(PetSitter))]
+        [ResponseType(typeof(PetterResultType<PetSitterDTO>))]
         public async Task<IHttpActionResult> GetPetSitter(int id)
         {
-            PetSitter petSitter = await db.PetSitters.FindAsync(id);
-            if (petSitter == null)
+            PetterResultType<PetSitterDTO> petterResultType = new PetterResultType<PetSitterDTO>();
+
+            var petSitterDatail = await db.PetSitters.Where(p => p.PetSitterNo == id).Select(p => new PetSitterDTO
+            {
+                PetSitterNo = p.PetSitterNo,
+                CompanyNo = p.CompanyNo,
+                PetSitterName = p.PetSitterName,
+                PetSitterAddr = p.PetSitterAddr,
+                PictureName = p.PictureName,
+                PicturePath = p.PicturePath,
+                StartHours = p.StartHours,
+                EndHours = p.EndHours,
+                Introduction = p.Introduction,
+                Coordinate = p.Coordinate,
+                Latitude = p.Latitude,
+                Longitude = p.Longitude,
+                Grade = p.Grade,
+                ReviewCount = p.ReviewCount,
+                Bookmark = p.Bookmark,
+                DateCreated = p.DateCreated,
+                DateModified = p.DateModified,
+                PetSitterServices = p.PetSitterServices.ToList(),
+                PetSitterHolidays = p.PetSitterHolidays.ToList()
+            }).SingleOrDefaultAsync();
+
+            if (petSitterDatail == null)
             {
                 return NotFound();
             }
 
-            return Ok(petSitter);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = petSitterDatail;
+            return Ok(petterResultType);
         }
 
         // PUT: api/PetSitters/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutPetSitter(int id, PetSitter petSitter)
         {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
