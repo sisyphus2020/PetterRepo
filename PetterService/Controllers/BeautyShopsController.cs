@@ -111,8 +111,8 @@ namespace PetterService.Controllers
                 BeautyShopAddr = p.BeautyShopAddr,
                 PictureName = p.PictureName,
                 PicturePath = p.PicturePath,
-                StartBeautyShopHours = p.StartHours,
-                EndBeautyShopHours = p.EndHours,
+                StartHours = p.StartHours,
+                EndHours = p.EndHours,
                 Introduction = p.Introduction,
                 Coordinate = p.Coordinate,
                 Latitude = p.Latitude,
@@ -257,17 +257,10 @@ namespace PetterService.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BeautyShopExists(id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                   throw;
                 }
 
-                //await DeletePensionService(pension);
+                //await DeletePensionService(beautyShop);
                 //if (!string.IsNullOrWhiteSpace(pensionService))
                 //{
                 //    List<PensionService> list = await AddPensionService(pension, pensionService);
@@ -322,6 +315,68 @@ namespace PetterService.Controllers
             await db.SaveChangesAsync();
 
             return Ok(beautyShop);
+        }
+
+        private async Task<List<PensionService>> AddPensionService(Pension pension, string service)
+        {
+            List<PensionService> pensionServices = new List<PensionService>();
+            var arr = HttpUtility.UrlDecode(service.ToString()).Split(',');
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                PensionService pensionService = new PensionService();
+                pensionService.PensionNo = pension.PensionNo;
+                pensionService.PensionServiceCode = int.Parse(arr[i].ToString());
+
+                db.PensionServices.Add(pensionService);
+                await db.SaveChangesAsync();
+
+                pensionServices.Add(pensionService);
+            }
+
+            return pensionServices;
+        }
+
+        private async Task DeleteBeautyShopService(BeautyShop beautyShop)
+        {
+            var beuatyShopService = await db.BeautyShopServices.Where(p => p.BeautyShopNo == beautyShop.BeautyShopNo).ToListAsync();
+            db.BeautyShopServices.RemoveRange(beuatyShopService);
+        }
+
+        //private async Task DeleteService<T>(T service)
+        //{
+        //    var pensionService = await db.PensionServices.Where(p => p.PensionNo == service.).ToListAsync();
+        //    foreach (var item in pensionService)
+        //    {
+        //        db.PensionServices.Remove(item);
+        //        int num = await db.SaveChangesAsync();
+        //    }
+        //}
+
+        private async Task<List<PensionHoliday>> AddPensionHoliday(Pension pension, string holiday)
+        {
+            List<PensionHoliday> pensionHolidays = new List<PensionHoliday>();
+            var arr = HttpUtility.UrlDecode(holiday.ToString()).Split(',');
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                PensionHoliday pensionHoliday = new PensionHoliday();
+                pensionHoliday.PensionNo = pension.PensionNo;
+                pensionHoliday.PensionHolidayCode = int.Parse(arr[i].ToString());
+
+                db.PensionHolidays.Add(pensionHoliday);
+                await db.SaveChangesAsync();
+
+                pensionHolidays.Add(pensionHoliday);
+            }
+
+            return pensionHolidays;
+        }
+
+        private async Task DeleteBeautyShopHoliday(BeautyShop beautyShop)
+        {
+            var beautyShpHolidays = await db.BeautyShopHolidays.Where(p => p.BeautyShopNo == beautyShop.BeautyShopNo).ToListAsync();
+            db.BeautyShopHolidays.RemoveRange(beautyShpHolidays);
         }
 
         protected override void Dispose(bool disposing)

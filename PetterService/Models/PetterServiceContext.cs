@@ -28,5 +28,9 @@ namespace PetterService.Models
         public System.Data.Entity.DbSet<PetterService.Models.PensionHoliday> PensionHolidays { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.PensionService> PensionServices { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.BeautyShopService> BeautyShopServices { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.BeautyShopHoliday> BeautyShopHolidays { get; set; }
     }
 }

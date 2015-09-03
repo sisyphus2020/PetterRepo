@@ -113,8 +113,8 @@ namespace PetterService.Controllers
                 PensionAddr = p.PensionAddr,
                 PictureName = p.PictureName,
                 PicturePath = p.PicturePath,
-                StartPensionHours = p.StartHours,
-                EndPensionHours = p.EndHours,
+                StartHours = p.StartHours,
+                EndHours = p.EndHours,
                 Introduction = p.Introduction,
                 Coordinate = p.Coordinate,
                 Latitude = p.Latitude,
@@ -259,14 +259,7 @@ namespace PetterService.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PensionExists(id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
 
                 await DeletePensionService(pension);
@@ -491,14 +484,10 @@ namespace PetterService.Controllers
         //    //List<PensionService>.Enumerator enumerator = new List<PensionService>.Enumerator();
         //}
 
-        private async Task DeletePensionService(Pension Pension)
+        private async Task DeletePensionService(Pension pension)
         {
-            var pensionService = await db.PensionServices.Where(p => p.PensionNo == Pension.PensionNo).ToListAsync();
-            foreach (var item in pensionService)
-            {
-                db.PensionServices.Remove(item);
-                int num = await db.SaveChangesAsync();
-            }
+            var pensionService = await db.PensionServices.Where(p => p.PensionNo == pension.PensionNo).ToListAsync();
+            db.PensionServices.RemoveRange(pensionService);
         }
 
         private async Task<List<PensionHoliday>> AddPensionHoliday(Pension pension, string holiday)
@@ -538,14 +527,10 @@ namespace PetterService.Controllers
         //}
 
 
-        private async Task DeletePensionHoliday(Pension Pension)
+        private async Task DeletePensionHoliday(Pension pension)
         {
-            var pensionHolidays = await db.PensionHolidays.Where(p => p.PensionNo == Pension.PensionNo).ToListAsync();
-            foreach (var item in pensionHolidays)
-            {
-                db.PensionHolidays.Remove(item);
-                int num = await this.db.SaveChangesAsync();
-            }
+            var pensionHolidays = await db.PensionHolidays.Where(p => p.PensionNo == pension.PensionNo).ToListAsync();
+            db.PensionHolidays.RemoveRange(pensionHolidays);
         }
 
         protected override void Dispose(bool disposing)
