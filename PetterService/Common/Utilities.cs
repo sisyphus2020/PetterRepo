@@ -119,32 +119,103 @@ namespace PetterService.Common
             }
         }
 
+        //public static void ResizeImage(string fullPath, string thumbnamilName, int thumbWidth, int thumbHeight, ImageFormat imageFormat)
+        //{
+        //    using (Image image = Image.FromFile(fullPath))
+        //    {
+        //        var ratioX = (double)thumbWidth / image.Width;
+        //        var ratioY = (double)thumbHeight / image.Height;
+        //        var ratio = Math.Min(ratioX, ratioY);
+
+        //        var newWidth = (int)(image.Width * ratio);
+        //        var newHeight = (int)(image.Height * ratio);
+
+        //        var newImage = new Bitmap(newWidth, newHeight);
+
+        //        using (var graphics = Graphics.FromImage(newImage))
+        //        {
+        //            graphics.DrawImage(image, 0, 0, newWidth, newHeight);
+        //        }
+
+        //        string thumbnailPath = Path.GetDirectoryName(fullPath);
+        //        string rootPath = Path.GetPathRoot(fullPath);
+
+        //        newImage.Save(Path.Combine(thumbnailPath, thumbnamilName), ImageFormat.Png);
+        //        newImage.Dispose();
+        //    }
+
+        //}
+
         public static void ResizeImage(string fullPath, string thumbnamilName, int thumbWidth, int thumbHeight, ImageFormat imageFormat)
         {
-            using (Image image = Image.FromFile(fullPath))
-            {
-                var ratioX = (double)thumbWidth / image.Width;
-                var ratioY = (double)thumbHeight / image.Height;
-                var ratio = Math.Min(ratioX, ratioY);
+            Image originalImage;
+            originalImage = Image.FromFile(fullPath);
 
-                var newWidth = (int)(image.Width * ratio);
-                var newHeight = (int)(image.Height * ratio);
 
-                var newImage = new Bitmap(newWidth, newHeight);
+            // Get Original Image Dimensions
+            int originalHeight = originalImage.Height;
+            int originalWidth = originalImage.Width;
 
-                using (var graphics = Graphics.FromImage(newImage))
-                {
-                    graphics.DrawImage(image, 0, 0, newWidth, newHeight);
-                }
+            // Set new Image dimensions
+            int newWidth = thumbWidth;
+            int newHeight = (thumbWidth * originalHeight) / originalWidth;
 
-                string thumbnailPath = Path.GetDirectoryName(fullPath);
-                string rootPath = Path.GetPathRoot(fullPath);
-             
-                newImage.Save(Path.Combine(thumbnailPath, thumbnamilName), ImageFormat.Png);
-                newImage.Dispose();
-            }
+            // Creates new resized image
+            System.Drawing.Image resizedImage;
+            resizedImage = originalImage.GetThumbnailImage(newWidth, newHeight, ()=>false, IntPtr.Zero);
+
+            string thumbnailPath = Path.GetDirectoryName(fullPath);
+            resizedImage.Save(Path.Combine(thumbnailPath, thumbnamilName));
 
         }
+
+        //public static void ResizeImage(string fullPath, string thumbnamilName, int thumbWidth, int thumbHeight, ImageFormat imageFormat)
+        //{
+        //    System.Drawing.Bitmap bmpOut = null;
+        //    try
+        //    {
+        //        Bitmap loBMP = new Bitmap(fullPath);
+        //        ImageFormat loFormat = loBMP.RawFormat;
+
+        //        decimal lnRatio;
+        //        int lnNewWidth = 0;
+        //        int lnNewHeight = 0;
+
+        //        if (loBMP.Width > loBMP.Height)
+        //        {
+        //            lnRatio = (decimal)thumbWidth / loBMP.Width;
+        //            lnNewWidth = thumbWidth;
+        //            decimal lnTemp = loBMP.Height * lnRatio;
+        //            lnNewHeight = (int)lnTemp;
+        //        }
+        //        else
+        //        {
+        //            lnRatio = (decimal)thumbHeight / loBMP.Height;
+        //            lnNewHeight = thumbHeight;
+        //            decimal lnTemp = loBMP.Width * lnRatio;
+        //            lnNewWidth = (int)lnTemp;
+        //        }
+        //        bmpOut = new Bitmap(lnNewWidth, lnNewHeight);
+        //        Graphics g = Graphics.FromImage(bmpOut);
+        //        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+        //        g.FillRectangle(Brushes.White, 0, 0, lnNewWidth, lnNewHeight);
+        //        g.DrawImage(loBMP, 0, 0, lnNewWidth, lnNewHeight);
+
+        //        string thumbnailPath = Path.GetDirectoryName(fullPath);
+        //        string rootPath = Path.GetPathRoot(fullPath);
+
+        //        //bmpOut.Save(Path.Combine(thumbnailPath, thumbnamilName), ImageFormat.Png);
+        //        bmpOut.Save(Path.Combine(thumbnailPath, thumbnamilName));
+
+        //        loBMP.Dispose();
+        //    }
+        //    catch
+        //    {
+        //        throw;
+        //    }
+
+
+        //}
 
         public static string additionFileName(string fileName)
         {

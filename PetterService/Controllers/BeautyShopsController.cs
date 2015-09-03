@@ -137,7 +137,7 @@ namespace PetterService.Controllers
         }
 
         // PUT: api/BeautyShops/5
-        [ResponseType(typeof(PetterResultType<BeautyShopDTO>))]
+        [ResponseType(typeof(PetterResultType<BeautyShop>))]
         public async Task<IHttpActionResult> PutBeautyShop(int id)
         {
             PetterResultType<BeautyShop> petterResultType = new PetterResultType<BeautyShop>();
@@ -185,9 +185,9 @@ namespace PetterService.Controllers
                         File.WriteAllBytes(fullPath, file);
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
-                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PensionWidth, FileSize.PensionHeight, ImageFormat.Png);
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.BeautyShopWidth, FileSize.BeautyShopHeight, ImageFormat.Png);
                         beautyShop.PictureName = fileName;
-                        beautyShop.PicturePath = UploadPath.PensionPath;
+                        beautyShop.PicturePath = UploadPath.BeautyShopPath;
                     }
                     else
                     {
@@ -233,10 +233,10 @@ namespace PetterService.Controllers
                             case "Bookmark":
                                 beautyShop.Bookmark = int.Parse(item);
                                 break;
-                            case "PensionServices":
+                            case "BeautyShopServices":
                                 beautyShopService = item;
                                 break;
-                            case "PensionHolidays":
+                            case "BeautyShopHolidays":
                                 beautyShopHoliday = item;
                                 break;
                             default:
@@ -327,7 +327,7 @@ namespace PetterService.Controllers
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.BeautyShopWidth, FileSize.BeautyShopHeight, ImageFormat.Png);
                         beautyShop.PictureName = fileName;
-                        beautyShop.PicturePath = UploadPath.PensionPath;
+                        beautyShop.PicturePath = UploadPath.BeautyShopPath;
                     }
                     else
                     {

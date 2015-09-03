@@ -461,24 +461,6 @@ namespace PetterService.Controllers
             return pensionServices;
         }
 
-        //private async Task DeletePensionService(Pension Pension)
-        //{
-        //    //List<PensionService> PensionService = new List<PensionService>();
-        //    //List<PensionService> list = await (Task<List<PensionService>>)QueryableExtensions.ToListAsync<PensionService>((IQueryable<M0>)Queryable.Where<PensionService>((IQueryable<PensionService>)this.db.PensionServices, (Expression<Func<PensionService, bool>>)(p => p.PensionNo == Pension.PensionNo)));
-            
-        //    //PensionService = list;
-        //    //list = (List<PensionService>)null;
-
-        //    List<PensionService> pensionService = await db.PensionServices.Where(p => p.PensionNo == Pension.PensionNo).ToListAsync();
-        //    foreach (var item in pensionService)
-        //    {
-        //        //PensionService item = pensionService;
-        //        db.PensionServices.Remove(item);
-        //        int num = await db.SaveChangesAsync();
-        //    }
-        //    //List<PensionService>.Enumerator enumerator = new List<PensionService>.Enumerator();
-        //}
-
         private async Task DeletePensionService(Pension pension)
         {
             var pensionService = await db.PensionServices.Where(p => p.PensionNo == pension.PensionNo).ToListAsync();
@@ -504,23 +486,6 @@ namespace PetterService.Controllers
 
             return pensionHolidays;
         }
-
-        //private async Task DeletePensionHoliday(Pension Pension)
-        //{
-        //    List<PensionHoliday> PensionHolidays = new List<PensionHoliday>();
-        //    List<PensionHoliday> list = await (Task<List<PensionHoliday>>)QueryableExtensions.ToListAsync<PensionHoliday>((IQueryable<M0>)Queryable.Where<PensionHoliday>((IQueryable<PensionHoliday>)this.db.PensionHolidays, (Expression<Func<PensionHoliday, bool>>)(p => p.PensionNo == Pension.PensionNo)));
-        //    PensionHolidays = list;
-        //    list = (List<PensionHoliday>)null;
-        //    foreach (PensionHoliday pensionHoliday in PensionHolidays)
-        //    {
-        //        PensionHoliday item = pensionHoliday;
-        //        this.db.PensionHolidays.Remove(item);
-        //        int num = await this.db.SaveChangesAsync();
-        //        item = (PensionHoliday)null;
-        //    }
-        //    List<PensionHoliday>.Enumerator enumerator = new List<PensionHoliday>.Enumerator();
-        //}
-
 
         private async Task DeletePensionHoliday(Pension pension)
         {
