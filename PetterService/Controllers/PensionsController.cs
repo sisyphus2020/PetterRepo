@@ -30,7 +30,6 @@ namespace PetterService.Controllers
             List<Pension> list = new List<Pension>();
             DbGeography currentLocation = DbGeography.FromText(string.Format("POINT({0} {1})", petterRequestType.Latitude, petterRequestType.Longitude));
             int distance = petterRequestType.Distance;
-            //IEnumerable<Pension> source = Enumerable.AsEnumerable<Pension>((IEnumerable<Pension>)this.db.Pensions);
 
             var Pension = db.Pensions.AsEnumerable();
 

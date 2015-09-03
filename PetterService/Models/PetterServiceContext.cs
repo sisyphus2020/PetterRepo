@@ -32,5 +32,13 @@ namespace PetterService.Models
         public System.Data.Entity.DbSet<PetterService.Models.BeautyShopService> BeautyShopServices { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.BeautyShopHoliday> BeautyShopHolidays { get; set; }
+
+        //public System.Data.Entity.DbSet<PetterService.Models.PetSitter> PetSitters { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.PetSitterService> PetSitterServices { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.PetSitterHoliday> PetSitterHolidays { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.PetSitter> PetSitters { get; set; }
     }
 }

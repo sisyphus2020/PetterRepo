@@ -6,7 +6,7 @@ using System.Web;
 
 namespace PetterService.Models
 {
-    public class PensionDTO :Classification
+    public class PensionDTO : Classification
     {
         public int PensionNo { get; set; }
         public string PensionName { get; set; }
