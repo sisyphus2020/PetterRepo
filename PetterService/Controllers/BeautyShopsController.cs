@@ -260,19 +260,19 @@ namespace PetterService.Controllers
                    throw;
                 }
 
-                //await DeletePensionService(beautyShop);
-                //if (!string.IsNullOrWhiteSpace(pensionService))
-                //{
-                //    List<PensionService> list = await AddPensionService(pension, pensionService);
-                //    pension.PensionServices = list;
-                //}
+                await DeleteBeautyShopService(beautyShop);
+                if (!string.IsNullOrWhiteSpace(beautyShopService))
+                {
+                    List<BeautyShopService> list = await AddBeautyShopService(beautyShop, beautyShopService);
+                    beautyShop.BeautyShopServices = list;
+                }
 
-                //await this.DeletePensionHoliday(pension);
-                //if (!string.IsNullOrWhiteSpace(pensionHoliday))
-                //{
-                //    List<PensionHoliday> list = await AddPensionHoliday(pension, pensionHoliday);
-                //    pension.PensionHolidays = list;
-                //}
+                await this.DeleteBeautyShopHoliday(beautyShop);
+                if (!string.IsNullOrWhiteSpace(beautyShopHoliday))
+                {
+                    List<BeautyShopHoliday> list = await AddBeautyShopHoliday(beautyShop, beautyShopHoliday);
+                    beautyShop.BeautyShopHolidays = list;
+                }
 
                 petterResultType.IsSuccessful = true;
                 petterResultType.JsonDataSet = beautyShop;
@@ -287,18 +287,140 @@ namespace PetterService.Controllers
         }
 
         // POST: api/BeautyShops
-        [ResponseType(typeof(BeautyShop))]
-        public async Task<IHttpActionResult> PostBeautyShop(BeautyShop beautyShop)
+        [ResponseType(typeof(PetterResultType<BeautyShop>))]
+        public async Task<IHttpActionResult> PostBeautyShop()
         {
-            if (!ModelState.IsValid)
+            PetterResultType<BeautyShop> petterResultType = new PetterResultType<BeautyShop>();
+            List<BeautyShopService> beautyShopServices = new List<BeautyShopService>();
+            List<BeautyShopHoliday> beautyShopHolidays = new List<BeautyShopHoliday>();
+            BeautyShop beautyShop = new BeautyShop();
+            string beautyShopService = string.Empty;
+            string beautyShopHoliday = string.Empty;
+
+            if (Request.Content.IsMimeMultipartContent())
             {
-                return BadRequest(ModelState);
+                string folder = HostingEnvironment.MapPath(UploadPath.BeautyShopPath);
+                Utilities.CreateDirectory(folder);
+
+                var provider = await Request.Content.ReadAsMultipartAsync();
+
+                foreach (var content in provider.Contents)
+                {
+                    string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
+                    if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
+                    {
+                        var file = await content.ReadAsByteArrayAsync();
+
+                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+
+                        if (!FileExtension.PensionExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        {
+                            petterResultType.IsSuccessful = false;
+                            petterResultType.JsonDataSet = null;
+                            petterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            return Ok(petterResultType);
+                        }
+
+                        string fullPath = Path.Combine(folder, fileName);
+                        File.WriteAllBytes(fullPath, file);
+                        string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
+
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.BeautyShopWidth, FileSize.BeautyShopHeight, ImageFormat.Png);
+                        beautyShop.PictureName = fileName;
+                        beautyShop.PicturePath = UploadPath.PensionPath;
+                    }
+                    else
+                    {
+                        string str = await content.ReadAsStringAsync();
+                        string item = HttpUtility.UrlDecode(str);
+
+                        #region switch case
+                        switch (fieldName)
+                        {
+                            case "PensionNo":
+                                beautyShop.BeautyShopNo = int.Parse(item);
+                                break;
+                            case "CompanyNo":
+                                beautyShop.CompanyNo = int.Parse(item);
+                                break;
+                            case "PensionName":
+                                beautyShop.BeautyShopName = item;
+                                break;
+                            case "PensionAddr":
+                                beautyShop.BeautyShopAddr = item;
+                                break;
+                            case "PictureName":
+                                beautyShop.PictureName = item;
+                                break;
+                            case "PicturePath":
+                                beautyShop.PicturePath = item;
+                                break;
+                            case "StartPensionHours":
+                                beautyShop.StartHours = item;
+                                break;
+                            case "EndPensionHours":
+                                beautyShop.EndHours = item;
+                                break;
+                            case "Introduction":
+                                beautyShop.Introduction = item;
+                                break;
+                            case "Latitude":
+                                beautyShop.Latitude = Convert.ToDouble(item);
+                                break;
+                            case "Longitude":
+                                beautyShop.Longitude = Convert.ToDouble(item);
+                                break;
+                            case "Grade":
+                                beautyShop.Grade = int.Parse(item);
+                                break;
+                            case "ReviewCount":
+                                beautyShop.ReviewCount = int.Parse(item);
+                                break;
+                            case "Bookmark":
+                                beautyShop.Bookmark = int.Parse(item);
+                                break;
+                            case "PensionServices":
+                                beautyShopService = item;
+                                break;
+                            case "PensionHolidays":
+                                beautyShopHoliday = item;
+                                break;
+                            default:
+                                break;
+                        }
+                        #endregion switch case
+                    }
+                }
+
+                string point = string.Format("POINT({0} {1})", beautyShop.Latitude, beautyShop.Longitude);
+                beautyShop.Coordinate = DbGeography.FromText(point);
+                beautyShop.DateCreated = DateTime.Now;
+                beautyShop.DateModified = DateTime.Now;
+                db.BeautyShops.Add(beautyShop);
+                int num = await this.db.SaveChangesAsync();
+
+                if (!string.IsNullOrWhiteSpace(beautyShopService))
+                {
+                    List<BeautyShopService> list = await AddBeautyShopService(beautyShop, beautyShopService);
+                    beautyShop.BeautyShopServices = list;
+                }
+
+                if (!string.IsNullOrWhiteSpace(beautyShopHoliday))
+                {
+                    List<BeautyShopHoliday> list = await AddBeautyShopHoliday(beautyShop, beautyShopHoliday);
+                    beautyShop.BeautyShopHolidays = list;
+                }
+
+                petterResultType.IsSuccessful = true;
+                petterResultType.JsonDataSet = beautyShop;
+            }
+            else
+            {
+                petterResultType.IsSuccessful = false;
+                petterResultType.JsonDataSet = null;
             }
 
-            db.BeautyShops.Add(beautyShop);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = beautyShop.BeautyShopNo }, beautyShop);
+            return Ok(petterResultType);
         }
 
         // DELETE: api/BeautyShops/5
@@ -317,24 +439,25 @@ namespace PetterService.Controllers
             return Ok(beautyShop);
         }
 
-        private async Task<List<PensionService>> AddPensionService(Pension pension, string service)
+        private async Task<List<BeautyShopService>> AddBeautyShopService(BeautyShop beautyShop, string service)
         {
-            List<PensionService> pensionServices = new List<PensionService>();
+            List<BeautyShopService> beautyShopServices = new List<BeautyShopService>();
             var arr = HttpUtility.UrlDecode(service.ToString()).Split(',');
+            BeautyShopService beautyShopService = new BeautyShopService();
 
             for (int i = 0; i < arr.Length; i++)
             {
-                PensionService pensionService = new PensionService();
-                pensionService.PensionNo = pension.PensionNo;
-                pensionService.PensionServiceCode = int.Parse(arr[i].ToString());
+                //BeautyShopService beautyShopService = new BeautyShopService();
+                beautyShopService.BeautyShopNo = beautyShop.BeautyShopNo;
+                beautyShopService.BeautyShopServiceCode = int.Parse(arr[i].ToString());
 
-                db.PensionServices.Add(pensionService);
+                db.BeautyShopServices.Add(beautyShopService);
                 await db.SaveChangesAsync();
 
-                pensionServices.Add(pensionService);
+                beautyShopServices.Add(beautyShopService);
             }
 
-            return pensionServices;
+            return beautyShopServices;
         }
 
         private async Task DeleteBeautyShopService(BeautyShop beautyShop)
@@ -343,34 +466,25 @@ namespace PetterService.Controllers
             db.BeautyShopServices.RemoveRange(beuatyShopService);
         }
 
-        //private async Task DeleteService<T>(T service)
-        //{
-        //    var pensionService = await db.PensionServices.Where(p => p.PensionNo == service.).ToListAsync();
-        //    foreach (var item in pensionService)
-        //    {
-        //        db.PensionServices.Remove(item);
-        //        int num = await db.SaveChangesAsync();
-        //    }
-        //}
-
-        private async Task<List<PensionHoliday>> AddPensionHoliday(Pension pension, string holiday)
+        private async Task<List<BeautyShopHoliday>> AddBeautyShopHoliday(BeautyShop beautyShop, string holiday)
         {
-            List<PensionHoliday> pensionHolidays = new List<PensionHoliday>();
+            List<BeautyShopHoliday> beautyShopHolidays = new List<BeautyShopHoliday>();
             var arr = HttpUtility.UrlDecode(holiday.ToString()).Split(',');
+            BeautyShopHoliday beautyShopHoliday = new BeautyShopHoliday();
 
             for (int i = 0; i < arr.Length; i++)
             {
-                PensionHoliday pensionHoliday = new PensionHoliday();
-                pensionHoliday.PensionNo = pension.PensionNo;
-                pensionHoliday.PensionHolidayCode = int.Parse(arr[i].ToString());
+                //BeautyShopService beautyShopService = new BeautyShopService();
+                beautyShopHoliday.BeautyShopNo = beautyShop.BeautyShopNo;
+                beautyShopHoliday.BeautyShopHolidayCode = int.Parse(arr[i].ToString());
 
-                db.PensionHolidays.Add(pensionHoliday);
+                db.BeautyShopHolidays.Add(beautyShopHoliday);
                 await db.SaveChangesAsync();
 
-                pensionHolidays.Add(pensionHoliday);
+                beautyShopHolidays.Add(beautyShopHoliday);
             }
 
-            return pensionHolidays;
+            return beautyShopHolidays;
         }
 
         private async Task DeleteBeautyShopHoliday(BeautyShop beautyShop)

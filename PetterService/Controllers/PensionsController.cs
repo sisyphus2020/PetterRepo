@@ -404,18 +404,14 @@ namespace PetterService.Controllers
 
                 if (!string.IsNullOrWhiteSpace(pensionService))
                 {
-                    List<PensionService> list = await this.AddPensionService(pension, pensionService);
-                    pensionServices = list;
-                    list = (List<PensionService>)null;
-                    pension.PensionServices = (ICollection<PensionService>)Enumerable.ToList<PensionService>((IEnumerable<PensionService>)pensionServices);
+                    List<PensionService> list = await AddPensionService(pension, pensionService);
+                    pension.PensionServices = list;
                 }
 
                 if (!string.IsNullOrWhiteSpace(pensionHoliday))
                 {
-                    List<PensionHoliday> list = await this.AddPensionHoliday(pension, pensionHoliday);
-                    pensionHolidays = list;
-                    list = (List<PensionHoliday>)null;
-                    pension.PensionHolidays = (ICollection<PensionHoliday>)Enumerable.ToList<PensionHoliday>((IEnumerable<PensionHoliday>)pensionHolidays);
+                    List<PensionHoliday> list = await AddPensionHoliday(pension, pensionHoliday);
+                    pension.PensionHolidays = list;
                 }
 
                 petterResultType.IsSuccessful = true;
