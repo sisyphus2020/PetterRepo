@@ -10,6 +10,12 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PetterService.Models;
+using PetterService.Common;
+using System.Data.Entity.Spatial;
+using System.Web.Hosting;
+using System.IO;
+using System.Drawing.Imaging;
+using System.Web;
 
 namespace PetterService.Controllers
 {
@@ -18,64 +24,71 @@ namespace PetterService.Controllers
         private PetterServiceContext db = new PetterServiceContext();
 
         // GET: api/BeautyShops
-        public IEnumerable<BeautyShop> GetBeautyShop(int page = 1, int itemsPerPage = 10, string sortBy = "basic", bool reverse = false, string search = null)
+        public IEnumerable<BeautyShop> GetBeautyShop([FromUri] PetterRequestType petterRequestType)
         {
             List<BeautyShop> list = new List<BeautyShop>();
+            DbGeography currentLocation = DbGeography.FromText(string.Format("POINT({0} {1})", petterRequestType.Latitude, petterRequestType.Longitude));
+            int distance = petterRequestType.Distance;
 
             var beautyShop = db.BeautyShops.AsEnumerable();
 
             // 검색 조건 
-            if (!String.IsNullOrEmpty(search))
+            if (!String.IsNullOrEmpty(petterRequestType.Search))
             {
-                beautyShop = beautyShop.Where(p => p.BeautyShopName != null && p.BeautyShopName.Contains(search));
+                beautyShop = beautyShop.Where(p => p.BeautyShopName != null && p.BeautyShopName.Contains(petterRequestType.Search));
             }
 
             #region 정렬 방식
-            switch (sortBy)
+            switch (petterRequestType.SortBy)
             {
                 // 거리
                 case "distance":
                     {
                         list = beautyShop
+                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             .OrderByDescending(p => p.BeautyShopNo)
-                            .Skip((page - 1) * itemsPerPage)
-                            .Take(itemsPerPage).ToList();
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
                     }
                 // 리뷰수
                 case "reviewcount":
                     {
                         list = beautyShop
+                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             .OrderByDescending(p => p.ReviewCount)
-                            .Skip((page - 1) * itemsPerPage)
-                            .Take(itemsPerPage).ToList();
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
                     }
                 // 점수
                 case "grade":
                     {
                         list = beautyShop
+                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             .OrderByDescending(p => p.Grade)
-                            .Skip((page - 1) * itemsPerPage)
-                            .Take(itemsPerPage).ToList();
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
                     }
                 // 즐겨찾기
                 case "bookmark":
                     {
                         list = beautyShop
+                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             .OrderByDescending(p => p.Bookmark)
-                            .Skip((page - 1) * itemsPerPage)
-                            .Take(itemsPerPage).ToList();
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
                     }
                 // 기본
                 default:
                     {
                         list = beautyShop
-                             .OrderByDescending(p => p.CompanyNo)
-                             .Skip((page - 1) * itemsPerPage)
-                             .Take(itemsPerPage).ToList();
+                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
+                            .OrderByDescending(p => p.CompanyNo)
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
                     }
             }
@@ -85,10 +98,12 @@ namespace PetterService.Controllers
         }
 
         // GET: api/BeautyShops/5
-        [ResponseType(typeof(BeautyShop))]
+        [ResponseType(typeof(PetterResultType<BeautyShopDTO>))]
         public async Task<IHttpActionResult> GetBeautyShop(int id)
         {
-            var BeautyShopDatails = await db.BeautyShops.Where(p => p.BeautyShopNo == id).Select(p => new BeautyShopDTO
+            PetterResultType<BeautyShopDTO> petterResultType = new PetterResultType<BeautyShopDTO>();
+
+            var beautyShopDatail = await db.BeautyShops.Where(p => p.BeautyShopNo == id).Select(p => new BeautyShopDTO
             {
                 BeautyShopNo = p.BeautyShopNo,
                 CompanyNo = p.CompanyNo,
@@ -96,8 +111,8 @@ namespace PetterService.Controllers
                 BeautyShopAddr = p.BeautyShopAddr,
                 PictureName = p.PictureName,
                 PicturePath = p.PicturePath,
-                StartBeautyShopHours = p.StartBeautyShopHours,
-                EndBeautyShopHours = p.EndBeautyShopHours,
+                StartBeautyShopHours = p.StartHours,
+                EndBeautyShopHours = p.EndHours,
                 Introduction = p.Introduction,
                 Coordinate = p.Coordinate,
                 Latitude = p.Latitude,
@@ -111,47 +126,171 @@ namespace PetterService.Controllers
                 BeautyShopHolidays = p.BeautyShopHolidays.ToList()
             }).SingleOrDefaultAsync();
 
-            if (BeautyShopDatails == null)
+            if (beautyShopDatail == null)
             {
                 return NotFound();
             }
 
-            return Ok(BeautyShopDatails);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = beautyShopDatail;
+            return Ok(petterResultType);
         }
 
         // PUT: api/BeautyShops/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutBeautyShop(int id, BeautyShop beautyShop)
+        [ResponseType(typeof(PetterResultType<BeautyShopDTO>))]
+        public async Task<IHttpActionResult> PutBeautyShop(int id)
         {
-            if (!ModelState.IsValid)
+            PetterResultType<BeautyShop> petterResultType = new PetterResultType<BeautyShop>();
+            List<BeautyShopService> beautyShopServices = new List<BeautyShopService>();
+            List<BeautyShopHoliday> beautyShopHolidays = new List<BeautyShopHoliday>();
+            string beautyShopService = string.Empty;
+            string beautyShopHoliday = string.Empty;
+
+            if (!Request.Content.IsMimeMultipartContent())
             {
-                return BadRequest(ModelState);
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
-            if (id != beautyShop.BeautyShopNo)
+            BeautyShop beautyShop = await db.BeautyShops.FindAsync(id);
+            if (beautyShop == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            db.Entry(beautyShop).State = EntityState.Modified;
+            if (Request.Content.IsMimeMultipartContent())
+            {
+                string folder = HostingEnvironment.MapPath(UploadPath.BeautyShopPath);
+                Utilities.CreateDirectory(folder);
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BeautyShopExists(id))
+                var provider = await Request.Content.ReadAsMultipartAsync();
+
+                foreach (var content in provider.Contents)
                 {
-                    return NotFound();
+                    string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
+                    if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
+                    {
+                        var file = await content.ReadAsByteArrayAsync();
+
+                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+
+                        if (!FileExtension.BeautyShopExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        {
+                            petterResultType.IsSuccessful = false;
+                            petterResultType.JsonDataSet = null;
+                            petterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            return Ok(petterResultType);
+                        }
+
+                        string fullPath = Path.Combine(folder, fileName);
+                        File.WriteAllBytes(fullPath, file);
+                        string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
+
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PensionWidth, FileSize.PensionHeight, ImageFormat.Png);
+                        beautyShop.PictureName = fileName;
+                        beautyShop.PicturePath = UploadPath.PensionPath;
+                    }
+                    else
+                    {
+                        string str = await content.ReadAsStringAsync();
+                        string item = HttpUtility.UrlDecode(str);
+
+                        #region switch case
+                        switch (fieldName)
+                        {
+                            case "BeautyShopNo":
+                                beautyShop.BeautyShopNo = int.Parse(item);
+                                break;
+                            case "CompanyNo":
+                                beautyShop.CompanyNo = int.Parse(item);
+                                break;
+                            case "BeautyShopName":
+                                beautyShop.BeautyShopName = item;
+                                break;
+                            case "BeautyShopAddr":
+                                beautyShop.BeautyShopAddr = item;
+                                break;
+                            case "StartPensionHours":
+                                beautyShop.StartHours = item;
+                                break;
+                            case "EndPensionHours":
+                                beautyShop.EndHours = item;
+                                break;
+                            case "Introduction":
+                                beautyShop.Introduction = item;
+                                break;
+                            case "Latitude":
+                                beautyShop.Latitude = Convert.ToDouble(item);
+                                break;
+                            case "Longitude":
+                                beautyShop.Longitude = Convert.ToDouble(item);
+                                break;
+                            case "Grade":
+                                beautyShop.Grade = int.Parse(item);
+                                break;
+                            case "ReviewCount":
+                                beautyShop.ReviewCount = int.Parse(item);
+                                break;
+                            case "Bookmark":
+                                beautyShop.Bookmark = int.Parse(item);
+                                break;
+                            case "PensionServices":
+                                beautyShopService = item;
+                                break;
+                            case "PensionHolidays":
+                                beautyShopHoliday = item;
+                                break;
+                            default:
+                                break;
+                        }
+                        #endregion switch case
+                    }
                 }
-                else
+
+                string point = string.Format("POINT({0} {1})", beautyShop.Latitude, beautyShop.Longitude);
+                beautyShop.Coordinate = DbGeography.FromText(point);
+                beautyShop.DateModified = DateTime.Now;
+                db.Entry(beautyShop).State = EntityState.Modified;
+
+                try
                 {
-                    throw;
+                    await db.SaveChangesAsync();
                 }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!BeautyShopExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                //await DeletePensionService(pension);
+                //if (!string.IsNullOrWhiteSpace(pensionService))
+                //{
+                //    List<PensionService> list = await AddPensionService(pension, pensionService);
+                //    pension.PensionServices = list;
+                //}
+
+                //await this.DeletePensionHoliday(pension);
+                //if (!string.IsNullOrWhiteSpace(pensionHoliday))
+                //{
+                //    List<PensionHoliday> list = await AddPensionHoliday(pension, pensionHoliday);
+                //    pension.PensionHolidays = list;
+                //}
+
+                petterResultType.IsSuccessful = true;
+                petterResultType.JsonDataSet = beautyShop;
+            }
+            else
+            {
+                petterResultType.IsSuccessful = false;
+                petterResultType.JsonDataSet = null;
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(petterResultType);
         }
 
         // POST: api/BeautyShops

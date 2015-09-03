@@ -113,8 +113,8 @@ namespace PetterService.Controllers
                 PensionAddr = p.PensionAddr,
                 PictureName = p.PictureName,
                 PicturePath = p.PicturePath,
-                StartPensionHours = p.StartPensionHours,
-                EndPensionHours = p.EndPensionHours,
+                StartPensionHours = p.StartHours,
+                EndPensionHours = p.EndHours,
                 Introduction = p.Introduction,
                 Coordinate = p.Coordinate,
                 Latitude = p.Latitude,
@@ -212,10 +212,10 @@ namespace PetterService.Controllers
                                 pension.PensionAddr = item;
                                 break;
                             case "StartPensionHours":
-                                pension.StartPensionHours = item;
+                                pension.StartHours = item;
                                 break;
                             case "EndPensionHours":
-                                pension.EndPensionHours = item;
+                                pension.EndHours = item;
                                 break;
                             case "Introduction":
                                 pension.Introduction = item;
@@ -366,10 +366,10 @@ namespace PetterService.Controllers
                                 pension.PicturePath = item;
                                 break;
                             case "StartPensionHours":
-                                pension.StartPensionHours = item;
+                                pension.StartHours = item;
                                 break;
                             case "EndPensionHours":
-                                pension.EndPensionHours = item;
+                                pension.EndHours = item;
                                 break;
                             case "Introduction":
                                 pension.Introduction = item;
