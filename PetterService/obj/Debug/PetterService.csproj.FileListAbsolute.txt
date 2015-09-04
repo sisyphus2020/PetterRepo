@@ -166,3 +166,9 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Pe
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetSitterService.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetSitter1.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetSitter3.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Member.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Member1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Pension1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Company.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Company1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Company2.resources

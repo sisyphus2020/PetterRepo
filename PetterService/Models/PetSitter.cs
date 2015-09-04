@@ -12,7 +12,9 @@ namespace PetterService.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PetSitterNo { get; set; }
+        [MaxLength(100)]
         public string PetSitterName { get; set; }
+        [MaxLength(200)]
         public string PetSitterAddr { get; set; }
 
         // Navigation property

@@ -11,7 +11,9 @@ namespace PetterService.Models
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int PensionNo { get; set; }
+        [Index("IDX_PENSION_PENSIONNAME"), MaxLength(100)]
         public string PensionName { get; set; }
+        [MaxLength(200)]
         public string PensionAddr { get; set; }
 
         // Navigation property

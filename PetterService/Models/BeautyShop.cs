@@ -9,7 +9,9 @@ namespace PetterService.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BeautyShopNo { get; set; }
+        [Index("IDX_BEAUTYSHOP_BEAUTYSHOPNAME"), MaxLength(100)]
         public string BeautyShopName { get; set; }
+        [MaxLength(200)]
         public string BeautyShopAddr { get; set; }
         
         // Navigation property
