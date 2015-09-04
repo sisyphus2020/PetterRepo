@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PetterService.Models;
+using PetterService.Common;
 
 namespace PetterService.Controllers
 {
@@ -23,17 +21,37 @@ namespace PetterService.Controllers
             return db.Members;
         }
 
-        // GET: api/Login/5
-        [ResponseType(typeof(Member))]
-        public async Task<IHttpActionResult> GetMember(int id)
+        /// <summary>
+        /// GET api/Login?memberID={memberID}&password={password}
+        /// </summary>
+        /// <param name="memberID"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<Member>))]
+        public async Task<IHttpActionResult> GetMember(string memberID, string password)
         {
-            Member member = await db.Members.FindAsync(id);
-            if (member == null)
+            PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
+            var memberDetail = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower() & p.Password == password).Select(p => new MemberDTO
+            {
+                MemberNo = p.MemberNo,
+                MemberID = p.MemberID,
+                Password = p.Password,
+                NickName = p.NickName,
+                PictureName = p.PictureName,
+                PicturePath = p.PicturePath,
+                Latitude = p.Latitude,
+                Longitude = p.Longitude
+            }).SingleOrDefaultAsync();
+
+            if (memberDetail == null)
             {
                 return NotFound();
             }
 
-            return Ok(member);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = memberDetail;
+
+            return Ok(petterResultType);
         }
 
         // PUT: api/Login/5

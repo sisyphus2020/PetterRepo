@@ -11,6 +11,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using PetterService.Models;
 using PetterService.Common;
+using System.Data.Entity.Spatial;
+using System.Web.Hosting;
+using System.IO;
+using System.Drawing.Imaging;
+using System.Web;
 
 namespace PetterService.Controllers
 {
@@ -24,18 +29,24 @@ namespace PetterService.Controllers
             return db.Members;
         }
 
-        // GET: api/Members/5
-        //[ResponseType(typeof(Member))]
-        //public async Task<IHttpActionResult> GetMember(int id)
-        //{
-        //    Member member = await db.Members.FindAsync(id);
-        //    if (member == null)
-        //    {
-        //        return NotFound();
-        //    }
+        //GET: api/Members/5
+        [ResponseType(typeof(PetterResultType<Member>))]
+        public async Task<IHttpActionResult> GetMember(int id)
+        {
+            PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
+            var memberDetail = await db.Members.Where(p => p.MemberNo == id).SingleOrDefaultAsync();
 
-        //    return Ok(member);
-        //}
+            if (memberDetail != null)
+            {
+                petterResultType.IsSuccessful = true;
+                petterResultType.ErrorMessage = ResultMessage.MemberSearchByID;
+            }
+
+            petterResultType.IsSuccessful = false;
+            petterResultType.ErrorMessage = ResultErrorMessage.MemberSearchByID;
+
+            return Ok(petterResultType);
+        }
 
         //GET: api/Members/MemberID/sisyphus2020@naver.com
         [HttpGet]
@@ -141,52 +152,232 @@ namespace PetterService.Controllers
 
         // PUT: api/Members/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutMember(int id, Member member)
+        public async Task<IHttpActionResult> PutMember(int id)
         {
-            if (!ModelState.IsValid)
+            PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+
+            if (!Request.Content.IsMimeMultipartContent())
             {
-                return BadRequest(ModelState);
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
-            if (id != member.MemberNo)
+            Member member = await db.Members.FindAsync(id);
+            if (member == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            db.Entry(member).State = EntityState.Modified;
+            if (Request.Content.IsMimeMultipartContent())
+            {
+                string folder = HostingEnvironment.MapPath(UploadPath.MemberPath);
+                Utilities.CreateDirectory(folder);
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MemberExists(id))
+                var provider = await Request.Content.ReadAsMultipartAsync();
+
+                foreach (var content in provider.Contents)
                 {
-                    return NotFound();
+                    string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
+                    if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
+                    {
+                        var file = await content.ReadAsByteArrayAsync();
+
+                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+
+                        if (!FileExtension.MemberExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        {
+                            petterResultType.IsSuccessful = false;
+                            petterResultType.JsonDataSet = null;
+                            petterResultType.ErrorMessage = ResultErrorMessage.FileTypeError;
+                            return Ok(petterResultType);
+                        }
+
+                        string fullPath = Path.Combine(folder, fileName);
+                        File.WriteAllBytes(fullPath, file);
+                        string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
+
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.MemberWidth, FileSize.MemberHeight, ImageFormat.Png);
+                        member.PictureName = fileName;
+                        member.PicturePath = UploadPath.MemberPath;
+                    }
+                    else
+                    {
+                        string str = await content.ReadAsStringAsync();
+                        string item = HttpUtility.UrlDecode(str);
+
+                        #region switch case
+                        switch (fieldName)
+                        {
+                            case "Password":
+                                member.Password = item;
+                                break;
+                            //case "NickName":
+                            //    member.NickName = item;
+                            //    break;
+                            case "PictureName":
+                                member.PictureName = item;
+                                break;
+                            case "PicturePath":
+                                member.PicturePath = item;
+                                break;
+                            case "Latitude":
+                                member.Latitude = Convert.ToDouble(item);
+                                break;
+                            case "Longitude":
+                                member.Longitude = Convert.ToDouble(item);
+                                break;
+                            default:
+                                break;
+                        }
+                        #endregion switch case
+                    }
                 }
-                else
+
+                string point = string.Format("POINT({0} {1})", member.Latitude, member.Longitude);
+                member.Coordinate = DbGeography.FromText(point);
+                member.DateModified = DateTime.Now;
+                db.Entry(member).State = EntityState.Modified;
+
+                try
+                {
+                    await db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
                 {
                     throw;
                 }
+                                
+                petterResultType.IsSuccessful = true;
+                petterResultType.JsonDataSet = member;
+            }
+            else
+            {
+                petterResultType.IsSuccessful = false;
+                petterResultType.JsonDataSet = null;
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(petterResultType);
         }
 
+        //// POST: api/Members
+        //[ResponseType(typeof(PetterResultType<Member>))]
+        //public async Task<IHttpActionResult> PostMember(Member member)
+        //{
+        //    PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    string point = string.Format("POINT({0} {1})", member.Latitude, member.Longitude);
+        //    member.Coordinate = DbGeography.FromText(point);
+        //    member.DateCreated = DateTime.Now;
+        //    member.DateModified = DateTime.Now;
+
+        //    db.Members.Add(member);
+        //    await db.SaveChangesAsync();
+
+        //    petterResultType.IsSuccessful = true;
+        //    petterResultType.JsonDataSet = member;
+        //    return Ok(petterResultType);
+        //}
+
+
         // POST: api/Members
-        [ResponseType(typeof(Member))]
-        public async Task<IHttpActionResult> PostMember(Member member)
+        [ResponseType(typeof(PetterResultType<Member>))]
+        public async Task<IHttpActionResult> PostMember()
         {
-            if (!ModelState.IsValid)
+            PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+            Member member = new Member();
+
+            if (Request.Content.IsMimeMultipartContent())
             {
-                return BadRequest(ModelState);
+                string folder = HostingEnvironment.MapPath(UploadPath.MemberPath);
+                Utilities.CreateDirectory(folder);
+
+                var provider = await Request.Content.ReadAsMultipartAsync();
+
+                foreach (var content in provider.Contents)
+                {
+                    string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
+                    if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
+                    {
+                        var file = await content.ReadAsByteArrayAsync();
+
+                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+
+                        if (!FileExtension.MemberExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        {
+                            petterResultType.IsSuccessful = false;
+                            petterResultType.JsonDataSet = null;
+                            petterResultType.ErrorMessage = ResultErrorMessage.FileTypeError;
+                            return Ok(petterResultType);
+                        }
+
+                        string fullPath = Path.Combine(folder, fileName);
+                        File.WriteAllBytes(fullPath, file);
+                        string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
+
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.MemberWidth, FileSize.MemberHeight, ImageFormat.Png);
+                        member.PictureName = fileName;
+                        member.PicturePath = UploadPath.MemberPath;
+                    }
+                    else
+                    {
+                        string str = await content.ReadAsStringAsync();
+                        string item = HttpUtility.UrlDecode(str);
+
+                        #region switch case
+                        switch (fieldName)
+                        {
+                            case "MemberNo":
+                                member.MemberNo = int.Parse(item);
+                                break;
+                            case "MemberID":
+                                member.MemberID = item;
+                                break;
+                            case "Password":
+                                member.Password = item;
+                                break;
+                            case "NickName":
+                                member.NickName = item;
+                                break;
+                            case "PictureName":
+                                member.PictureName = item;
+                                break;
+                            case "PicturePath":
+                                member.PicturePath = item;
+                                break;
+                            case "Latitude":
+                                member.Latitude = Convert.ToDouble(item);
+                                break;
+                            case "Longitude":
+                                member.Longitude = Convert.ToDouble(item);
+                                break;
+                            default:
+                                break;
+                        }
+                        #endregion switch case
+                    }
+                }
+
+                string point = string.Format("POINT({0} {1})", member.Latitude, member.Longitude);
+                member.Coordinate = DbGeography.FromText(point);
+                member.DateCreated = DateTime.Now;
+                member.DateModified = DateTime.Now;
+                db.Members.Add(member);
+                int num = await this.db.SaveChangesAsync();
+
+                petterResultType.IsSuccessful = true;
+                petterResultType.JsonDataSet = member;
+            }
+            else
+            {
+                petterResultType.IsSuccessful = false;
+                petterResultType.JsonDataSet = null;
             }
 
-            db.Members.Add(member);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = member.MemberNo }, member);
+            return Ok(petterResultType);
         }
 
         // DELETE: api/Members/5

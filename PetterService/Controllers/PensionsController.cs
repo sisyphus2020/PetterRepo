@@ -287,7 +287,6 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-
         // POST: api/Pensions
         [ResponseType(typeof(PetterResultType<Pension>))]
         public async Task<IHttpActionResult> PostPension()

@@ -17,6 +17,7 @@ namespace PetterService.Common
         public static string BeautyShopPath { get { return "/Files" + "/" + "BeautyShop" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string PetSitterPath { get { return "/Files" + "/" + "PetSitter" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string PensionPath { get { return "/Files" + "/" + "Pension" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
+        public static string MemberPath { get { return "/Files" + "/" + "Member" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
     }
 
     public sealed class Encription
@@ -42,6 +43,11 @@ namespace PetterService.Common
         public const int PensionWidth = 980;
         public const int PensionHeight = 360;
 
+        // Member
+        public const int MemberWidth = 300;
+        public const int MemberHeight = 100;
+
+
     }
 
     public static class FileExtension
@@ -49,6 +55,7 @@ namespace PetterService.Common
         public static string[] BeautyShopExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] PetSitterExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] PensionExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
+        public static string[] MemberExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
     }
 
     public static class ResultErrorMessage
@@ -62,5 +69,6 @@ namespace PetterService.Common
     {
         public static readonly string MemberSearchByID = "검색한 아이디가 존재하지 않습니다.";
         public static readonly string MemberSearchByNickName = "검색한 닉네임이 존재하지 않습니다.";
+        public static readonly string MemberLoginByID = "정상적으로 로그인 되었습니다.";
     }
 }
