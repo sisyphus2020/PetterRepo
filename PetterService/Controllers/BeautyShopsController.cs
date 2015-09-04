@@ -103,7 +103,7 @@ namespace PetterService.Controllers
         {
             PetterResultType<BeautyShopDTO> petterResultType = new PetterResultType<BeautyShopDTO>();
 
-            var beautyShopDatail = await db.BeautyShops.Where(p => p.BeautyShopNo == id).Select(p => new BeautyShopDTO
+            var beautyShopDetail = await db.BeautyShops.Where(p => p.BeautyShopNo == id).Select(p => new BeautyShopDTO
             {
                 BeautyShopNo = p.BeautyShopNo,
                 CompanyNo = p.CompanyNo,
@@ -126,13 +126,13 @@ namespace PetterService.Controllers
                 BeautyShopHolidays = p.BeautyShopHolidays.ToList()
             }).SingleOrDefaultAsync();
 
-            if (beautyShopDatail == null)
+            if (beautyShopDetail == null)
             {
                 return NotFound();
             }
 
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = beautyShopDatail;
+            petterResultType.JsonDataSet = beautyShopDetail;
             return Ok(petterResultType);
         }
 
@@ -177,7 +177,7 @@ namespace PetterService.Controllers
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
-                            petterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            petterResultType.ErrorMessage = ResultErrorMessage.FileTypeError;
                             return Ok(petterResultType);
                         }
 
@@ -317,7 +317,7 @@ namespace PetterService.Controllers
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
-                            petterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            petterResultType.ErrorMessage = ResultErrorMessage.FileTypeError;
                             return Ok(petterResultType);
                         }
 

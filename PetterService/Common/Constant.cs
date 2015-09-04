@@ -51,8 +51,16 @@ namespace PetterService.Common
         public static string[] PensionExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
     }
 
-    public static class ErrorMessage
+    public static class ResultErrorMessage
     {
         public static readonly string FileTypeError = "첨부파일 형식이 맞지 않습니다.";
+        public static readonly string MemberSearchByID = "검색한 아이디가 존재합니다.";
+        public static readonly string MemberSearchByNickName = "검색한 닉네임이 존재합니다.";
+    }
+
+    public static class ResultMessage
+    {
+        public static readonly string MemberSearchByID = "검색한 아이디가 존재하지 않습니다.";
+        public static readonly string MemberSearchByNickName = "검색한 닉네임이 존재하지 않습니다.";
     }
 }

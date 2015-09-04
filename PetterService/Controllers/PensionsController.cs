@@ -104,7 +104,7 @@ namespace PetterService.Controllers
         {
             PetterResultType<PensionDTO> petterResultType = new PetterResultType<PensionDTO>();
           
-            var pensionDatail = await db.Pensions.Where(p => p.PensionNo == id).Select(p => new PensionDTO
+            var pensionDetail = await db.Pensions.Where(p => p.PensionNo == id).Select(p => new PensionDTO
             {
                 PensionNo = p.PensionNo,
                 CompanyNo = p.CompanyNo,
@@ -127,13 +127,13 @@ namespace PetterService.Controllers
                 PensionHolidays = p.PensionHolidays.ToList()
             }).SingleOrDefaultAsync();
 
-            if (pensionDatail == null)
+            if (pensionDetail == null)
             {
                 return NotFound();
             }
 
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = pensionDatail;
+            petterResultType.JsonDataSet = pensionDetail;
             return Ok(petterResultType);
         }
 
@@ -178,7 +178,7 @@ namespace PetterService.Controllers
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
-                            petterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            petterResultType.ErrorMessage = ResultErrorMessage.FileTypeError;
                             return Ok(petterResultType);
                         }
 
@@ -319,7 +319,7 @@ namespace PetterService.Controllers
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
-                            petterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            petterResultType.ErrorMessage = ResultErrorMessage.FileTypeError;
                             return Ok(petterResultType);
                         }
 

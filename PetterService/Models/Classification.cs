@@ -10,7 +10,7 @@ namespace PetterService.Models
 {
     public class Classification
     {
-        public int CompanyNo { get; set; }
+        public virtual int CompanyNo { get; set; }
         [MaxLength(100)]
         public string PictureName { get; set; }
         [MaxLength(100)]

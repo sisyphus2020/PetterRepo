@@ -103,7 +103,7 @@ namespace PetterService.Controllers
         {
             PetterResultType<PetSitterDTO> petterResultType = new PetterResultType<PetSitterDTO>();
 
-            var petSitterDatail = await db.PetSitters.Where(p => p.PetSitterNo == id).Select(p => new PetSitterDTO
+            var petSitterDetail = await db.PetSitters.Where(p => p.PetSitterNo == id).Select(p => new PetSitterDTO
             {
                 PetSitterNo = p.PetSitterNo,
                 CompanyNo = p.CompanyNo,
@@ -126,13 +126,13 @@ namespace PetterService.Controllers
                 PetSitterHolidays = p.PetSitterHolidays.ToList()
             }).SingleOrDefaultAsync();
 
-            if (petSitterDatail == null)
+            if (petSitterDetail == null)
             {
                 return NotFound();
             }
 
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = petSitterDatail;
+            petterResultType.JsonDataSet = petSitterDetail;
             return Ok(petterResultType);
         }
 
@@ -177,7 +177,7 @@ namespace PetterService.Controllers
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
-                            petterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            petterResultType.ErrorMessage = ResultErrorMessage.FileTypeError;
                             return Ok(petterResultType);
                         }
 
@@ -323,7 +323,7 @@ namespace PetterService.Controllers
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
-                            petterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            petterResultType.ErrorMessage = ResultErrorMessage.FileTypeError;
                             return Ok(petterResultType);
                         }
 

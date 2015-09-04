@@ -1,26 +1,18 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 using System.Data.Entity.Spatial;
+using System.Linq;
+using System.Web;
 
 namespace PetterService.Models
 {
-    public class Member
+    public class MemberDTO
     {
-        [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int MemberNo { get; set; }
-        [Index("IDX_MEMBER_MEMBERID", IsUnique = true)]
-        [Range(7, 50), MaxLength(50)]
         public string MemberID { get; set; }
-        [MaxLength(50)]
         public string Password { get; set; }
-        [Index("IDX_MEMBER_NICKNAME", IsUnique = true)]
-        [MaxLength(50)]
         public string NickName { get; set; }
-        [MaxLength(200)]
         public string PictureName { get; set; }
-        [MaxLength(200)]
         public string PicturePath { get; set; }
         public DbGeography Coordinate { get; set; }
         public double Latitude { get; set; }

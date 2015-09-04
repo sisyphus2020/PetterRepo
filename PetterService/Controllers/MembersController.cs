@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PetterService.Models;
+using PetterService.Common;
 
 namespace PetterService.Controllers
 {
@@ -24,16 +25,118 @@ namespace PetterService.Controllers
         }
 
         // GET: api/Members/5
-        [ResponseType(typeof(Member))]
-        public async Task<IHttpActionResult> GetMember(int id)
+        //[ResponseType(typeof(Member))]
+        //public async Task<IHttpActionResult> GetMember(int id)
+        //{
+        //    Member member = await db.Members.FindAsync(id);
+        //    if (member == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(member);
+        //}
+
+        //GET: api/Members/MemberID/sisyphus2020@naver.com
+        [HttpGet]
+        [ActionName("MemberID")]
+        [ResponseType(typeof(PetterResultType<Member>))]
+        public async Task<IHttpActionResult> GetMemberByID(string memberID)
         {
-            Member member = await db.Members.FindAsync(id);
-            if (member == null)
+            PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
+            var memberDetail = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower()).Select(p => new MemberDTO
+            {
+                MemberNo = p.MemberNo,
+                MemberID = p.MemberID,
+                Password = p.Password,
+                NickName = p.NickName,
+                PictureName = p.PictureName,
+                PicturePath = p.PicturePath,
+                Latitude = p.Latitude,
+                Longitude = p.Longitude
+            }).SingleOrDefaultAsync();
+
+            if (memberDetail == null)
             {
                 return NotFound();
             }
 
-            return Ok(member);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = memberDetail;
+            return Ok(petterResultType);
+        }
+
+        //GET: api/Members/MemberID/sisyphus2020@naver.com
+        [HttpGet]
+        [ActionName("MemberCheck")]
+        [ResponseType(typeof(PetterResultType<Member>))]
+        public async Task<IHttpActionResult> GetMemberCheckByID(string memberID)
+        {
+            PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
+            var memberDetail = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower()).SingleOrDefaultAsync();
+
+            if (memberDetail != null)
+            {
+                petterResultType.IsSuccessful = true;
+                petterResultType.ErrorMessage = ResultMessage.MemberSearchByID;
+                //petterResultType.JsonDataSet = memberDetail;
+            }
+
+            petterResultType.IsSuccessful = false;
+            petterResultType.ErrorMessage = ResultErrorMessage.MemberSearchByID;
+
+            return Ok(petterResultType);
+        }
+
+        //GET: api/Members/NickName/victory
+        [HttpGet]
+        [ActionName("NickName")]
+        [ResponseType(typeof(PetterResultType<Member>))]
+        public async Task<IHttpActionResult> GetMemberByNickName(string nickName)
+        {
+            PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
+            var memberDetail = await db.Members.Where(p => p.NickName == nickName.Trim().ToLower()).Select(p => new MemberDTO
+            {
+                MemberNo = p.MemberNo,
+                MemberID = p.MemberID,
+                Password = p.Password,
+                NickName = p.NickName,
+                PictureName = p.PictureName,
+                PicturePath = p.PicturePath,
+                Latitude = p.Latitude,
+                Longitude = p.Longitude
+            }).SingleOrDefaultAsync();
+
+            if (memberDetail == null)
+            {
+                return NotFound();
+            }
+
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = memberDetail;
+            return Ok(petterResultType);
+        }
+
+        //GET: api/Members/MemberID/sisyphus2020@naver.com
+        [HttpGet]
+        [ActionName("MemberCheck")]
+        [ResponseType(typeof(PetterResultType<Member>))]
+        public async Task<IHttpActionResult> GetMemberCheckByNickName(string nickName)
+        {
+            PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
+            var memberDetail = await db.Members.Where(p => p.MemberID == nickName.Trim().ToLower()).SingleOrDefaultAsync();
+
+            if (memberDetail != null)
+            {
+                petterResultType.IsSuccessful = true;
+                petterResultType.ErrorMessage = ResultMessage.MemberSearchByNickName;
+                //petterResultType.JsonDataSet = memberDetail;
+            }
+
+            petterResultType.IsSuccessful = false;
+            petterResultType.ErrorMessage = ResultErrorMessage.MemberSearchByNickName;
+
+            return Ok(petterResultType);
         }
 
         // PUT: api/Members/5
