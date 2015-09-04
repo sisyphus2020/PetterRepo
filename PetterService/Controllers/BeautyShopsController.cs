@@ -209,10 +209,10 @@ namespace PetterService.Controllers
                             case "BeautyShopAddr":
                                 beautyShop.BeautyShopAddr = item;
                                 break;
-                            case "StartPensionHours":
+                            case "StartHours":
                                 beautyShop.StartHours = item;
                                 break;
-                            case "EndPensionHours":
+                            case "EndHours":
                                 beautyShop.EndHours = item;
                                 break;
                             case "Introduction":
@@ -355,10 +355,10 @@ namespace PetterService.Controllers
                             case "PicturePath":
                                 beautyShop.PicturePath = item;
                                 break;
-                            case "StartPensionHours":
+                            case "StartHours":
                                 beautyShop.StartHours = item;
                                 break;
-                            case "EndPensionHours":
+                            case "EndHours":
                                 beautyShop.EndHours = item;
                                 break;
                             case "Introduction":
@@ -460,8 +460,8 @@ namespace PetterService.Controllers
 
         private async Task DeleteBeautyShopService(BeautyShop beautyShop)
         {
-            var beuatyShopService = await db.BeautyShopServices.Where(p => p.BeautyShopNo == beautyShop.BeautyShopNo).ToListAsync();
-            db.BeautyShopServices.RemoveRange(beuatyShopService);
+            var beuatyShopServices = await db.BeautyShopServices.Where(p => p.BeautyShopNo == beautyShop.BeautyShopNo).ToListAsync();
+            db.BeautyShopServices.RemoveRange(beuatyShopServices);
         }
 
         private async Task<List<BeautyShopHoliday>> AddBeautyShopHoliday(BeautyShop beautyShop, string holiday)

@@ -210,10 +210,10 @@ namespace PetterService.Controllers
                             case "PensionAddr":
                                 pension.PensionAddr = item;
                                 break;
-                            case "StartPensionHours":
+                            case "StartHours":
                                 pension.StartHours = item;
                                 break;
-                            case "EndPensionHours":
+                            case "EndHours":
                                 pension.EndHours = item;
                                 break;
                             case "Introduction":
@@ -357,10 +357,10 @@ namespace PetterService.Controllers
                             case "PicturePath":
                                 pension.PicturePath = item;
                                 break;
-                            case "StartPensionHours":
+                            case "StartHours":
                                 pension.StartHours = item;
                                 break;
-                            case "EndPensionHours":
+                            case "EndHours":
                                 pension.EndHours = item;
                                 break;
                             case "Introduction":
@@ -462,8 +462,8 @@ namespace PetterService.Controllers
 
         private async Task DeletePensionService(Pension pension)
         {
-            var pensionService = await db.PensionServices.Where(p => p.PensionNo == pension.PensionNo).ToListAsync();
-            db.PensionServices.RemoveRange(pensionService);
+            var pensionServices = await db.PensionServices.Where(p => p.PensionNo == pension.PensionNo).ToListAsync();
+            db.PensionServices.RemoveRange(pensionServices);
         }
 
         private async Task<List<PensionHoliday>> AddPensionHoliday(Pension pension, string holiday)
