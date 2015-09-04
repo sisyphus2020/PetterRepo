@@ -34,17 +34,27 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> GetMember(int id)
         {
             PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
-            var memberDetail = await db.Members.Where(p => p.MemberNo == id).SingleOrDefaultAsync();
-
-            if (memberDetail != null)
+            var memberDetail = await db.Members.Where(p => p.MemberNo == id).Select(p => new MemberDTO
             {
-                petterResultType.IsSuccessful = true;
-                petterResultType.ErrorMessage = ResultMessage.MemberSearchByID;
+                MemberNo = p.MemberNo,
+                MemberID = p.MemberID,
+                Password = p.Password,
+                NickName = p.NickName,
+                PictureName = p.PictureName,
+                PicturePath = p.PicturePath,
+                Latitude = p.Latitude,
+                Longitude = p.Longitude,
+                DateCreated = p.DateCreated,
+                DateModified = p.DateModified
+            }).SingleOrDefaultAsync();
+
+            if (memberDetail == null)
+            {
+                return NotFound();
             }
 
-            petterResultType.IsSuccessful = false;
-            petterResultType.ErrorMessage = ResultErrorMessage.MemberSearchByID;
-
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = memberDetail;
             return Ok(petterResultType);
         }
 
@@ -64,7 +74,9 @@ namespace PetterService.Controllers
                 PictureName = p.PictureName,
                 PicturePath = p.PicturePath,
                 Latitude = p.Latitude,
-                Longitude = p.Longitude
+                Longitude = p.Longitude,
+                DateCreated = p.DateCreated,
+                DateModified = p.DateModified
             }).SingleOrDefaultAsync();
 
             if (memberDetail == null)
