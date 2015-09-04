@@ -12,6 +12,10 @@ using System.Web.Http.Description;
 using PetterService.Models;
 using System.Data.Entity.Spatial;
 using PetterService.Common;
+using System.Web.Hosting;
+using System.IO;
+using System.Web;
+using System.Drawing.Imaging;
 
 namespace PetterService.Controllers
 {
@@ -133,54 +137,296 @@ namespace PetterService.Controllers
         }
 
         // PUT: api/PetSitters/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutPetSitter(int id, PetSitter petSitter)
+        [ResponseType(typeof(PetterResultType<PetSitterDTO>))]
+        public async Task<IHttpActionResult> PutPetSitter(int id)
         {
+            PetterResultType<PetSitter> petterResultType = new PetterResultType<PetSitter>();
+            List<PetSitterService> petSitterServices = new List<PetSitterService>();
+            List<PetSitterHoliday> petSitterHolidays = new List<PetSitterHoliday>();
+            string pensionService = string.Empty;
+            string pensionHoliday = string.Empty;
 
-            if (!ModelState.IsValid)
+            if (!Request.Content.IsMimeMultipartContent())
             {
-                return BadRequest(ModelState);
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
-            if (id != petSitter.PetSitterNo)
+            PetSitter petSitter = await db.PetSitters.FindAsync(id);
+            if (petSitter == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            db.Entry(petSitter).State = EntityState.Modified;
+            if (Request.Content.IsMimeMultipartContent())
+            {
+                string folder = HostingEnvironment.MapPath(UploadPath.PetSitterPath);
+                Utilities.CreateDirectory(folder);
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PetSitterExists(id))
+                var provider = await Request.Content.ReadAsMultipartAsync();
+
+                foreach (var content in provider.Contents)
                 {
-                    return NotFound();
+                    string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
+                    if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
+                    {
+                        var file = await content.ReadAsByteArrayAsync();
+
+                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+
+                        if (!FileExtension.PetSitterExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        {
+                            petterResultType.IsSuccessful = false;
+                            petterResultType.JsonDataSet = null;
+                            petterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            return Ok(petterResultType);
+                        }
+
+                        string fullPath = Path.Combine(folder, fileName);
+                        File.WriteAllBytes(fullPath, file);
+                        string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
+
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PetSitterWidth, FileSize.PetSitterHeight, ImageFormat.Png);
+                        petSitter.PictureName = fileName;
+                        petSitter.PicturePath = UploadPath.PetSitterPath;
+                    }
+                    else
+                    {
+                        string str = await content.ReadAsStringAsync();
+                        string item = HttpUtility.UrlDecode(str);
+
+                        #region switch case
+                        switch (fieldName)
+                        {
+                            case "PetSitterNo":
+                                petSitter.PetSitterNo = int.Parse(item);
+                                break;
+                            case "CompanyNo":
+                                petSitter.CompanyNo = int.Parse(item);
+                                break;
+                            case "PetSitterName":
+                                petSitter.PetSitterName = item;
+                                break;
+                            case "PetSitterAddr":
+                                petSitter.PetSitterAddr = item;
+                                break;
+                            case "PictureName":
+                                petSitter.PictureName = item;
+                                break;
+                            case "PicturePath":
+                                petSitter.PicturePath = item;
+                                break;
+                            case "StartHours":
+                                petSitter.StartHours = item;
+                                break;
+                            case "EndHours":
+                                petSitter.EndHours = item;
+                                break;
+                            case "Introduction":
+                                petSitter.Introduction = item;
+                                break;
+                            case "Latitude":
+                                petSitter.Latitude = Convert.ToDouble(item);
+                                break;
+                            case "Longitude":
+                                petSitter.Longitude = Convert.ToDouble(item);
+                                break;
+                            case "Grade":
+                                petSitter.Grade = int.Parse(item);
+                                break;
+                            case "ReviewCount":
+                                petSitter.ReviewCount = int.Parse(item);
+                                break;
+                            case "Bookmark":
+                                petSitter.Bookmark = int.Parse(item);
+                                break;
+                            case "PetSitterServices":
+                                pensionService = item;
+                                break;
+                            case "PetSitterHolidays":
+                                pensionHoliday = item;
+                                break;
+                            default:
+                                break;
+                        }
+                        #endregion switch case
+                    }
                 }
-                else
+
+                string point = string.Format("POINT({0} {1})", petSitter.Latitude, petSitter.Longitude);
+                petSitter.Coordinate = DbGeography.FromText(point);
+                petSitter.DateModified = DateTime.Now;
+                db.Entry(petSitter).State = EntityState.Modified;
+
+                try
+                {
+                    await db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
                 {
                     throw;
                 }
+
+                await DeletePetSitterService(petSitter);
+                if (!string.IsNullOrWhiteSpace(pensionService))
+                {
+                    List<PetSitterService> list = await AddPetSitterService(petSitter, pensionService);
+                    petSitter.PetSitterServices = list;
+                }
+
+                await this.DeletePetSitterHoliday(petSitter);
+                if (!string.IsNullOrWhiteSpace(pensionHoliday))
+                {
+                    List<PetSitterHoliday> list = await AddPetSitterHoliday(petSitter, pensionHoliday);
+                    petSitter.PetSitterHolidays = list;
+                }
+
+                petterResultType.IsSuccessful = true;
+                petterResultType.JsonDataSet = petSitter;
+            }
+            else
+            {
+                petterResultType.IsSuccessful = false;
+                petterResultType.JsonDataSet = null;
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(petterResultType);
         }
 
         // POST: api/PetSitters
-        [ResponseType(typeof(PetSitter))]
-        public async Task<IHttpActionResult> PostPetSitter(PetSitter petSitter)
+        [ResponseType(typeof(PetterResultType<PetSitter>))]
+        public async Task<IHttpActionResult> PostPetSitter()
         {
-            if (!ModelState.IsValid)
+            PetterResultType<PetSitter> petterResultType = new PetterResultType<PetSitter>();
+            List<PetSitterService> petSitterServices = new List<PetSitterService>();
+            List<PetSitterHoliday> petSitterHolidays = new List<PetSitterHoliday>();
+            PetSitter petSitter = new PetSitter();
+            string pensionService = string.Empty;
+            string pensionHoliday = string.Empty;
+
+            if (Request.Content.IsMimeMultipartContent())
             {
-                return BadRequest(ModelState);
+                string folder = HostingEnvironment.MapPath(UploadPath.PetSitterPath);
+                Utilities.CreateDirectory(folder);
+
+                var provider = await Request.Content.ReadAsMultipartAsync();
+
+                foreach (var content in provider.Contents)
+                {
+                    string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
+                    if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
+                    {
+                        var file = await content.ReadAsByteArrayAsync();
+
+                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+
+                        if (!FileExtension.PetSitterExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        {
+                            petterResultType.IsSuccessful = false;
+                            petterResultType.JsonDataSet = null;
+                            petterResultType.ErrorMessage = ErrorMessage.FileTypeError;
+                            return Ok(petterResultType);
+                        }
+
+                        string fullPath = Path.Combine(folder, fileName);
+                        File.WriteAllBytes(fullPath, file);
+                        string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
+
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PensionWidth, FileSize.PensionHeight, ImageFormat.Png);
+                        petSitter.PictureName = fileName;
+                        petSitter.PicturePath = UploadPath.PetSitterPath;
+                    }
+                    else
+                    {
+                        string str = await content.ReadAsStringAsync();
+                        string item = HttpUtility.UrlDecode(str);
+
+                        #region switch case
+                        switch (fieldName)
+                        {
+                            case "PetSitterNo":
+                                petSitter.PetSitterNo = int.Parse(item);
+                                break;
+                            case "CompanyNo":
+                                petSitter.CompanyNo = int.Parse(item);
+                                break;
+                            case "PetSitterName":
+                                petSitter.PetSitterName = item;
+                                break;
+                            case "PetSitterAddr":
+                                petSitter.PetSitterAddr = item;
+                                break;
+                            case "PictureName":
+                                petSitter.PictureName = item;
+                                break;
+                            case "PicturePath":
+                                petSitter.PicturePath = item;
+                                break;
+                            case "StartHours":
+                                petSitter.StartHours = item;
+                                break;
+                            case "EndHours":
+                                petSitter.EndHours = item;
+                                break;
+                            case "Introduction":
+                                petSitter.Introduction = item;
+                                break;
+                            case "Latitude":
+                                petSitter.Latitude = Convert.ToDouble(item);
+                                break;
+                            case "Longitude":
+                                petSitter.Longitude = Convert.ToDouble(item);
+                                break;
+                            case "Grade":
+                                petSitter.Grade = int.Parse(item);
+                                break;
+                            case "ReviewCount":
+                                petSitter.ReviewCount = int.Parse(item);
+                                break;
+                            case "Bookmark":
+                                petSitter.Bookmark = int.Parse(item);
+                                break;
+                            case "PetSitterServices":
+                                pensionService = item;
+                                break;
+                            case "PetSitterHolidays":
+                                pensionHoliday = item;
+                                break;
+                            default:
+                                break;
+                        }
+                        #endregion switch case
+                    }
+                }
+
+                string point = string.Format("POINT({0} {1})", petSitter.Latitude, petSitter.Longitude);
+                petSitter.Coordinate = DbGeography.FromText(point);
+                petSitter.DateCreated = DateTime.Now;
+                petSitter.DateModified = DateTime.Now;
+                db.PetSitters.Add(petSitter);
+                int num = await this.db.SaveChangesAsync();
+
+                if (!string.IsNullOrWhiteSpace(pensionService))
+                {
+                    List<PetSitterService> list = await AddPetSitterService(petSitter, pensionService);
+                    petSitter.PetSitterServices = list;
+                }
+
+                if (!string.IsNullOrWhiteSpace(pensionHoliday))
+                {
+                    List<PetSitterHoliday> list = await AddPetSitterHoliday(petSitter, pensionHoliday);
+                    petSitter.PetSitterHolidays = list;
+                }
+
+                petterResultType.IsSuccessful = true;
+                petterResultType.JsonDataSet = petSitter;
+            }
+            else
+            {
+                petterResultType.IsSuccessful = false;
+                petterResultType.JsonDataSet = null;
             }
 
-            db.PetSitters.Add(petSitter);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = petSitter.PetSitterNo }, petSitter);
+            return Ok(petterResultType);
         }
 
         // DELETE: api/PetSitters/5
@@ -197,6 +443,57 @@ namespace PetterService.Controllers
             await db.SaveChangesAsync();
 
             return Ok(petSitter);
+        }
+
+        private async Task<List<PetSitterService>> AddPetSitterService(PetSitter petSitter, string service)
+        {
+            List<PetSitterService> petSitterServices = new List<PetSitterService>();
+            var arr = HttpUtility.UrlDecode(service.ToString()).Split(',');
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                PetSitterService petSitterService = new PetSitterService();
+                petSitterService.PetSitterNo = petSitter.PetSitterNo;
+                petSitterService.PetSitterServiceCode = int.Parse(arr[i].ToString());
+                petSitterServices.Add(petSitterService);
+            }
+
+            db.PetSitterServices.AddRange(petSitterServices);
+            await db.SaveChangesAsync();
+
+            return petSitterServices;
+        }
+
+        private async Task DeletePetSitterService(PetSitter petSitter)
+        {
+            var petSitterServices = await db.PetSitterServices.Where(p => p.PetSitterNo == petSitter.PetSitterNo).ToListAsync();
+            db.PetSitterServices.RemoveRange(petSitterServices);
+        }
+
+        private async Task<List<PetSitterHoliday>> AddPetSitterHoliday(PetSitter petSitter, string holiday)
+        {
+            List<PetSitterHoliday> petSitterHolidays = new List<PetSitterHoliday>();
+
+            var arr = HttpUtility.UrlDecode(holiday.ToString()).Split(',');
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                PetSitterHoliday petSitterHoliday = new PetSitterHoliday();
+                petSitterHoliday.PetSitterNo = petSitter.PetSitterNo;
+                petSitterHoliday.PetSitterHolidayCode = int.Parse(arr[i].ToString());
+                petSitterHolidays.Add(petSitterHoliday);
+            }
+
+            db.PetSitterHolidays.AddRange(petSitterHolidays);
+            await db.SaveChangesAsync();
+
+            return petSitterHolidays;
+        }
+
+        private async Task DeletePetSitterHoliday(PetSitter petSitter)
+        {
+            var petSitterHolidays = await db.PetSitterHolidays.Where(p => p.PetSitterNo == petSitter.PetSitterNo).ToListAsync();
+            db.PetSitterHolidays.RemoveRange(petSitterHolidays);
         }
 
         protected override void Dispose(bool disposing)
