@@ -44,5 +44,11 @@ namespace PetterService.Models
         public System.Data.Entity.DbSet<PetterService.Models.Company> Companies { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.MemberAccess> MemberAccesses { get; set; }
+
+        //public System.Data.Entity.DbSet<PetterService.Models.PetInfomation> PetInfomations { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.PetKind> PetKinds { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.PetInfomation> PetInfomations { get; set; }
     }
 }

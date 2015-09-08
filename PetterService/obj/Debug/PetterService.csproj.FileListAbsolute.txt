@@ -78,7 +78,6 @@ D:\12. Repository\PetterService\PetterService\obj\Debug\PetterService.pdb
 D:\12. Repository\PetterService\PetterService\obj\Debug\PetterService.Migrations.Initial.resources
 D:\12. Repository\PetterService\PetterService\obj\Debug\PetterService.csproj.GenerateResource.Cache
 D:\12. Repository\PetterService\PetterService\obj\Debug\PetterService.Migrations.BeautyShop.resources
-D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.csprojResolveAssemblyReference.cache
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Initial.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShop.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.csproj.GenerateResource.Cache
@@ -180,3 +179,8 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Me
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.MemberAccess2.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.MemberAccess3.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.MemberAccess4.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetInfomation.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetInfomation1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetKind.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetInformation.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetInformation1.resources
