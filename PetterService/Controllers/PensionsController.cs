@@ -226,7 +226,7 @@ namespace PetterService.Controllers
                                 pension.Longitude = Convert.ToDouble(item);
                                 break;
                             case "Grade":
-                                pension.Grade = int.Parse(item);
+                                pension.Grade = Convert.ToDouble(item);
                                 break;
                             case "ReviewCount":
                                 pension.ReviewCount = int.Parse(item);
@@ -372,7 +372,7 @@ namespace PetterService.Controllers
                                 pension.Longitude = Convert.ToDouble(item);
                                 break;
                             case "Grade":
-                                pension.Grade = int.Parse(item);
+                                pension.Grade = Convert.ToDouble(item);
                                 break;
                             case "ReviewCount":
                                 pension.ReviewCount = int.Parse(item);

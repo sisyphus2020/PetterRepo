@@ -173,3 +173,10 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Co
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Company1.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Company2.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Member2.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Classification.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Classification1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.MemberAccess.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.MemberAccess1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.MemberAccess2.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.MemberAccess3.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.MemberAccess4.resources

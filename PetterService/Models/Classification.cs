@@ -25,7 +25,7 @@ namespace PetterService.Models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         [Index("IDX_CRADE"), Range(0, 10)]
-        public decimal Grade { get; set; }
+        public double Grade { get; set; }
         [Index("IDX_REVIEWCOUNT")]
         public int ReviewCount { get; set; }
         [Index("IDX_BOOKMARK")]

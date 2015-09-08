@@ -127,13 +127,18 @@ namespace PetterService.Controllers
                 PictureName = p.PictureName,
                 PicturePath = p.PicturePath,
                 Latitude = p.Latitude,
-                Longitude = p.Longitude
+                Longitude = p.Longitude,
+                DateCreated = p.DateCreated,
+                DateModified = p.DateModified
             }).SingleOrDefaultAsync();
 
             if (memberDetail == null)
             {
                 return NotFound();
             }
+
+
+            
 
             petterResultType.IsSuccessful = true;
             petterResultType.JsonDataSet = memberDetail;
@@ -346,7 +351,7 @@ namespace PetterService.Controllers
                                 member.MemberNo = int.Parse(item);
                                 break;
                             case "MemberID":
-                                member.MemberID = item;
+                                member.MemberID = item.ToLower();
                                 break;
                             case "Password":
                                 member.Password = item;

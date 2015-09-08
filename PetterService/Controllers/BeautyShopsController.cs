@@ -225,7 +225,7 @@ namespace PetterService.Controllers
                                 beautyShop.Longitude = Convert.ToDouble(item);
                                 break;
                             case "Grade":
-                                beautyShop.Grade = int.Parse(item);
+                                beautyShop.Grade = Convert.ToDouble(item);
                                 break;
                             case "ReviewCount":
                                 beautyShop.ReviewCount = int.Parse(item);
@@ -371,7 +371,7 @@ namespace PetterService.Controllers
                                 beautyShop.Longitude = Convert.ToDouble(item);
                                 break;
                             case "Grade":
-                                beautyShop.Grade = int.Parse(item);
+                                beautyShop.Grade = Convert.ToDouble(item);
                                 break;
                             case "ReviewCount":
                                 beautyShop.ReviewCount = int.Parse(item);

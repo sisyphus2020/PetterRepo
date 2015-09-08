@@ -23,7 +23,7 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.BeautyShop> BeautyShops { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.Company> Companies { get; set; }
+        //public System.Data.Entity.DbSet<PetterService.Models.Company> Companies { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.PensionHoliday> PensionHolidays { get; set; }
 
@@ -40,5 +40,9 @@ namespace PetterService.Models
         public System.Data.Entity.DbSet<PetterService.Models.PetSitter> PetSitters { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.Member> Members { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.Company> Companies { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.MemberAccess> MemberAccesses { get; set; }
     }
 }

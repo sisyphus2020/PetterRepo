@@ -20,6 +20,13 @@ namespace PetterService.Common
         public static string MemberPath { get { return "/Files" + "/" + "Member" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
     }
 
+    public sealed class AccessResult
+    {
+        // 성공
+        public const string Success = "S";
+        public const string Failure = "F";
+    }
+
     public sealed class Encription
     {
         public const string keyValue = "Teis";

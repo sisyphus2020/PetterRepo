@@ -231,7 +231,7 @@ namespace PetterService.Controllers
                                 petSitter.Longitude = Convert.ToDouble(item);
                                 break;
                             case "Grade":
-                                petSitter.Grade = int.Parse(item);
+                                petSitter.Grade = Convert.ToDouble(item);
                                 break;
                             case "ReviewCount":
                                 petSitter.ReviewCount = int.Parse(item);
@@ -377,7 +377,7 @@ namespace PetterService.Controllers
                                 petSitter.Longitude = Convert.ToDouble(item);
                                 break;
                             case "Grade":
-                                petSitter.Grade = int.Parse(item);
+                                petSitter.Grade = Convert.ToDouble(item);
                                 break;
                             case "ReviewCount":
                                 petSitter.ReviewCount = int.Parse(item);

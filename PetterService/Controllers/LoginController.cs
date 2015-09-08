@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using PetterService.Models;
 using PetterService.Common;
+using System;
 
 namespace PetterService.Controllers
 {
@@ -33,6 +34,7 @@ namespace PetterService.Controllers
             PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
             var memberDetail = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower() & p.Password == password).Select(p => new MemberDTO
             {
+                // 패스워드 암호화 필요
                 MemberNo = p.MemberNo,
                 MemberID = p.MemberID,
                 Password = p.Password,
@@ -40,18 +42,34 @@ namespace PetterService.Controllers
                 PictureName = p.PictureName,
                 PicturePath = p.PicturePath,
                 Latitude = p.Latitude,
-                Longitude = p.Longitude
+                Longitude = p.Longitude,
+                DateCreated = p.DateCreated,
+                DateModified = p.DateModified
             }).SingleOrDefaultAsync();
 
             if (memberDetail == null)
             {
+                await AddMemberAccess(memberID, AccessResult.Failure);
                 return NotFound();
             }
+
+            await AddMemberAccess(memberID, AccessResult.Success);
 
             petterResultType.IsSuccessful = true;
             petterResultType.JsonDataSet = memberDetail;
 
             return Ok(petterResultType);
+        }
+
+        private async Task AddMemberAccess(string memberID, string result)
+        {
+            MemberAccess memberAccess = new MemberAccess();
+            memberAccess.MemberID = memberID;
+            memberAccess.AccessResult = result;
+            memberAccess.DateCreated = DateTime.Now;
+
+            db.MemberAccesses.Add(memberAccess);
+            await db.SaveChangesAsync();
         }
 
         // PUT: api/Login/5
