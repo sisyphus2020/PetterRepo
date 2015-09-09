@@ -111,8 +111,8 @@ namespace PetterService.Controllers
                 PetSitterAddr = p.PetSitterAddr,
                 PictureName = p.PictureName,
                 PicturePath = p.PicturePath,
-                StartHours = p.StartHours,
-                EndHours = p.EndHours,
+                StartTime = p.StartTime,
+                EndTime = p.EndTime,
                 Introduction = p.Introduction,
                 Coordinate = p.Coordinate,
                 Latitude = p.Latitude,
@@ -215,11 +215,11 @@ namespace PetterService.Controllers
                             case "PicturePath":
                                 petSitter.PicturePath = item;
                                 break;
-                            case "StartHours":
-                                petSitter.StartHours = item;
+                            case "StartTime":
+                                petSitter.StartTime = item;
                                 break;
-                            case "EndHours":
-                                petSitter.EndHours = item;
+                            case "EndTime":
+                                petSitter.EndTime = item;
                                 break;
                             case "Introduction":
                                 petSitter.Introduction = item;
@@ -361,11 +361,11 @@ namespace PetterService.Controllers
                             case "PicturePath":
                                 petSitter.PicturePath = item;
                                 break;
-                            case "StartHours":
-                                petSitter.StartHours = item;
+                            case "StartTime":
+                                petSitter.StartTime = item;
                                 break;
-                            case "EndHours":
-                                petSitter.EndHours = item;
+                            case "EndTime":
+                                petSitter.EndTime = item;
                                 break;
                             case "Introduction":
                                 petSitter.Introduction = item;

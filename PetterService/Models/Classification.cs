@@ -11,14 +11,16 @@ namespace PetterService.Models
     public class Classification
     {
         public virtual int CompanyNo { get; set; }
+        [MaxLength(20)]
+        public string Phone { get; set; }
         [MaxLength(100)]
         public string PictureName { get; set; }
         [MaxLength(100)]
         public string PicturePath { get; set; }
         [MaxLength(4)]
-        public string StartHours { get; set; }
+        public string StartTime { get; set; }
         [MaxLength(4)]
-        public string EndHours { get; set; }
+        public string EndTime { get; set; }
         [MaxLength(200)]
         public string Introduction { get; set; }
         public DbGeography Coordinate { get; set; }
@@ -30,7 +32,14 @@ namespace PetterService.Models
         public int ReviewCount { get; set; }
         [Index("IDX_BOOKMARK")]
         public int Bookmark { get; set; }
+        [MaxLength(1)]
+        public string StateFlag{ get; set; }
+        [MaxLength(20)]
+        public string WriteIP { get; set; }
+        [MaxLength(20)]
+        public string ModifyIP { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
+        public DateTime DateDeleted { get; set; }
     }
 }

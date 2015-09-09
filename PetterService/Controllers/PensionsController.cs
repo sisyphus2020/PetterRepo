@@ -112,8 +112,8 @@ namespace PetterService.Controllers
                 PensionAddr = p.PensionAddr,
                 PictureName = p.PictureName,
                 PicturePath = p.PicturePath,
-                StartHours = p.StartHours,
-                EndHours = p.EndHours,
+                StartTime = p.StartTime,
+                EndTime = p.EndTime,
                 Introduction = p.Introduction,
                 Coordinate = p.Coordinate,
                 Latitude = p.Latitude,
@@ -210,11 +210,11 @@ namespace PetterService.Controllers
                             case "PensionAddr":
                                 pension.PensionAddr = item;
                                 break;
-                            case "StartHours":
-                                pension.StartHours = item;
+                            case "StartTime":
+                                pension.StartTime = item;
                                 break;
-                            case "EndHours":
-                                pension.EndHours = item;
+                            case "EndTime":
+                                pension.EndTime = item;
                                 break;
                             case "Introduction":
                                 pension.Introduction = item;
@@ -356,11 +356,11 @@ namespace PetterService.Controllers
                             case "PicturePath":
                                 pension.PicturePath = item;
                                 break;
-                            case "StartHours":
-                                pension.StartHours = item;
+                            case "StartTime":
+                                pension.StartTime = item;
                                 break;
-                            case "EndHours":
-                                pension.EndHours = item;
+                            case "EndTime":
+                                pension.EndTime = item;
                                 break;
                             case "Introduction":
                                 pension.Introduction = item;

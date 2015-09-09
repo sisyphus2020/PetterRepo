@@ -107,12 +107,13 @@ namespace PetterService.Controllers
             {
                 BeautyShopNo = p.BeautyShopNo,
                 CompanyNo = p.CompanyNo,
+                Phone = p.Phone,
                 BeautyShopName = p.BeautyShopName,
                 BeautyShopAddr = p.BeautyShopAddr,
                 PictureName = p.PictureName,
                 PicturePath = p.PicturePath,
-                StartHours = p.StartHours,
-                EndHours = p.EndHours,
+                StartTime = p.StartTime,
+                EndTime = p.EndTime,
                 Introduction = p.Introduction,
                 Coordinate = p.Coordinate,
                 Latitude = p.Latitude,
@@ -203,17 +204,20 @@ namespace PetterService.Controllers
                             case "CompanyNo":
                                 beautyShop.CompanyNo = int.Parse(item);
                                 break;
+                            case "Phone":
+                                beautyShop.Phone = item;
+                                break;
                             case "BeautyShopName":
                                 beautyShop.BeautyShopName = item;
                                 break;
                             case "BeautyShopAddr":
                                 beautyShop.BeautyShopAddr = item;
                                 break;
-                            case "StartHours":
-                                beautyShop.StartHours = item;
+                            case "StartTime":
+                                beautyShop.StartTime = item;
                                 break;
-                            case "EndHours":
-                                beautyShop.EndHours = item;
+                            case "EndTime":
+                                beautyShop.EndTime = item;
                                 break;
                             case "Introduction":
                                 beautyShop.Introduction = item;
@@ -343,6 +347,9 @@ namespace PetterService.Controllers
                             case "CompanyNo":
                                 beautyShop.CompanyNo = int.Parse(item);
                                 break;
+                            case "Phone":
+                                beautyShop.Phone = item;
+                                break;
                             case "BeautyShopName":
                                 beautyShop.BeautyShopName = item;
                                 break;
@@ -355,11 +362,11 @@ namespace PetterService.Controllers
                             case "PicturePath":
                                 beautyShop.PicturePath = item;
                                 break;
-                            case "StartHours":
-                                beautyShop.StartHours = item;
+                            case "StartTime":
+                                beautyShop.StartTime = item;
                                 break;
-                            case "EndHours":
-                                beautyShop.EndHours = item;
+                            case "EndTime":
+                                beautyShop.EndTime = item;
                                 break;
                             case "Introduction":
                                 beautyShop.Introduction = item;

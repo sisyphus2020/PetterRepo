@@ -184,3 +184,5 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Pe
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetKind.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetInformation.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetInformation1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.csprojResolveAssemblyReference.cache
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Classification2.resources
