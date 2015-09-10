@@ -9,6 +9,7 @@ using System.Web.Http.Description;
 using PetterService.Models;
 using PetterService.Common;
 using System;
+using System.Collections.Generic;
 
 namespace PetterService.Controllers
 {
@@ -31,23 +32,11 @@ namespace PetterService.Controllers
         [ResponseType(typeof(PetterResultType<Member>))]
         public async Task<IHttpActionResult> GetMember(string memberID, string password)
         {
-            PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
-            var memberDetail = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower() & p.Password == password).Select(p => new MemberDTO
-            {
-                // 패스워드 암호화 필요
-                MemberNo = p.MemberNo,
-                MemberID = p.MemberID,
-                Password = p.Password,
-                NickName = p.NickName,
-                PictureName = p.PictureName,
-                PicturePath = p.PicturePath,
-                Latitude = p.Latitude,
-                Longitude = p.Longitude,
-                DateCreated = p.DateCreated,
-                DateModified = p.DateModified
-            }).SingleOrDefaultAsync();
+            PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+            List<Member> members = new List<Member>();
+            var member = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower() & p.Password == password).SingleOrDefaultAsync();
 
-            if (memberDetail == null)
+            if (member == null)
             {
                 await AddMemberAccess(memberID, AccessResult.Failure);
                 return NotFound();
@@ -55,8 +44,9 @@ namespace PetterService.Controllers
 
             await AddMemberAccess(memberID, AccessResult.Success);
 
+            members.Add(member);
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = memberDetail;
+            petterResultType.JsonDataSet = members;
 
             return Ok(petterResultType);
         }

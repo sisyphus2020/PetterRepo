@@ -22,50 +22,51 @@ namespace PetterService.Controllers
     {
         private PetterServiceContext db = new PetterServiceContext();
 
-        // GET: api/CompanionAnimals
-        public IQueryable<CompanionAnimal> GetCompanionAnimals()
+        /// <summary>
+        /// GET: api/CompanionAnimals
+        /// 반려동물 등록 리스트
+        /// </summary>
+        /// <param name="companionAnimal"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<CompanionAnimal>))]
+        public async Task<IHttpActionResult> GetCompanionAnimals([FromUri] CompanionAnimal companionAnimal)
         {
-            return db.CompanionAnimals;
+            PetterResultType<CompanionAnimal> petterResultType = new PetterResultType<CompanionAnimal>();
+            var list = await db.CompanionAnimals.Where(p => p.MemberNo == companionAnimal.MemberNo).ToListAsync();
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = list;
+            return Ok(petterResultType);
         }
 
-        /// <summary>
-        /// GET: api/CompanionAnimals/5
-        /// 반려동물 상세 정보
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        ///// <summary>
+        ///// GET: api/CompanionAnimals/5
+        ///// 반려동물 상세 정보
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
         [ResponseType(typeof(PetterResultType<CompanionAnimal>))]
         public async Task<IHttpActionResult> GetCompanionAnimal(int id)
         {
-            PetterResultType<CompanionAnimalDTO> petterResultType = new PetterResultType<CompanionAnimalDTO>();
-            var companionAnimalDetail = await db.CompanionAnimals.Where(p => p.CompanionAnimalNo == id).Select(p => new CompanionAnimalDTO
-            {
-                CompanionAnimalNo = p.CompanionAnimalNo,
-                MemberNo = p.MemberNo,
-                PetCategory = p.PetCategory,
-                PetCode = p.PetCode,
-                Name = p.Name,
-                Age = p.Age,
-                Weight = p.Weight,
-                Gender = p.Gender,
-                Marking = p.Marking,
-                Medication = p.Medication,
-                Feature = p.Feature,
-                PictureName = p.PictureName,
-                PicturePath = p.PicturePath,
-                StateFlag = p.StateFlag,
-                DateCreated = p.DateCreated,
-                DateModified = p.DateModified,
-                DateDeleted = p.DateDeleted
-            }).SingleOrDefaultAsync();
+            PetterResultType<CompanionAnimal> petterResultType = new PetterResultType<CompanionAnimal>();
+            List<CompanionAnimal> cmpanionAnimals = new List<CompanionAnimal>();
+
+            var companionAnimalDetail = await db.CompanionAnimals.Where(p => p.CompanionAnimalNo == id).SingleOrDefaultAsync();
 
             if (companionAnimalDetail == null)
             {
                 return NotFound();
             }
 
+            cmpanionAnimals.Add(companionAnimalDetail);
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = companionAnimalDetail;
+            petterResultType.JsonDataSet = cmpanionAnimals;
+
             return Ok(petterResultType);
         }
 
@@ -74,6 +75,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PutCompanionAnimal(int id)
         {
             PetterResultType<CompanionAnimal> petterResultType = new PetterResultType<CompanionAnimal>();
+            List<CompanionAnimal> cmpanionAnimals = new List<CompanionAnimal>();
 
             if (!Request.Content.IsMimeMultipartContent())
             {
@@ -178,8 +180,10 @@ namespace PetterService.Controllers
                     throw;
                 }
 
+                cmpanionAnimals.Add(companionAnimal);
+
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = companionAnimal;
+                petterResultType.JsonDataSet = cmpanionAnimals;
             }
             else
             {
@@ -195,6 +199,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PostCompanionAnimal()
         {
             PetterResultType<CompanionAnimal> petterResultType = new PetterResultType<CompanionAnimal>();
+            List<CompanionAnimal> companionAnimals = new List<CompanionAnimal>();
             CompanionAnimal companionAnimal = new CompanionAnimal();
 
             if (Request.Content.IsMimeMultipartContent())
@@ -280,8 +285,9 @@ namespace PetterService.Controllers
                 db.CompanionAnimals.Add(companionAnimal);
                 int num = await this.db.SaveChangesAsync();
 
+                companionAnimals.Add(companionAnimal);
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = companionAnimal;
+                petterResultType.JsonDataSet = companionAnimals;
             }
             else
             {
@@ -304,6 +310,7 @@ namespace PetterService.Controllers
             // 삭제 권한 처리 필요
 
             PetterResultType<CompanionAnimal> petterResultType = new PetterResultType<CompanionAnimal>();
+            List<CompanionAnimal> companionAnimals = new List<CompanionAnimal>();
             CompanionAnimal companionAnimal = await db.CompanionAnimals.FindAsync(id);
 
             if (companionAnimal == null)
@@ -317,8 +324,9 @@ namespace PetterService.Controllers
 
             await db.SaveChangesAsync();
 
+            companionAnimals.Add(companionAnimal);
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = companionAnimal;
+            petterResultType.JsonDataSet = companionAnimals;
 
             return Ok(petterResultType);
         }

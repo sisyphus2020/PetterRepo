@@ -102,8 +102,9 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> GetPetSitter(int id)
         {
             PetterResultType<PetSitterDTO> petterResultType = new PetterResultType<PetSitterDTO>();
+            List<PetSitterDTO> petSitters = new List<PetSitterDTO>();
 
-            var petSitterDetail = await db.PetSitters.Where(p => p.PetSitterNo == id).Select(p => new PetSitterDTO
+            var petSitter = await db.PetSitters.Where(p => p.PetSitterNo == id).Select(p => new PetSitterDTO
             {
                 PetSitterNo = p.PetSitterNo,
                 CompanyNo = p.CompanyNo,
@@ -126,13 +127,14 @@ namespace PetterService.Controllers
                 PetSitterHolidays = p.PetSitterHolidays.ToList()
             }).SingleOrDefaultAsync();
 
-            if (petSitterDetail == null)
+            if (petSitter == null)
             {
                 return NotFound();
             }
 
+            petSitters.Add(petSitter);
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = petSitterDetail;
+            petterResultType.JsonDataSet = petSitters;
             return Ok(petterResultType);
         }
 
@@ -141,6 +143,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PutPetSitter(int id)
         {
             PetterResultType<PetSitter> petterResultType = new PetterResultType<PetSitter>();
+            List<PetSitter> petSitters = new List<PetSitter>();
             List<PetSitterService> petSitterServices = new List<PetSitterService>();
             List<PetSitterHoliday> petSitterHolidays = new List<PetSitterHoliday>();
             string pensionService = string.Empty;
@@ -280,8 +283,9 @@ namespace PetterService.Controllers
                     petSitter.PetSitterHolidays = list;
                 }
 
+                petSitters.Add(petSitter);
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = petSitter;
+                petterResultType.JsonDataSet = petSitters;
             }
             else
             {
@@ -297,6 +301,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PostPetSitter()
         {
             PetterResultType<PetSitter> petterResultType = new PetterResultType<PetSitter>();
+            List<PetSitter> petSitters = new List<PetSitter>();
             List<PetSitterService> petSitterServices = new List<PetSitterService>();
             List<PetSitterHoliday> petSitterHolidays = new List<PetSitterHoliday>();
             PetSitter petSitter = new PetSitter();
@@ -417,8 +422,9 @@ namespace PetterService.Controllers
                     petSitter.PetSitterHolidays = list;
                 }
 
+                petSitters.Add(petSitter);
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = petSitter;
+                petterResultType.JsonDataSet = petSitters;
             }
             else
             {

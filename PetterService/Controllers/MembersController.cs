@@ -33,28 +33,18 @@ namespace PetterService.Controllers
         [ResponseType(typeof(PetterResultType<Member>))]
         public async Task<IHttpActionResult> GetMember(int id)
         {
-            PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
-            var memberDetail = await db.Members.Where(p => p.MemberNo == id).Select(p => new MemberDTO
-            {
-                MemberNo = p.MemberNo,
-                MemberID = p.MemberID,
-                Password = p.Password,
-                NickName = p.NickName,
-                PictureName = p.PictureName,
-                PicturePath = p.PicturePath,
-                Latitude = p.Latitude,
-                Longitude = p.Longitude,
-                DateCreated = p.DateCreated,
-                DateModified = p.DateModified
-            }).SingleOrDefaultAsync();
+            PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+            List<Member> members = new List<Member>();
+            var member = await db.Members.Where(p => p.MemberNo == id).SingleOrDefaultAsync();
 
-            if (memberDetail == null)
+            if (member == null)
             {
                 return NotFound();
             }
 
+            members.Add(member);
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = memberDetail;
+            petterResultType.JsonDataSet = members;
             return Ok(petterResultType);
         }
 
@@ -69,28 +59,18 @@ namespace PetterService.Controllers
         [ResponseType(typeof(PetterResultType<Member>))]
         public async Task<IHttpActionResult> GetMemberByID(string memberID)
         {
-            PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
-            var memberDetail = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower()).Select(p => new MemberDTO
-            {
-                MemberNo = p.MemberNo,
-                MemberID = p.MemberID,
-                Password = p.Password,
-                NickName = p.NickName,
-                PictureName = p.PictureName,
-                PicturePath = p.PicturePath,
-                Latitude = p.Latitude,
-                Longitude = p.Longitude,
-                DateCreated = p.DateCreated,
-                DateModified = p.DateModified
-            }).SingleOrDefaultAsync();
+            PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+            List<Member> members = new List<Member>();
+            var member = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower()).SingleOrDefaultAsync();
 
-            if (memberDetail == null)
+            if (member == null)
             {
                 return NotFound();
             }
 
+            members.Add(member);
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = memberDetail;
+            petterResultType.JsonDataSet = members;
             return Ok(petterResultType);
         }
 
@@ -122,31 +102,20 @@ namespace PetterService.Controllers
         [ResponseType(typeof(PetterResultType<Member>))]
         public async Task<IHttpActionResult> GetMemberByNickName(string nickName)
         {
-            PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
-            var memberDetail = await db.Members.Where(p => p.NickName == nickName.Trim().ToLower()).Select(p => new MemberDTO
-            {
-                MemberNo = p.MemberNo,
-                MemberID = p.MemberID,
-                Password = p.Password,
-                NickName = p.NickName,
-                PictureName = p.PictureName,
-                PicturePath = p.PicturePath,
-                Latitude = p.Latitude,
-                Longitude = p.Longitude,
-                DateCreated = p.DateCreated,
-                DateModified = p.DateModified
-            }).SingleOrDefaultAsync();
+            PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+            List<Member> members = new List<Member>();
 
-            if (memberDetail == null)
+            var member = await db.Members.Where(p => p.NickName == nickName.Trim().ToLower()).SingleOrDefaultAsync();
+
+            if (member == null)
             {
                 return NotFound();
             }
 
-
-            
-
+            members.Add(member);
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = memberDetail;
+            petterResultType.JsonDataSet = members;
+
             return Ok(petterResultType);
         }
 
@@ -177,6 +146,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PutMember(int id)
         {
             PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+            List<Member> members = new List<Member>();
 
             if (!Request.Content.IsMimeMultipartContent())
             {
@@ -267,9 +237,10 @@ namespace PetterService.Controllers
                 {
                     throw;
                 }
-                                
+
+                members.Add(member);
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = member;
+                petterResultType.JsonDataSet = members;
             }
             else
             {
@@ -310,6 +281,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PostMember()
         {
             PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+            List<Member> members = new List<Member>();
             Member member = new Member();
 
             if (Request.Content.IsMimeMultipartContent())
@@ -392,8 +364,9 @@ namespace PetterService.Controllers
                 db.Members.Add(member);
                 int num = await this.db.SaveChangesAsync();
 
+                members.Add(member);
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = member;
+                petterResultType.JsonDataSet = members;
             }
             else
             {
@@ -432,6 +405,7 @@ namespace PetterService.Controllers
             // 인증 처리 필요
 
             PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+            List<Member> members = new List<Member>();
             Member member = await db.Members.FindAsync(id);
 
             if (member == null)
@@ -445,8 +419,9 @@ namespace PetterService.Controllers
 
             await db.SaveChangesAsync();
 
+            members.Add(member);
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = member;
+            petterResultType.JsonDataSet = members;
 
             return Ok(petterResultType);
         }

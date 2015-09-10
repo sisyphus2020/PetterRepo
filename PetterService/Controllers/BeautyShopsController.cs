@@ -102,6 +102,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> GetBeautyShop(int id)
         {
             PetterResultType<BeautyShopDTO> petterResultType = new PetterResultType<BeautyShopDTO>();
+            List<BeautyShopDTO> beautyShops = new List<BeautyShopDTO>();
 
             var beautyShopDetail = await db.BeautyShops.Where(p => p.BeautyShopNo == id).Select(p => new BeautyShopDTO
             {
@@ -132,8 +133,9 @@ namespace PetterService.Controllers
                 return NotFound();
             }
 
+            beautyShops.Add(beautyShopDetail);
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = beautyShopDetail;
+            petterResultType.JsonDataSet = beautyShops;
             return Ok(petterResultType);
         }
 
@@ -142,6 +144,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PutBeautyShop(int id)
         {
             PetterResultType<BeautyShop> petterResultType = new PetterResultType<BeautyShop>();
+            List<BeautyShop> beautyShops = new List<BeautyShop>();
             List<BeautyShopService> beautyShopServices = new List<BeautyShopService>();
             List<BeautyShopHoliday> beautyShopHolidays = new List<BeautyShopHoliday>();
             string beautyShopService = string.Empty;
@@ -278,8 +281,9 @@ namespace PetterService.Controllers
                     beautyShop.BeautyShopHolidays = list;
                 }
 
+                beautyShops.Add(beautyShop);
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = beautyShop;
+                petterResultType.JsonDataSet = beautyShops;
             }
             else
             {
@@ -295,6 +299,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PostBeautyShop()
         {
             PetterResultType<BeautyShop> petterResultType = new PetterResultType<BeautyShop>();
+            List<BeautyShop> beautyShops = new List<BeautyShop>();
             List<BeautyShopService> beautyShopServices = new List<BeautyShopService>();
             List<BeautyShopHoliday> beautyShopHolidays = new List<BeautyShopHoliday>();
             BeautyShop beautyShop = new BeautyShop();
@@ -420,8 +425,9 @@ namespace PetterService.Controllers
                     beautyShop.BeautyShopHolidays = list;
                 }
 
+                beautyShops.Add(beautyShop);
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = beautyShop;
+                petterResultType.JsonDataSet = beautyShops;
             }
             else
             {

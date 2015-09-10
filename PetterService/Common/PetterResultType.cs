@@ -7,7 +7,7 @@ namespace PetterService.Common
 {
     public class PetterResultType<T>
     {
-        public T JsonDataSet;
+        public List<T> JsonDataSet;
         public bool IsSuccessful;
         public int AffectedRow;
         public string ErrorCode;

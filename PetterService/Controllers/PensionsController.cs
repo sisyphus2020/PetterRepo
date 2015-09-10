@@ -103,8 +103,9 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> GetPension(int id)
         {
             PetterResultType<PensionDTO> petterResultType = new PetterResultType<PensionDTO>();
-          
-            var pensionDetail = await db.Pensions.Where(p => p.PensionNo == id).Select(p => new PensionDTO
+            List<PensionDTO> pensions = new List<PensionDTO>();
+
+            var pension = await db.Pensions.Where(p => p.PensionNo == id).Select(p => new PensionDTO
             {
                 PensionNo = p.PensionNo,
                 CompanyNo = p.CompanyNo,
@@ -127,13 +128,14 @@ namespace PetterService.Controllers
                 PensionHolidays = p.PensionHolidays.ToList()
             }).SingleOrDefaultAsync();
 
-            if (pensionDetail == null)
+            if (pension == null)
             {
                 return NotFound();
             }
 
+            pensions.Add(pension);
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = pensionDetail;
+            petterResultType.JsonDataSet = pensions;
             return Ok(petterResultType);
         }
 
@@ -142,6 +144,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PutPension(int id)
         {
             PetterResultType<Pension> petterResultType = new PetterResultType<Pension>();
+            List<Pension> pensions = new List<Pension>();
             List<PensionService> pensionServices = new List<PensionService>();
             List<PensionHoliday> PensionHolidays = new List<PensionHoliday>();
             string pensionService = string.Empty;
@@ -275,8 +278,9 @@ namespace PetterService.Controllers
                     pension.PensionHolidays = list;
                 }
 
+                pensions.Add(pension);
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = pension;
+                petterResultType.JsonDataSet = pensions;
             }
             else
             {
@@ -292,6 +296,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PostPension()
         {
             PetterResultType<Pension> petterResultType = new PetterResultType<Pension>();
+            List<Pension> pensions = new List<Pension>();
             List<PensionService> pensionServices = new List<PensionService>();
             List<PensionHoliday> pensionHolidays = new List<PensionHoliday>();
             Pension pension = new Pension();
@@ -412,8 +417,9 @@ namespace PetterService.Controllers
                     pension.PensionHolidays = list;
                 }
 
+                pensions.Add(pension);
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = pension;
+                petterResultType.JsonDataSet = pensions;
             }
             else
             {
