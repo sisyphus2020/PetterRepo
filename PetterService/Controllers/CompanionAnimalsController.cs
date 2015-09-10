@@ -42,38 +42,124 @@ namespace PetterService.Controllers
         }
 
         // PUT: api/CompanionAnimals/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutCompanionAnimal(int id, CompanionAnimal companionAnimal)
+        [ResponseType(typeof(PetterResultType<CompanionAnimal>))]
+        public async Task<IHttpActionResult> PutCompanionAnimal(int id)
         {
-            if (!ModelState.IsValid)
+            PetterResultType<CompanionAnimal> petterResultType = new PetterResultType<CompanionAnimal>();
+
+            if (!Request.Content.IsMimeMultipartContent())
             {
-                return BadRequest(ModelState);
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
-            if (id != companionAnimal.CompanionAnimalNo)
+            CompanionAnimal companionAnimal = await db.CompanionAnimals.FindAsync(id);
+            if (companionAnimal == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            db.Entry(companionAnimal).State = EntityState.Modified;
+            if (Request.Content.IsMimeMultipartContent())
+            {
+                string folder = HostingEnvironment.MapPath(UploadPath.CompanionAnimalPath);
+                Utilities.CreateDirectory(folder);
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CompanionAnimalExists(id))
+                var provider = await Request.Content.ReadAsMultipartAsync();
+
+                foreach (var content in provider.Contents)
                 {
-                    return NotFound();
+                    string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
+                    if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
+                    {
+                        var file = await content.ReadAsByteArrayAsync();
+
+                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+
+                        if (!FileExtension.CompanionAnimalExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        {
+                            petterResultType.IsSuccessful = false;
+                            petterResultType.JsonDataSet = null;
+                            petterResultType.ErrorMessage = ResultErrorMessage.FileTypeError;
+                            return Ok(petterResultType);
+                        }
+
+                        string fullPath = Path.Combine(folder, fileName);
+                        File.WriteAllBytes(fullPath, file);
+                        string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
+
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.BeautyShopWidth, FileSize.BeautyShopHeight, ImageFormat.Png);
+                        companionAnimal.PictureName = fileName;
+                        companionAnimal.PicturePath = UploadPath.CompanionAnimalPath;
+                    }
+                    else
+                    {
+                        string str = await content.ReadAsStringAsync();
+                        string item = HttpUtility.UrlDecode(str);
+
+                        #region switch case
+                        switch (fieldName)
+                        {
+                            case "CompanionAnimalNo":
+                                companionAnimal.CompanionAnimalNo = int.Parse(item);
+                                break;
+                            case "MemberNo":
+                                companionAnimal.MemberNo = int.Parse(item);
+                                break;
+                            case "PetCategory":
+                                companionAnimal.PetCategory = item;
+                                break;
+                            case "PetCode":
+                                companionAnimal.PetCode = item;
+                                break;
+                            case "Name":
+                                companionAnimal.Name = item;
+                                break;
+                            case "Age":
+                                companionAnimal.Age = byte.Parse(item);
+                                break;
+                            case "Weight":
+                                companionAnimal.Weight = byte.Parse(item);
+                                break;
+                            case "Gender":
+                                companionAnimal.Gender = item;
+                                break;
+                            case "Marking":
+                                companionAnimal.Marking = item;
+                                break;
+                            case "Medication":
+                                companionAnimal.Medication = item;
+                                break;
+                            case "Feature":
+                                companionAnimal.Feature = item;
+                                break;
+                            default:
+                                break;
+                        }
+                        #endregion switch case
+                    }
                 }
-                else
+
+                companionAnimal.StateFlag = StateFlag.Use;
+                companionAnimal.DateModified = DateTime.Now;
+                db.Entry(companionAnimal).State = EntityState.Modified;
+                try
+                {
+                    await db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
                 {
                     throw;
                 }
+
+                petterResultType.IsSuccessful = true;
+                petterResultType.JsonDataSet = companionAnimal;
+            }
+            else
+            {
+                petterResultType.IsSuccessful = false;
+                petterResultType.JsonDataSet = null;
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(petterResultType);
         }
 
         // POST: api/CompanionAnimals
@@ -81,8 +167,6 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PostCompanionAnimal()
         {
             PetterResultType<CompanionAnimal> petterResultType = new PetterResultType<CompanionAnimal>();
-            //List<BeautyShopService> beautyShopServices = new List<BeautyShopService>();
-            //List<BeautyShopHoliday> beautyShopHolidays = new List<BeautyShopHoliday>();
             CompanionAnimal companionAnimal = new CompanionAnimal();
 
             if (Request.Content.IsMimeMultipartContent())
@@ -155,12 +239,6 @@ namespace PetterService.Controllers
                             case "Feature":
                                 companionAnimal.Feature = item;
                                 break;
-                            case "PictureName":
-                                companionAnimal.PictureName = item;
-                                break;
-                            case "PicturePath":
-                                companionAnimal.PicturePath = item;
-                                break;
                             default:
                                 break;
                         }
@@ -171,7 +249,6 @@ namespace PetterService.Controllers
                 companionAnimal.StateFlag = StateFlag.Use;
                 companionAnimal.DateCreated = DateTime.Now;
                 companionAnimal.DateModified = DateTime.Now;
-                companionAnimal.DateDeleted = DateTime.Now;
                 db.CompanionAnimals.Add(companionAnimal);
                 int num = await this.db.SaveChangesAsync();
 
@@ -187,20 +264,33 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-        // DELETE: api/CompanionAnimals/5
+        /// <summary>
+        /// DELETE: api/CompanionAnimals/5
+        /// 반려동물 삭제처리(상태플래그 삭제(D)로 변경)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ResponseType(typeof(CompanionAnimal))]
         public async Task<IHttpActionResult> DeleteCompanionAnimal(int id)
         {
+            PetterResultType<CompanionAnimal> petterResultType = new PetterResultType<CompanionAnimal>();
             CompanionAnimal companionAnimal = await db.CompanionAnimals.FindAsync(id);
+
             if (companionAnimal == null)
             {
                 return NotFound();
             }
 
-            db.CompanionAnimals.Remove(companionAnimal);
+            companionAnimal.StateFlag = StateFlag.Delete;
+            companionAnimal.DateDeleted = DateTime.Now;
+            db.Entry(companionAnimal).State = EntityState.Modified;
+
             await db.SaveChangesAsync();
 
-            return Ok(companionAnimal);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = companionAnimal;
+
+            return Ok(petterResultType);
         }
 
         protected override void Dispose(bool disposing)

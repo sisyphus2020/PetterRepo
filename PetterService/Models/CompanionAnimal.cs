@@ -7,7 +7,7 @@ using System.Web;
 
 namespace PetterService.Models
 {
-    public class CompanionAnimal
+    public class CompanionAnimal : DateDetails
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
@@ -39,9 +39,6 @@ namespace PetterService.Models
         public string PicturePath { get; set; }
         [MaxLength(1), Column("StateFlag", TypeName = "char")]
         public string StateFlag { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateModified { get; set; }
-        public DateTime DateDeleted { get; set; }
 
         // Navigation property
         [ForeignKey("MemberNo")]

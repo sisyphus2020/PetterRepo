@@ -13,7 +13,7 @@ namespace PetterService.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201509100528205_CompanionAnimal"; }
+            get { return "201509100641527_CompanionAnimal"; }
         }
         
         string IMigrationMetadata.Source

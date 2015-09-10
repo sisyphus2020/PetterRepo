@@ -422,7 +422,7 @@ namespace PetterService.Controllers
 
         /// <summary>
         /// DELETE: api/Members/5
-        /// 회원 삭제처리(상태플래그 삭제로 변경)
+        /// 회원 삭제처리(상태플래그 삭제(D)로 변경)
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -440,6 +440,7 @@ namespace PetterService.Controllers
             }
 
             member.StateFlag = StateFlag.Delete;
+            member.DateDeleted = DateTime.Now;
             db.Entry(member).State = EntityState.Modified;
 
             await db.SaveChangesAsync();
