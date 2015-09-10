@@ -58,7 +58,12 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-        //GET: api/Members/MemberID/sisyphus2020@naver.com
+        /// <summary>
+        /// GET: api/Members/MemberID/sisyphus2020@naver.com
+        /// MemberID 중복 확인
+        /// </summary>
+        /// <param name="memberID"></param>
+        /// <returns></returns>
         [HttpGet]
         [ActionName("MemberID")]
         [ResponseType(typeof(PetterResultType<Member>))]
@@ -380,6 +385,8 @@ namespace PetterService.Controllers
 
                 string point = string.Format("POINT({0} {1})", member.Latitude, member.Longitude);
                 member.Coordinate = DbGeography.FromText(point);
+                member.StateFlag = StateFlag.Use;
+                member.Route = Route.App;
                 member.DateCreated = DateTime.Now;
                 member.DateModified = DateTime.Now;
                 db.Members.Add(member);
@@ -397,20 +404,43 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
+        //// DELETE: api/Members/5
+        //[ResponseType(typeof(Member))]
+        //public async Task<IHttpActionResult> DeleteMember(int id)
+        //{
+        //    Member member = await db.Members.FindAsync(id);
+        //    if (member == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    db.Members.Remove(member);
+        //    await db.SaveChangesAsync();
+
+        //    return Ok(member);
+        //}
+
         // DELETE: api/Members/5
-        [ResponseType(typeof(Member))]
+        [ResponseType(typeof(PetterResultType<Member>))]
         public async Task<IHttpActionResult> DeleteMember(int id)
         {
+            PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+
             Member member = await db.Members.FindAsync(id);
             if (member == null)
             {
                 return NotFound();
             }
 
-            db.Members.Remove(member);
+            member.StateFlag = StateFlag.Delete;
+            db.Entry(member).State = EntityState.Modified;
+
             await db.SaveChangesAsync();
 
-            return Ok(member);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = member;
+
+            return Ok(petterResultType);
         }
 
         protected override void Dispose(bool disposing)

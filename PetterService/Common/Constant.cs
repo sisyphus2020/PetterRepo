@@ -24,7 +24,26 @@ namespace PetterService.Common
     {
         // 성공
         public const string Success = "S";
+        // 실패
         public const string Failure = "F";
+    }
+
+    public sealed class StateFlag
+    {
+        // 사용
+        public const string Use = "U";
+        // 일시정지
+        public const string Stop = "S";
+        // 삭제
+        public const string Delete = "D";
+    }
+
+    public sealed class Route
+    {
+        // 앱
+        public const string App = "A";
+        // 페이스북
+        public const string Facebook = "F";
     }
 
     public sealed class Encription

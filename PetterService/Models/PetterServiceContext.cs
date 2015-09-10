@@ -50,5 +50,7 @@ namespace PetterService.Models
         public System.Data.Entity.DbSet<PetterService.Models.PetKind> PetKinds { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.PetInfomation> PetInfomations { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.CommonCode> CommonCodes { get; set; }
     }
 }

@@ -86,6 +86,22 @@ namespace PetterService.Controllers
             return CreatedAtRoute("DefaultApi", new { id = company.CompanyNo }, company);
         }
 
+        //// DELETE: api/Companies/5
+        //[ResponseType(typeof(Company))]
+        //public async Task<IHttpActionResult> DeleteCompany(int id)
+        //{
+        //    Company company = await db.Companies.FindAsync(id);
+        //    if (company == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    db.Companies.Remove(company);
+        //    await db.SaveChangesAsync();
+
+        //    return Ok(company);
+        //}
+
         // DELETE: api/Companies/5
         [ResponseType(typeof(Company))]
         public async Task<IHttpActionResult> DeleteCompany(int id)

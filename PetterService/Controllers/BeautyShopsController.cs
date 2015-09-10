@@ -401,6 +401,8 @@ namespace PetterService.Controllers
 
                 string point = string.Format("POINT({0} {1})", beautyShop.Latitude, beautyShop.Longitude);
                 beautyShop.Coordinate = DbGeography.FromText(point);
+                beautyShop.StateFlag = "U";
+                beautyShop.WriteIP = "2222.2.22.22";
                 beautyShop.DateCreated = DateTime.Now;
                 beautyShop.DateModified = DateTime.Now;
                 db.BeautyShops.Add(beautyShop);
