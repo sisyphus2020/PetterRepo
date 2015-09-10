@@ -9,7 +9,7 @@ namespace PetterService.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(PetterService.Models.PetterServiceContext context)
@@ -31,38 +31,56 @@ namespace PetterService.Migrations
             //);
             //#endregion Member Seed
             //byte[] bytes = Encoding.Default.GetBytes(myString);
-            System.Text.UTF8Encoding encodingUTF8 = new System.Text.UTF8Encoding();
-            System.Text.UnicodeEncoding encodingUNICODE = new System.Text.UnicodeEncoding();
+            //System.Text.UTF8Encoding encodingUTF8 = new System.Text.UTF8Encoding();
+            //System.Text.UnicodeEncoding encodingUNICODE = new System.Text.UnicodeEncoding();
 
-            #region CommonCode Seed
-            context.CommonCodes.AddOrUpdate(
-                new Models.CommonCode() { Category = "Dog", Code = "D001", CodeName = encodingUTF8.GetString(encodingUTF8.GetBytes(@"그레이트데인")) },
-                
-                new Models.CommonCode() { Category = "Dog", Code = "D002", CodeName = encodingUNICODE.GetString(encodingUNICODE.GetBytes("그레이하운드")) },
+            //#region CommonCode Seed
+            //context.CommonCodes.AddOrUpdate(
+            //    new Models.CommonCode() { Category = "Dog", Code = "D001", CodeName = encodingUTF8.GetString(encodingUTF8.GetBytes(@"그레이트데인")) },
 
-                new Models.CommonCode() { Category = "Dog", Code = "D003", CodeName = Encoding.UTF8.GetString(Encoding.Default.GetBytes("달마티안")) },
-                new Models.CommonCode() { Category = "Dog", Code = "D004", CodeName = "마르티즈" },
-                new Models.CommonCode() { Category = "Dog", Code = "D005", CodeName = "불도그" },
-                new Models.CommonCode() { Category = "Dog", Code = "D006", CodeName = "세인트버나드" },
-                new Models.CommonCode() { Category = "Dog", Code = "D007", CodeName = "세퍼드" },
-                new Models.CommonCode() { Category = "Dog", Code = "D008", CodeName = "아메리칸 코커" },
-                new Models.CommonCode() { Category = "Dog", Code = "D009", CodeName = "차우차우" },
-                new Models.CommonCode() { Category = "Dog", Code = "D010", CodeName = "콜리" },
-                new Models.CommonCode() { Category = "Dog", Code = "D011", CodeName = "포예리아안" },
-                new Models.CommonCode() { Category = "Dog", Code = "D012", CodeName = "똥개" },
-                new Models.CommonCode() { Category = "Dog", Code = "D013", CodeName = "푸들" },
-                new Models.CommonCode() { Category = "Dog", Code = "D014", CodeName = "AAA" }
+            //    new Models.CommonCode() { Category = "Dog", Code = "D002", CodeName = encodingUNICODE.GetString(encodingUNICODE.GetBytes("그레이하운드")) },
+
+            //    new Models.CommonCode() { Category = "Dog", Code = "D003", CodeName = Encoding.UTF8.GetString(Encoding.Default.GetBytes("달마티안")) },
+            //    new Models.CommonCode() { Category = "Dog", Code = "D004", CodeName = "마르티즈" },
+            //    new Models.CommonCode() { Category = "Dog", Code = "D005", CodeName = "불도그" },
+            //    new Models.CommonCode() { Category = "Dog", Code = "D006", CodeName = "세인트버나드" },
+            //    new Models.CommonCode() { Category = "Dog", Code = "D007", CodeName = "세퍼드" },
+            //    new Models.CommonCode() { Category = "Dog", Code = "D008", CodeName = "아메리칸 코커" },
+            //    new Models.CommonCode() { Category = "Dog", Code = "D009", CodeName = "차우차우" },
+            //    new Models.CommonCode() { Category = "Dog", Code = "D010", CodeName = "콜리" },
+            //    new Models.CommonCode() { Category = "Dog", Code = "D011", CodeName = "포예리아안" },
+            //    new Models.CommonCode() { Category = "Dog", Code = "D012", CodeName = "똥개" },
+            //    new Models.CommonCode() { Category = "Dog", Code = "D013", CodeName = "푸들" },
+            //    new Models.CommonCode() { Category = "Dog", Code = "D014", CodeName = "AAA" }
+            //);
+            //#endregion CommonCode Seed
+
+            #region PetKind Seed
+            context.PetKinds.AddOrUpdate(
+                new Models.PetKind() { PetCategory = "Dog", PetCode = "D001", PetName = "그레이트데인" },
+                new Models.PetKind() { PetCategory = "Dog", PetCode = "D002", PetName = "그레이하운드" },
+                new Models.PetKind() { PetCategory = "Dog", PetCode = "D003", PetName = "달마티안" },
+                new Models.PetKind() { PetCategory = "Dog", PetCode = "D004", PetName = "마르티즈" },
+                new Models.PetKind() { PetCategory = "Dog", PetCode = "D005", PetName = "불도그" },
+                new Models.PetKind() { PetCategory = "Dog", PetCode = "D006", PetName = "세인트버나드" },
+                new Models.PetKind() { PetCategory = "Dog", PetCode = "D007", PetName = "세퍼드" },
+                new Models.PetKind() { PetCategory = "Dog", PetCode = "D008", PetName = "아메리칸 코커" },
+                new Models.PetKind() { PetCategory = "Dog", PetCode = "D009", PetName = "차우차우" },
+                new Models.PetKind() { PetCategory = "Dog", PetCode = "D010", PetName = "콜리" },
+                new Models.PetKind() { PetCategory = "Dog", PetCode = "D011", PetName = "포예리아안" },
+                new Models.PetKind() { PetCategory = "Dog", PetCode = "D012", PetName = "똥개" },
+                new Models.PetKind() { PetCategory = "Dog", PetCode = "D013", PetName = "푸들" }
             );
-            #endregion CommonCode Seed
+            #endregion PetKind Seed
 
-                //#region Company Seed
-                //context.Companies.AddOrUpdate(x => x.CompanyNo,
-                //    new Company() { CompanyNo = 17, CompanyName = "강아지 대통령", CompanyAddr = "서울 송파구 장지동", StartShopHours = "0930", EndShopHours = "1830", Holiday = "토요일", Introduction = "개사료 판매합니다.", Geo = DbGeography.FromText("POINT(126.9784 37.5667)") },
-                //    new Company() { CompanyNo = 18, CompanyName = "고양이 대통령", CompanyAddr = "서울 구로구 구로동", StartShopHours = "0630", EndShopHours = "1800", Holiday = "토요일", Introduction = "고양이 사료 판매합니다.", Geo = DbGeography.FromText("POINT(126.9784 37.5667)") },
-                //    new Company() { CompanyNo = 19, CompanyName = "돼지 대통령", CompanyAddr = "서울 노원구 사계동", StartShopHours = "0730", EndShopHours = "1930", Holiday = "토요일", Introduction = "돼지료 판매합니다.", Geo = DbGeography.FromText("POINT(126.9784 37.5667)") }
+            //#region Company Seed
+            //context.Companies.AddOrUpdate(x => x.CompanyNo,
+            //    new Company() { CompanyNo = 17, CompanyName = "강아지 대통령", CompanyAddr = "서울 송파구 장지동", StartShopHours = "0930", EndShopHours = "1830", Holiday = "토요일", Introduction = "개사료 판매합니다.", Geo = DbGeography.FromText("POINT(126.9784 37.5667)") },
+            //    new Company() { CompanyNo = 18, CompanyName = "고양이 대통령", CompanyAddr = "서울 구로구 구로동", StartShopHours = "0630", EndShopHours = "1800", Holiday = "토요일", Introduction = "고양이 사료 판매합니다.", Geo = DbGeography.FromText("POINT(126.9784 37.5667)") },
+            //    new Company() { CompanyNo = 19, CompanyName = "돼지 대통령", CompanyAddr = "서울 노원구 사계동", StartShopHours = "0730", EndShopHours = "1930", Holiday = "토요일", Introduction = "돼지료 판매합니다.", Geo = DbGeography.FromText("POINT(126.9784 37.5667)") }
 
-                //);
-                //#endregion Company Seed
+            //);
+            //#endregion Company Seed
 
         }
     }

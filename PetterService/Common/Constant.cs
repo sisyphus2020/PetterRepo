@@ -18,6 +18,7 @@ namespace PetterService.Common
         public static string PetSitterPath { get { return "/Files" + "/" + "PetSitter" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string PensionPath { get { return "/Files" + "/" + "Pension" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string MemberPath { get { return "/Files" + "/" + "Member" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
+        public static string CompanionAnimalPath { get { return "/Files" + "/" + "CompanionAnimal" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
     }
 
     public sealed class AccessResult
@@ -82,6 +83,7 @@ namespace PetterService.Common
         public static string[] PetSitterExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] PensionExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] MemberExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
+        public static string[] CompanionAnimalExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
     }
 
     public static class ResultErrorMessage

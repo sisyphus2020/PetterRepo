@@ -420,10 +420,17 @@ namespace PetterService.Controllers
         //    return Ok(member);
         //}
 
-        // DELETE: api/Members/5
+        /// <summary>
+        /// DELETE: api/Members/5
+        /// 회원 삭제처리(상태플래그 삭제로 변경)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ResponseType(typeof(PetterResultType<Member>))]
         public async Task<IHttpActionResult> DeleteMember(int id)
         {
+            // 인증 처리 필요
+
             PetterResultType<Member> petterResultType = new PetterResultType<Member>();
 
             Member member = await db.Members.FindAsync(id);

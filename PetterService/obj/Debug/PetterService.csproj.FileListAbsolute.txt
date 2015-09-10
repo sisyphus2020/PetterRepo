@@ -188,3 +188,5 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.csprojResolve
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Classification2.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.CommonCode.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Classification3.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.CompanionAnimal.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.CompanionAnimal1.resources
