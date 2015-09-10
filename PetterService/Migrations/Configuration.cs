@@ -9,7 +9,7 @@ namespace PetterService.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(PetterService.Models.PetterServiceContext context)
@@ -55,23 +55,23 @@ namespace PetterService.Migrations
             //);
             //#endregion CommonCode Seed
 
-            #region PetKind Seed
-            context.PetKinds.AddOrUpdate(
-                new Models.PetKind() { PetCategory = "Dog", PetCode = "D001", PetName = "그레이트데인" },
-                new Models.PetKind() { PetCategory = "Dog", PetCode = "D002", PetName = "그레이하운드" },
-                new Models.PetKind() { PetCategory = "Dog", PetCode = "D003", PetName = "달마티안" },
-                new Models.PetKind() { PetCategory = "Dog", PetCode = "D004", PetName = "마르티즈" },
-                new Models.PetKind() { PetCategory = "Dog", PetCode = "D005", PetName = "불도그" },
-                new Models.PetKind() { PetCategory = "Dog", PetCode = "D006", PetName = "세인트버나드" },
-                new Models.PetKind() { PetCategory = "Dog", PetCode = "D007", PetName = "세퍼드" },
-                new Models.PetKind() { PetCategory = "Dog", PetCode = "D008", PetName = "아메리칸 코커" },
-                new Models.PetKind() { PetCategory = "Dog", PetCode = "D009", PetName = "차우차우" },
-                new Models.PetKind() { PetCategory = "Dog", PetCode = "D010", PetName = "콜리" },
-                new Models.PetKind() { PetCategory = "Dog", PetCode = "D011", PetName = "포예리아안" },
-                new Models.PetKind() { PetCategory = "Dog", PetCode = "D012", PetName = "똥개" },
-                new Models.PetKind() { PetCategory = "Dog", PetCode = "D013", PetName = "푸들" }
-            );
-            #endregion PetKind Seed
+            //#region PetKind Seed
+            //context.PetKinds.AddOrUpdate(
+            //    new Models.PetKind() { PetCategory = "Dog", PetCode = "D001", PetName = "그레이트데인" },
+            //    new Models.PetKind() { PetCategory = "Dog", PetCode = "D002", PetName = "그레이하운드" },
+            //    new Models.PetKind() { PetCategory = "Dog", PetCode = "D003", PetName = "달마티안" },
+            //    new Models.PetKind() { PetCategory = "Dog", PetCode = "D004", PetName = "마르티즈" },
+            //    new Models.PetKind() { PetCategory = "Dog", PetCode = "D005", PetName = "불도그" },
+            //    new Models.PetKind() { PetCategory = "Dog", PetCode = "D006", PetName = "세인트버나드" },
+            //    new Models.PetKind() { PetCategory = "Dog", PetCode = "D007", PetName = "세퍼드" },
+            //    new Models.PetKind() { PetCategory = "Dog", PetCode = "D008", PetName = "아메리칸 코커" },
+            //    new Models.PetKind() { PetCategory = "Dog", PetCode = "D009", PetName = "차우차우" },
+            //    new Models.PetKind() { PetCategory = "Dog", PetCode = "D010", PetName = "콜리" },
+            //    new Models.PetKind() { PetCategory = "Dog", PetCode = "D011", PetName = "포예리아안" },
+            //    new Models.PetKind() { PetCategory = "Dog", PetCode = "D012", PetName = "똥개" },
+            //    new Models.PetKind() { PetCategory = "Dog", PetCode = "D013", PetName = "똥개" }
+            //);
+            //#endregion PetKind Seed
 
             //#region Company Seed
             //context.Companies.AddOrUpdate(x => x.CompanyNo,

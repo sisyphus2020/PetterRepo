@@ -432,8 +432,8 @@ namespace PetterService.Controllers
             // 인증 처리 필요
 
             PetterResultType<Member> petterResultType = new PetterResultType<Member>();
-
             Member member = await db.Members.FindAsync(id);
+
             if (member == null)
             {
                 return NotFound();

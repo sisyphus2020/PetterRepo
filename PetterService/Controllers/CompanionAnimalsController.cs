@@ -28,17 +28,45 @@ namespace PetterService.Controllers
             return db.CompanionAnimals;
         }
 
-        // GET: api/CompanionAnimals/5
-        [ResponseType(typeof(CompanionAnimal))]
+        /// <summary>
+        /// GET: api/CompanionAnimals/5
+        /// 반려동물 상세 정보
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<CompanionAnimal>))]
         public async Task<IHttpActionResult> GetCompanionAnimal(int id)
         {
-            CompanionAnimal companionAnimal = await db.CompanionAnimals.FindAsync(id);
-            if (companionAnimal == null)
+            PetterResultType<CompanionAnimalDTO> petterResultType = new PetterResultType<CompanionAnimalDTO>();
+            var companionAnimalDetail = await db.CompanionAnimals.Where(p => p.CompanionAnimalNo == id).Select(p => new CompanionAnimalDTO
+            {
+                CompanionAnimalNo = p.CompanionAnimalNo,
+                MemberNo = p.MemberNo,
+                PetCategory = p.PetCategory,
+                PetCode = p.PetCode,
+                Name = p.Name,
+                Age = p.Age,
+                Weight = p.Weight,
+                Gender = p.Gender,
+                Marking = p.Marking,
+                Medication = p.Medication,
+                Feature = p.Feature,
+                PictureName = p.PictureName,
+                PicturePath = p.PicturePath,
+                StateFlag = p.StateFlag,
+                DateCreated = p.DateCreated,
+                DateModified = p.DateModified,
+                DateDeleted = p.DateDeleted
+            }).SingleOrDefaultAsync();
+
+            if (companionAnimalDetail == null)
             {
                 return NotFound();
             }
 
-            return Ok(companionAnimal);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = companionAnimalDetail;
+            return Ok(petterResultType);
         }
 
         // PUT: api/CompanionAnimals/5
@@ -273,6 +301,8 @@ namespace PetterService.Controllers
         [ResponseType(typeof(CompanionAnimal))]
         public async Task<IHttpActionResult> DeleteCompanionAnimal(int id)
         {
+            // 삭제 권한 처리 필요
+
             PetterResultType<CompanionAnimal> petterResultType = new PetterResultType<CompanionAnimal>();
             CompanionAnimal companionAnimal = await db.CompanionAnimals.FindAsync(id);
 
