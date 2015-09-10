@@ -56,21 +56,26 @@ namespace PetterService.Controllers
             PetterResultType<CompanionAnimal> petterResultType = new PetterResultType<CompanionAnimal>();
             List<CompanionAnimal> cmpanionAnimals = new List<CompanionAnimal>();
 
-            var companionAnimalDetail = await db.CompanionAnimals.Where(p => p.CompanionAnimalNo == id).SingleOrDefaultAsync();
+            var companionAnimal = await db.CompanionAnimals.Where(p => p.CompanionAnimalNo == id).SingleOrDefaultAsync();
 
-            if (companionAnimalDetail == null)
+            if (companionAnimal == null)
             {
                 return NotFound();
             }
 
-            cmpanionAnimals.Add(companionAnimalDetail);
+            cmpanionAnimals.Add(companionAnimal);
             petterResultType.IsSuccessful = true;
             petterResultType.JsonDataSet = cmpanionAnimals;
 
             return Ok(petterResultType);
         }
 
-        // PUT: api/CompanionAnimals/5
+        /// <summary>
+        /// PUT: api/CompanionAnimals/5
+        /// 반려동물 수정
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ResponseType(typeof(PetterResultType<CompanionAnimal>))]
         public async Task<IHttpActionResult> PutCompanionAnimal(int id)
         {
@@ -194,7 +199,11 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-        // POST: api/CompanionAnimals
+        /// <summary>
+        /// POST: api/CompanionAnimals
+        /// 반려동물 등록
+        /// </summary>
+        /// <returns></returns>
         [ResponseType(typeof(PetterResultType<CompanionAnimal>))]
         public async Task<IHttpActionResult> PostCompanionAnimal()
         {

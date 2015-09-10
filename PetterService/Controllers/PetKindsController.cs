@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PetterService.Models;
+using PetterService.Common;
 
 namespace PetterService.Controllers
 {
@@ -18,12 +19,24 @@ namespace PetterService.Controllers
         private PetterServiceContext db = new PetterServiceContext();
 
         // GET: api/PetKinds
-        public IQueryable<PetKind> GetPetKinds()
+        //public IQueryable<PetKind> GetPetKinds()
+        //{
+        //    return db.PetKinds;
+        //}
+
+        // GET: api/PetKinds
+        [ResponseType(typeof(PetterResultType<PetKind>))]
+        public async Task<IHttpActionResult> GetPetKinds(string id)
         {
-            return db.PetKinds;
+            PetKind petKind = await db.PetKinds.FindAsync(id);
+            if (petKind == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(petKind);
         }
 
-        // GET: api/PetKinds/5
         [ResponseType(typeof(PetKind))]
         public async Task<IHttpActionResult> GetPetKind(string id)
         {

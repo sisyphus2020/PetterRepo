@@ -52,7 +52,7 @@ namespace PetterService.Common
         public const string keyValue = "Teis";
     }
 
-    public sealed class PetKind
+    public sealed class PetCategory
     {
         public const int CAT = 1;
         public const int DOG = 2;

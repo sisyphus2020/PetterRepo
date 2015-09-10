@@ -9,13 +9,10 @@ namespace PetterService.Models
 {
     public class PetKind
     {
-        [Key]
-        [Column("PetCategory", Order = 0, TypeName = "char"), MaxLength(3)]
+        [Column("PetCategory", Order = 0, TypeName = "char"), MaxLength(3), Key]
         public string PetCategory { get; set; }
-        [Key]
-        [Column("PetCode", Order = 1, TypeName = "char"), MaxLength(4)]
+        [Column("PetCode", Order = 1, TypeName = "char"), MaxLength(4), Key]
         public string PetCode { get; set; }
-
         [MaxLength(50)]
         public string PetName { get; set; }
     }
