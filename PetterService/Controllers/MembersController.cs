@@ -271,9 +271,9 @@ namespace PetterService.Controllers
         {
             PetterResultType<Member> petterResultType = new PetterResultType<Member>();
             List<Member> members = new List<Member>();
+            Ciphers ciphers = new Ciphers();
 
-            string aaa = "password";
-            string mySalt = BCrypt.GenerateSalt();
+            string hashcode = ciphers.getCryptPassword(password);
 
             var member = await db.Members.Where(p => p.MemberID == memberID).SingleOrDefaultAsync();
 
@@ -284,7 +284,7 @@ namespace PetterService.Controllers
 
             //db.Entry(member).State = EntityState.Modified;
 
-            member.Password = password;
+            member.Password = hashcode;
 
             await db.SaveChangesAsync();
 

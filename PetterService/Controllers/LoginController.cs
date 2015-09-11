@@ -34,7 +34,16 @@ namespace PetterService.Controllers
         {
             PetterResultType<Member> petterResultType = new PetterResultType<Member>();
             List<Member> members = new List<Member>();
-            var member = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower() & p.Password == password).SingleOrDefaultAsync();
+            Ciphers ciphers = new Ciphers();
+
+            //var member = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower() & p.Password == password).SingleOrDefaultAsync();
+            var member = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower() ).SingleOrDefaultAsync();
+            bool isPasswordMatch = ciphers.getPasswordMatch(member.Password, password);
+
+            if (!isPasswordMatch)
+            {
+                member = null;
+            }
 
             if (member == null)
             {

@@ -9,6 +9,13 @@ namespace PetterService.Common
     {
     }
 
+    public sealed class CryptKey
+    {
+        // Petter 서비스 
+        public const string PetterSalt = "$asp.net";
+        
+    }
+
     public static class UploadPath
     {
         public static string Root { get { return HttpContext.Current.Server.MapPath("~/") + "\\"; } }
