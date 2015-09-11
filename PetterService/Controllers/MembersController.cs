@@ -45,6 +45,7 @@ namespace PetterService.Controllers
             members.Add(member);
             petterResultType.IsSuccessful = true;
             petterResultType.JsonDataSet = members;
+
             return Ok(petterResultType);
         }
 
@@ -61,6 +62,7 @@ namespace PetterService.Controllers
         {
             PetterResultType<Member> petterResultType = new PetterResultType<Member>();
             List<Member> members = new List<Member>();
+
             var member = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower()).SingleOrDefaultAsync();
 
             if (member == null)
@@ -81,9 +83,9 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> GetMemberCheckByID(string memberID)
         {
             PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
-            var memberDetail = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower()).SingleOrDefaultAsync();
+            var member = await db.Members.Where(p => p.MemberID == memberID.Trim().ToLower()).SingleOrDefaultAsync();
 
-            if (memberDetail != null)
+            if (member != null)
             {
                 petterResultType.IsSuccessful = true;
                 petterResultType.ErrorMessage = ResultMessage.MemberSearchByID;
@@ -126,9 +128,9 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> GetMemberCheckByNickName(string nickName)
         {
             PetterResultType<MemberDTO> petterResultType = new PetterResultType<MemberDTO>();
-            var memberDetail = await db.Members.Where(p => p.MemberID == nickName.Trim().ToLower()).SingleOrDefaultAsync();
+            var member = await db.Members.Where(p => p.MemberID == nickName.Trim().ToLower()).SingleOrDefaultAsync();
 
-            if (memberDetail != null)
+            if (member != null)
             {
                 petterResultType.IsSuccessful = true;
                 petterResultType.ErrorMessage = ResultMessage.MemberSearchByNickName;
@@ -141,7 +143,12 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-        // PUT: api/Members/5
+        /// <summary>
+        /// PUT: api/Members/5
+        /// 회원정보 수정
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutMember(int id)
         {
@@ -251,32 +258,49 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-        //// POST: api/Members
-        //[ResponseType(typeof(PetterResultType<Member>))]
-        //public async Task<IHttpActionResult> PostMember(Member member)
-        //{
-        //    PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+        /// <summary>
+        /// PUT: api/Members/{memberID}/{password}/
+        /// 회원 패스워드 정보 수정
+        /// </summary>
+        /// <param name="memberID"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        [Route("api/Members/{memberID}/{password}/")]
+        [ResponseType(typeof(PetterResultType<Member>))]
+        public async Task<IHttpActionResult> PutMember(string memberID, string password)
+        {
+            PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+            List<Member> members = new List<Member>();
 
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+            string aaa = "password";
+            string mySalt = BCrypt.GenerateSalt();
 
-        //    string point = string.Format("POINT({0} {1})", member.Latitude, member.Longitude);
-        //    member.Coordinate = DbGeography.FromText(point);
-        //    member.DateCreated = DateTime.Now;
-        //    member.DateModified = DateTime.Now;
+            var member = await db.Members.Where(p => p.MemberID == memberID).SingleOrDefaultAsync();
 
-        //    db.Members.Add(member);
-        //    await db.SaveChangesAsync();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    petterResultType.IsSuccessful = true;
-        //    petterResultType.JsonDataSet = member;
-        //    return Ok(petterResultType);
-        //}
+            //db.Entry(member).State = EntityState.Modified;
+
+            member.Password = password;
+
+            await db.SaveChangesAsync();
+
+            members.Add(member);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = members;
+
+            return Ok(petterResultType);
+        }
 
 
-        // POST: api/Members
+        /// <summary>
+        /// POST: api/Members
+        /// 회원정보 등록
+        /// </summary>
+        /// <returns></returns>
         [ResponseType(typeof(PetterResultType<Member>))]
         public async Task<IHttpActionResult> PostMember()
         {
@@ -324,9 +348,9 @@ namespace PetterService.Controllers
                         #region switch case
                         switch (fieldName)
                         {
-                            case "MemberNo":
-                                member.MemberNo = int.Parse(item);
-                                break;
+                            //case "MemberNo":
+                            //    member.MemberNo = int.Parse(item);
+                            //    break;
                             case "MemberID":
                                 member.MemberID = item.ToLower();
                                 break;
@@ -335,12 +359,6 @@ namespace PetterService.Controllers
                                 break;
                             case "NickName":
                                 member.NickName = item;
-                                break;
-                            case "PictureName":
-                                member.PictureName = item;
-                                break;
-                            case "PicturePath":
-                                member.PicturePath = item;
                                 break;
                             case "Latitude":
                                 member.Latitude = Convert.ToDouble(item);
@@ -376,22 +394,6 @@ namespace PetterService.Controllers
 
             return Ok(petterResultType);
         }
-
-        //// DELETE: api/Members/5
-        //[ResponseType(typeof(Member))]
-        //public async Task<IHttpActionResult> DeleteMember(int id)
-        //{
-        //    Member member = await db.Members.FindAsync(id);
-        //    if (member == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    db.Members.Remove(member);
-        //    await db.SaveChangesAsync();
-
-        //    return Ok(member);
-        //}
 
         /// <summary>
         /// DELETE: api/Members/5

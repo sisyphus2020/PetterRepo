@@ -8,15 +8,15 @@ using System.Web;
 
 namespace PetterService.Models
 {
-    public class Classification : Geography
+    public class Classification : GeographyFileDateBase
     {
         public virtual int CompanyNo { get; set; }
         [MaxLength(20)]
         public string Phone { get; set; }
-        [MaxLength(100)]
-        public string PictureName { get; set; }
-        [MaxLength(100)]
-        public string PicturePath { get; set; }
+        //[MaxLength(100)]
+        //public string PictureName { get; set; }
+        //[MaxLength(100)]
+        //public string PicturePath { get; set; }
         [Column("StartTime", TypeName = "char"), MaxLength(4)]
         public string StartTime { get; set; }
         [Column("EndTime", TypeName = "char"), MaxLength(4)]
@@ -38,8 +38,8 @@ namespace PetterService.Models
         public string WriteIP { get; set; }
         [MaxLength(20)]
         public string ModifyIP { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateModified { get; set; }
-        public DateTime DateDeleted { get; set; }
+        //public DateTime DateCreated { get; set; }
+        //public DateTime DateModified { get; set; }
+        //public DateTime DateDeleted { get; set; }
     }
 }

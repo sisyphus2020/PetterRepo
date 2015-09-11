@@ -6,7 +6,7 @@ using System.Web;
 
 namespace PetterService.Models
 {
-    public class Geography
+    public class GeographyFileDateBase : FileDateBase
     {
         public DbGeography Coordinate { get; set; }
         public double Latitude { get; set; }

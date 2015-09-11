@@ -5,7 +5,7 @@ using System.Data.Entity.Spatial;
 
 namespace PetterService.Models
 {
-    public class Member : Geography
+    public class Member : GeographyFileDateBase
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
@@ -16,10 +16,10 @@ namespace PetterService.Models
         public string Password { get; set; }
         [Index("IDX_MEMBER_NICKNAME", IsUnique = true), MaxLength(50)]
         public string NickName { get; set; }
-        [MaxLength(200)]
-        public string PictureName { get; set; }
-        [MaxLength(200)]
-        public string PicturePath { get; set; }
+        //[MaxLength(200)]
+        //public string PictureName { get; set; }
+        //[MaxLength(200)]
+        //public string PicturePath { get; set; }
         //public DbGeography Coordinate { get; set; }
         //public double Latitude { get; set; }
         //public double Longitude { get; set; }
@@ -27,8 +27,8 @@ namespace PetterService.Models
         public string StateFlag { get; set; }
         [MaxLength(1), Column("Route", TypeName = "char")]
         public string Route { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateModified { get; set; }
-        public DateTime DateDeleted { get; set; }
+        //public DateTime? DateCreated { get; set; }
+        //public DateTime? DateModified { get; set; }
+        //public DateTime? DateDeleted { get; set; }
     }
 }
