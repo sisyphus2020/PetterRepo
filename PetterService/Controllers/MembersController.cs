@@ -153,6 +153,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PutMember(int id)
         {
             PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+            Ciphers ciphers = new Ciphers();
             List<Member> members = new List<Member>();
 
             if (!Request.Content.IsMimeMultipartContent())
@@ -207,17 +208,17 @@ namespace PetterService.Controllers
                         switch (fieldName)
                         {
                             case "Password":
-                                member.Password = item;
+                                member.Password = ciphers.getCryptPassword(item); 
                                 break;
                             //case "NickName":
                             //    member.NickName = item;
                             //    break;
-                            case "PictureName":
-                                member.PictureName = item;
-                                break;
-                            case "PicturePath":
-                                member.PicturePath = item;
-                                break;
+                            //case "PictureName":
+                            //    member.PictureName = item;
+                            //    break;
+                            //case "PicturePath":
+                            //    member.PicturePath = item;
+                            //    break;
                             case "Latitude":
                                 member.Latitude = Convert.ToDouble(item);
                                 break;
@@ -270,8 +271,8 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PutMember(string memberID, string password)
         {
             PetterResultType<Member> petterResultType = new PetterResultType<Member>();
-            List<Member> members = new List<Member>();
             Ciphers ciphers = new Ciphers();
+            List<Member> members = new List<Member>();
 
             string hashcode = ciphers.getCryptPassword(password);
 
@@ -305,6 +306,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PostMember()
         {
             PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+            Ciphers ciphers = new Ciphers();
             List<Member> members = new List<Member>();
             Member member = new Member();
 
@@ -355,7 +357,7 @@ namespace PetterService.Controllers
                                 member.MemberID = item.ToLower();
                                 break;
                             case "Password":
-                                member.Password = item;
+                                member.Password = ciphers.getCryptPassword(item);
                                 break;
                             case "NickName":
                                 member.NickName = item;
