@@ -18,35 +18,53 @@ namespace PetterService.Controllers
     {
         private PetterServiceContext db = new PetterServiceContext();
 
-        // GET: api/PetKinds
-        //public IQueryable<PetKind> GetPetKinds()
-        //{
-        //    return db.PetKinds;
-        //}
-
-        // GET: api/PetKinds
-        [ResponseType(typeof(PetterResultType<PetKind>))]
-        public async Task<IHttpActionResult> GetPetKinds(string id)
+        //GET: api/PetKinds
+        public IQueryable<PetKind> GetPetKinds()
         {
-            PetKind petKind = await db.PetKinds.FindAsync(id);
-            if (petKind == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(petKind);
+            return db.PetKinds;
         }
 
-        [ResponseType(typeof(PetKind))]
-        public async Task<IHttpActionResult> GetPetKind(string id)
+        // GET: api/PetKinds
+        [Route("api/PetKinds/{petCategory}")]
+        [ResponseType(typeof(PetterResultType<PetKind>))]
+        public async Task<IHttpActionResult> GetPetKinds(string petCategory)
         {
-            PetKind petKind = await db.PetKinds.FindAsync(id);
+            PetterResultType<PetKind> petterResultType = new PetterResultType<PetKind>();
+            //List<PetKind> petKinds = new List<PetKind>();
+
+            var petKinds = await db.PetKinds.Where(p=> p.PetCategory == petCategory).ToListAsync();
+
+            if (petKinds == null)
+            {
+                return NotFound();
+            }
+
+            //petKinds.Add(petKind);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = petKinds;
+
+            return Ok(petterResultType);
+        }
+
+        [Route("api/PetKinds/{petCategory}/{petCode}/")]
+        [ResponseType(typeof(PetKind))]
+        public async Task<IHttpActionResult> GetPetKind(string petCategory, string petCode)
+        {
+            PetterResultType<PetKind> petterResultType = new PetterResultType<PetKind>();
+            List<PetKind> petKinds = new List<PetKind>();
+
+            PetKind petKind = await db.PetKinds.Where(p => p.PetCategory == petCategory & p.PetCode == petCode).SingleOrDefaultAsync();
+
             if (petKind == null)
             {
                 return NotFound();
             }
 
-            return Ok(petKind);
+            petKinds.Add(petKind);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = petKinds;
+
+            return Ok(petterResultType);
         }
 
         // PUT: api/PetKinds/5
