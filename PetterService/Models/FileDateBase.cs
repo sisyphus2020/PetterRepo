@@ -9,8 +9,8 @@ namespace PetterService.Models
     public class FileDateBase : DateBase
     {
         [MaxLength(100)]
-        public string PictureName { get; set; }
+        public string FileName { get; set; }
         [MaxLength(100)]
-        public string PicturePath { get; set; }
+        public string FilePath { get; set; }
     }
 }

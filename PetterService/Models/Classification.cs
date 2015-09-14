@@ -14,9 +14,9 @@ namespace PetterService.Models
         [MaxLength(20)]
         public string Phone { get; set; }
         //[MaxLength(100)]
-        //public string PictureName { get; set; }
+        //public string FileName { get; set; }
         //[MaxLength(100)]
-        //public string PicturePath { get; set; }
+        //public string FilePath { get; set; }
         [Column("StartTime", TypeName = "char"), MaxLength(4)]
         public string StartTime { get; set; }
         [Column("EndTime", TypeName = "char"), MaxLength(4)]

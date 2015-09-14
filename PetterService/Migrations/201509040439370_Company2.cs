@@ -8,8 +8,8 @@ namespace PetterService.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.Companies", "PictureName", c => c.String(maxLength: 100));
-            AddColumn("dbo.Companies", "PicturePath", c => c.String(maxLength: 100));
+            AddColumn("dbo.Companies", "FileName", c => c.String(maxLength: 100));
+            AddColumn("dbo.Companies", "FilePath", c => c.String(maxLength: 100));
             AddColumn("dbo.Companies", "StartHours", c => c.String(maxLength: 4));
             AddColumn("dbo.Companies", "EndHours", c => c.String(maxLength: 4));
             AddColumn("dbo.Companies", "Introduction", c => c.String(maxLength: 200));
@@ -42,8 +42,8 @@ namespace PetterService.Migrations
             DropColumn("dbo.Companies", "Introduction");
             DropColumn("dbo.Companies", "EndHours");
             DropColumn("dbo.Companies", "StartHours");
-            DropColumn("dbo.Companies", "PicturePath");
-            DropColumn("dbo.Companies", "PictureName");
+            DropColumn("dbo.Companies", "FilePath");
+            DropColumn("dbo.Companies", "FileName");
         }
     }
 }

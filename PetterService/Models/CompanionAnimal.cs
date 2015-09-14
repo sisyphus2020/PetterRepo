@@ -34,9 +34,9 @@ namespace PetterService.Models
         [MaxLength(200)]
         public string Feature { get; set; }
         [MaxLength(100)]
-        public string PictureName { get; set; }
+        public string FileName { get; set; }
         [MaxLength(100)]
-        public string PicturePath { get; set; }
+        public string FilePath { get; set; }
         [MaxLength(1), Column("StateFlag", TypeName = "char")]
         public string StateFlag { get; set; }
 

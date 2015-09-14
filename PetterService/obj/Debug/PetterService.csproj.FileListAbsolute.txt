@@ -191,4 +191,8 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Cl
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.CompanionAnimal.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Member3.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Member4.resources
-D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Event.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoard.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardFile.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardFile1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardReply.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardReply1.resources

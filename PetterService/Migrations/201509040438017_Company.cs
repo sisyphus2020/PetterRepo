@@ -17,8 +17,8 @@ namespace PetterService.Migrations
             AddColumn("dbo.Companies", "DateModified", c => c.DateTime(nullable: false));
             AlterColumn("dbo.Companies", "CompanyName", c => c.String(maxLength: 100));
             AlterColumn("dbo.Companies", "CompanyAddr", c => c.String(maxLength: 200));
-            AlterColumn("dbo.Companies", "PictureName", c => c.String(maxLength: 100));
-            AlterColumn("dbo.Companies", "PicturePath", c => c.String(maxLength: 100));
+            AlterColumn("dbo.Companies", "FileName", c => c.String(maxLength: 100));
+            AlterColumn("dbo.Companies", "FilePath", c => c.String(maxLength: 100));
             AlterColumn("dbo.Companies", "Introduction", c => c.String(maxLength: 200));
             CreateIndex("dbo.Companies", "CompanyName", name: "IDX_COMPANY_COMPANYNAME");
             CreateIndex("dbo.Companies", "Grade", name: "IDX_CRADE");
@@ -39,8 +39,8 @@ namespace PetterService.Migrations
             DropIndex("dbo.Companies", "IDX_CRADE");
             DropIndex("dbo.Companies", "IDX_COMPANY_COMPANYNAME");
             AlterColumn("dbo.Companies", "Introduction", c => c.String());
-            AlterColumn("dbo.Companies", "PicturePath", c => c.String());
-            AlterColumn("dbo.Companies", "PictureName", c => c.String());
+            AlterColumn("dbo.Companies", "FilePath", c => c.String());
+            AlterColumn("dbo.Companies", "FileName", c => c.String());
             AlterColumn("dbo.Companies", "CompanyAddr", c => c.String());
             AlterColumn("dbo.Companies", "CompanyName", c => c.String());
             DropColumn("dbo.Companies", "DateModified");

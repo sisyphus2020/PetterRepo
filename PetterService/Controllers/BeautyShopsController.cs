@@ -111,8 +111,8 @@ namespace PetterService.Controllers
                 Phone = p.Phone,
                 BeautyShopName = p.BeautyShopName,
                 BeautyShopAddr = p.BeautyShopAddr,
-                PictureName = p.PictureName,
-                PicturePath = p.PicturePath,
+                FileName = p.FileName,
+                FilePath = p.FilePath,
                 StartTime = p.StartTime,
                 EndTime = p.EndTime,
                 Introduction = p.Introduction,
@@ -190,8 +190,8 @@ namespace PetterService.Controllers
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.BeautyShopWidth, FileSize.BeautyShopHeight, ImageFormat.Png);
-                        beautyShop.PictureName = fileName;
-                        beautyShop.PicturePath = UploadPath.BeautyShopPath;
+                        beautyShop.FileName = fileName;
+                        beautyShop.FilePath = UploadPath.BeautyShopPath;
                     }
                     else
                     {
@@ -335,8 +335,8 @@ namespace PetterService.Controllers
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.BeautyShopWidth, FileSize.BeautyShopHeight, ImageFormat.Png);
-                        beautyShop.PictureName = fileName;
-                        beautyShop.PicturePath = UploadPath.BeautyShopPath;
+                        beautyShop.FileName = fileName;
+                        beautyShop.FilePath = UploadPath.BeautyShopPath;
                     }
                     else
                     {
@@ -361,11 +361,11 @@ namespace PetterService.Controllers
                             case "BeautyShopAddr":
                                 beautyShop.BeautyShopAddr = item;
                                 break;
-                            case "PictureName":
-                                beautyShop.PictureName = item;
+                            case "FileName":
+                                beautyShop.FileName = item;
                                 break;
-                            case "PicturePath":
-                                beautyShop.PicturePath = item;
+                            case "FilePath":
+                                beautyShop.FilePath = item;
                                 break;
                             case "StartTime":
                                 beautyShop.StartTime = item;

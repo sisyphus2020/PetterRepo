@@ -7,15 +7,18 @@ using System.Web;
 
 namespace PetterService.Models
 {
-    public class Event : BoardBase
+    public class EventBoardReply
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int EventNo { get; set; }
-        public int MemberNo { get; set; }
+        public int EventBoardReplyNo { get; set; }
+        public string MemberID { get; set; }
+        public string Reply { get; set; }
+        [MaxLength(1), Column("StateFlag", TypeName = "char")]
+        public string StateFlag { get; set; }
 
         // Navigation property
-        [ForeignKey("MemberNo")]
+        [ForeignKey("MemberID")]
         public Member Member { get; set; }
     }
 }

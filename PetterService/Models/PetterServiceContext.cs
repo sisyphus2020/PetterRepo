@@ -55,6 +55,12 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.CompanionAnimal> CompanionAnimals { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.Event> Events { get; set; }
+        //public System.Data.Entity.DbSet<PetterService.Models.Event> Events { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.EventBoard> EventBoards { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.EventBoardFile> EventBoardFiles { get; set; }
+
+        //public System.Data.Entity.DbSet<PetterService.Models.EventBoardReply> EventBoardReplies { get; set; }
     }
 }

@@ -24,9 +24,9 @@ namespace PetterService.Migrations
 
             //#region Member Seed
             //context.Members.AddOrUpdate(x => x.MemberNo,
-            //    new Models.Member() { MemberID = "sisyphus2020@naver.com", Password = "jasper", NickName = "시지프스", PictureName = "abc.gif", PicturePath = "/Member/2015/09/08", Coordinate = DbGeography.FromText("POINT(126.977832 37.5713)"), Latitude = 126.977832, Longitude = 37.5713, DateCreated = DateTime.Now, DateModified = DateTime.Now },
-            //    new Models.Member() { MemberID = "jasper.teis@gamil.com", Password = "jasper", NickName = "제스퍼", PictureName = "abc.gif", PicturePath = "/Member/2015/09/08", Coordinate = DbGeography.FromText("POINT(126.977832 37.5713)"), Latitude = 126.977832, Longitude = 37.5713, DateCreated = DateTime.Now, DateModified = DateTime.Now },
-            //    new Models.Member() { MemberID = "sisyphus2020@daum.net", Password = "jasper", NickName = "Google", PictureName = "abc.gif", PicturePath = "/Member/2015/09/08", Coordinate = DbGeography.FromText("POINT(126.977832 37.5713)"), Latitude = 126.977832, Longitude = 37.5713, DateCreated = DateTime.Now, DateModified = DateTime.Now }
+            //    new Models.Member() { MemberID = "sisyphus2020@naver.com", Password = "jasper", NickName = "시지프스", FileName = "abc.gif", FilePath = "/Member/2015/09/08", Coordinate = DbGeography.FromText("POINT(126.977832 37.5713)"), Latitude = 126.977832, Longitude = 37.5713, DateCreated = DateTime.Now, DateModified = DateTime.Now },
+            //    new Models.Member() { MemberID = "jasper.teis@gamil.com", Password = "jasper", NickName = "제스퍼", FileName = "abc.gif", FilePath = "/Member/2015/09/08", Coordinate = DbGeography.FromText("POINT(126.977832 37.5713)"), Latitude = 126.977832, Longitude = 37.5713, DateCreated = DateTime.Now, DateModified = DateTime.Now },
+            //    new Models.Member() { MemberID = "sisyphus2020@daum.net", Password = "jasper", NickName = "Google", FileName = "abc.gif", FilePath = "/Member/2015/09/08", Coordinate = DbGeography.FromText("POINT(126.977832 37.5713)"), Latitude = 126.977832, Longitude = 37.5713, DateCreated = DateTime.Now, DateModified = DateTime.Now }
 
             //);
             //#endregion Member Seed

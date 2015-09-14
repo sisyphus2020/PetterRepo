@@ -111,8 +111,8 @@ namespace PetterService.Controllers
                 CompanyNo = p.CompanyNo,
                 PensionName = p.PensionName,
                 PensionAddr = p.PensionAddr,
-                PictureName = p.PictureName,
-                PicturePath = p.PicturePath,
+                FileName = p.FileName,
+                FilePath = p.FilePath,
                 StartTime = p.StartTime,
                 EndTime = p.EndTime,
                 Introduction = p.Introduction,
@@ -190,8 +190,8 @@ namespace PetterService.Controllers
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PensionWidth, FileSize.PensionHeight, ImageFormat.Png);
-                        pension.PictureName = fileName;
-                        pension.PicturePath = UploadPath.PensionPath;
+                        pension.FileName = fileName;
+                        pension.FilePath = UploadPath.PensionPath;
                     }
                     else
                     {
@@ -332,8 +332,8 @@ namespace PetterService.Controllers
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PensionWidth, FileSize.PensionHeight, ImageFormat.Png);
-                        pension.PictureName = fileName;
-                        pension.PicturePath = UploadPath.PensionPath;
+                        pension.FileName = fileName;
+                        pension.FilePath = UploadPath.PensionPath;
                     }
                     else
                     {
@@ -355,11 +355,11 @@ namespace PetterService.Controllers
                             case "PensionAddr":
                                 pension.PensionAddr = item;
                                 break;
-                            case "PictureName":
-                                pension.PictureName = item;
+                            case "FileName":
+                                pension.FileName = item;
                                 break;
-                            case "PicturePath":
-                                pension.PicturePath = item;
+                            case "FilePath":
+                                pension.FilePath = item;
                                 break;
                             case "StartTime":
                                 pension.StartTime = item;

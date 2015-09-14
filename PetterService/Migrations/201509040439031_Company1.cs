@@ -10,8 +10,8 @@ namespace PetterService.Migrations
             DropIndex("dbo.Companies", "IDX_CRADE");
             DropIndex("dbo.Companies", "IDX_REVIEWCOUNT");
             DropIndex("dbo.Companies", "IDX_BOOKMARK");
-            DropColumn("dbo.Companies", "PictureName");
-            DropColumn("dbo.Companies", "PicturePath");
+            DropColumn("dbo.Companies", "FileName");
+            DropColumn("dbo.Companies", "FilePath");
             DropColumn("dbo.Companies", "StartHours");
             DropColumn("dbo.Companies", "EndHours");
             DropColumn("dbo.Companies", "Introduction");
@@ -38,8 +38,8 @@ namespace PetterService.Migrations
             AddColumn("dbo.Companies", "Introduction", c => c.String(maxLength: 200));
             AddColumn("dbo.Companies", "EndHours", c => c.String(maxLength: 4));
             AddColumn("dbo.Companies", "StartHours", c => c.String(maxLength: 4));
-            AddColumn("dbo.Companies", "PicturePath", c => c.String(maxLength: 100));
-            AddColumn("dbo.Companies", "PictureName", c => c.String(maxLength: 100));
+            AddColumn("dbo.Companies", "FilePath", c => c.String(maxLength: 100));
+            AddColumn("dbo.Companies", "FileName", c => c.String(maxLength: 100));
             CreateIndex("dbo.Companies", "Bookmark", name: "IDX_BOOKMARK");
             CreateIndex("dbo.Companies", "ReviewCount", name: "IDX_REVIEWCOUNT");
             CreateIndex("dbo.Companies", "Grade", name: "IDX_CRADE");

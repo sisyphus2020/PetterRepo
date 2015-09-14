@@ -18,8 +18,8 @@ namespace PetterService.Models
         public string Marking { get; set; }
         public string Medication { get; set; }
         public string Feature { get; set; }
-        public string PictureName { get; set; }
-        public string PicturePath { get; set; }
+        public string FileName { get; set; }
+        public string FilePath { get; set; }
         public string StateFlag { get; set; }
 
         // Navigation property

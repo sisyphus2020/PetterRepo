@@ -110,8 +110,8 @@ namespace PetterService.Controllers
                 CompanyNo = p.CompanyNo,
                 PetSitterName = p.PetSitterName,
                 PetSitterAddr = p.PetSitterAddr,
-                PictureName = p.PictureName,
-                PicturePath = p.PicturePath,
+                FileName = p.FileName,
+                FilePath = p.FilePath,
                 StartTime = p.StartTime,
                 EndTime = p.EndTime,
                 Introduction = p.Introduction,
@@ -189,8 +189,8 @@ namespace PetterService.Controllers
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PetSitterWidth, FileSize.PetSitterHeight, ImageFormat.Png);
-                        petSitter.PictureName = fileName;
-                        petSitter.PicturePath = UploadPath.PetSitterPath;
+                        petSitter.FileName = fileName;
+                        petSitter.FilePath = UploadPath.PetSitterPath;
                     }
                     else
                     {
@@ -212,11 +212,11 @@ namespace PetterService.Controllers
                             case "PetSitterAddr":
                                 petSitter.PetSitterAddr = item;
                                 break;
-                            case "PictureName":
-                                petSitter.PictureName = item;
+                            case "FileName":
+                                petSitter.FileName = item;
                                 break;
-                            case "PicturePath":
-                                petSitter.PicturePath = item;
+                            case "FilePath":
+                                petSitter.FilePath = item;
                                 break;
                             case "StartTime":
                                 petSitter.StartTime = item;
@@ -337,8 +337,8 @@ namespace PetterService.Controllers
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PensionWidth, FileSize.PensionHeight, ImageFormat.Png);
-                        petSitter.PictureName = fileName;
-                        petSitter.PicturePath = UploadPath.PetSitterPath;
+                        petSitter.FileName = fileName;
+                        petSitter.FilePath = UploadPath.PetSitterPath;
                     }
                     else
                     {
@@ -360,11 +360,11 @@ namespace PetterService.Controllers
                             case "PetSitterAddr":
                                 petSitter.PetSitterAddr = item;
                                 break;
-                            case "PictureName":
-                                petSitter.PictureName = item;
+                            case "FileName":
+                                petSitter.FileName = item;
                                 break;
-                            case "PicturePath":
-                                petSitter.PicturePath = item;
+                            case "FilePath":
+                                petSitter.FilePath = item;
                                 break;
                             case "StartTime":
                                 petSitter.StartTime = item;

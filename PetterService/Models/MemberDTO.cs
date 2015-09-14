@@ -12,8 +12,8 @@ namespace PetterService.Models
         public string MemberID { get; set; }
         public string Password { get; set; }
         public string NickName { get; set; }
-        public string PictureName { get; set; }
-        public string PicturePath { get; set; }
+        public string FileName { get; set; }
+        public string FilePath { get; set; }
         public DbGeography Coordinate { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
