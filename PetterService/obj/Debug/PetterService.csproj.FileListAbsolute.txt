@@ -191,3 +191,4 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Cl
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.CompanionAnimal.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Member3.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Member4.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Event.resources
