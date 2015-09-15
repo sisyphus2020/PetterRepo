@@ -10,7 +10,7 @@ namespace PetterService.Models
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int MemberNo { get; set; }
-        [Index("IDX_MEMBER_MEMBERID", IsUnique = true, Order = 1), MaxLength(50), ]
+        [Index("IDX_MEMBER_MEMBERID",  IsUnique = true), MaxLength(50)]
         public string MemberID { get; set; }
         [MaxLength(200)]
         public string Password { get; set; }

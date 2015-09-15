@@ -288,20 +288,37 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-        // DELETE: api/EventBoards/5
+        /// <summary>
+        /// DELETE: api/EventBoards/5
+        /// 이벤트게시판 삭제
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ResponseType(typeof(EventBoard))]
         public async Task<IHttpActionResult> DeleteEventBoard(int id)
         {
+            // 인증 필요
+
+            PetterResultType<EventBoard> petterResultType = new PetterResultType<EventBoard>();
+            List<EventBoard> eventBoards = new List<EventBoard>();
             EventBoard eventBoard = await db.EventBoards.FindAsync(id);
+
             if (eventBoard == null)
             {
                 return NotFound();
             }
 
-            db.EventBoards.Remove(eventBoard);
+            eventBoard.StateFlag = StateFlag.Delete;
+            eventBoard.DateDeleted = DateTime.Now;
+            db.Entry(eventBoard).State = EntityState.Modified;
+
             await db.SaveChangesAsync();
 
-            return Ok(eventBoard);
+            eventBoards.Add(eventBoard);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = eventBoards;
+
+            return Ok(petterResultType);
         }
 
         protected override void Dispose(bool disposing)

@@ -61,6 +61,8 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.EventBoardFile> EventBoardFiles { get; set; }
 
+        public System.Data.Entity.DbSet<PetterService.Models.EventBoardReply> EventBoardReplies { get; set; }
+
         //public System.Data.Entity.DbSet<PetterService.Models.EventBoardReply> EventBoardReplies { get; set; }
     }
 }
