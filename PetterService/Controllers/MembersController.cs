@@ -30,6 +30,7 @@ namespace PetterService.Controllers
         }
 
         //GET: api/Members/5
+        [Authorize]
         [ResponseType(typeof(PetterResultType<Member>))]
         public async Task<IHttpActionResult> GetMember(int id)
         {

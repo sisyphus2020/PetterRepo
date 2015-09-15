@@ -196,3 +196,4 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Ev
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardFile1.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardReply.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardReply1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Members.resources
