@@ -37,42 +37,63 @@ namespace PetterService.Controllers
             return Ok(beautyShopBookmark);
         }
 
-        // PUT: api/BeautyShopBookmarks/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutBeautyShopBookmark(int id, BeautyShopBookmark beautyShopBookmark)
+        /// <summary>
+        /// PUT: api/BeautyShopBookmarks/5
+        /// 미용즐겨찾기 수정
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="shopBookmark"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<BeautyShopBookmark>))]
+        public async Task<IHttpActionResult> PutBeautyShopBookmark(int id, BeautyShopBookmark shopBookmark)
         {
+            PetterResultType<BeautyShopBookmark> petterResultType = new PetterResultType<BeautyShopBookmark>();
+            List<BeautyShopBookmark> beautyShopBookmarks = new List<BeautyShopBookmark>();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != beautyShopBookmark.BeautyShopBookmarkNo)
+            BeautyShopBookmark beautyShopBookmark = await db.BeautyShopBookmarks.FindAsync(id);
+            if (beautyShopBookmark == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            db.Entry(beautyShopBookmark).State = EntityState.Modified;
+            // 수정권한 체크
+            if (beautyShopBookmark.MemberNo != shopBookmark.MemberNo)
+            {
+                return BadRequest(ModelState);
+            }
 
+            //beautyShopBookmark.Reply = boardReply.Reply;
+            //beautyShopBookmark.StateFlag = StateFlags.Use;
+            beautyShopBookmark.DateModified = DateTime.Now;
+            db.Entry(beautyShopBookmark).State = EntityState.Modified;
             try
             {
                 await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BeautyShopBookmarkExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            beautyShopBookmarks.Add(beautyShopBookmark);
+
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = beautyShopBookmarks;
+
+            return Ok(petterResultType);
         }
 
-        // POST: api/BeautyShopBookmarks
+        /// <summary>
+        /// POST: api/BeautyShopBookmarks
+        /// 미용즐겨찾기 등록
+        /// </summary>
+        /// <param name="beautyShopBookmark"></param>
+        /// <returns></returns>
         [ResponseType(typeof(PetterResultType<BeautyShopBookmark>))]
         public async Task<IHttpActionResult> PostBeautyShopBookmark(BeautyShopBookmark beautyShopBookmark)
         {
@@ -84,7 +105,6 @@ namespace PetterService.Controllers
                 return BadRequest(ModelState);
             }
 
-            //beautyShopBookmark.StateFlag = StateFlags.Use;
             beautyShopBookmark.DateCreated = DateTime.Now;
             beautyShopBookmark.DateModified = DateTime.Now;
 
@@ -98,11 +118,19 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-        // DELETE: api/BeautyShopBookmarks/5
-        [ResponseType(typeof(BeautyShopBookmark))]
+        /// <summary>
+        /// DELETE: api/BeautyShopBookmarks/5
+        /// 미용즐겨찾기 삭제
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<BeautyShopBookmark>))]
         public async Task<IHttpActionResult> DeleteBeautyShopBookmark(int id)
         {
+            PetterResultType<BeautyShopBookmark> petterResultType = new PetterResultType<BeautyShopBookmark>();
+            List<BeautyShopBookmark> beautyShopBookmarks = new List<BeautyShopBookmark>();
             BeautyShopBookmark beautyShopBookmark = await db.BeautyShopBookmarks.FindAsync(id);
+
             if (beautyShopBookmark == null)
             {
                 return NotFound();
@@ -111,7 +139,12 @@ namespace PetterService.Controllers
             db.BeautyShopBookmarks.Remove(beautyShopBookmark);
             await db.SaveChangesAsync();
 
-            return Ok(beautyShopBookmark);
+            beautyShopBookmarks.Add(beautyShopBookmark);
+
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = beautyShopBookmarks;
+
+            return Ok(petterResultType);
         }
 
         protected override void Dispose(bool disposing)

@@ -84,6 +84,8 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.BeautyShopStats> BeautyShopStats { get; set; }
 
+        public System.Data.Entity.DbSet<PetterService.Models.Notice> Notices { get; set; }
+
         //public System.Data.Entity.DbSet<PetterService.Models.BeautyShopStatistics> BeautyShopStatistics { get; set; }
 
         //public System.Data.Entity.DbSet<PetterService.Models.BeautyShopStatistics> BeautyShopStatistics { get; set; }

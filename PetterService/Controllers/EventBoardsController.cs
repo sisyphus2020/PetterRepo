@@ -101,15 +101,15 @@ namespace PetterService.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ResponseType(typeof(PetterResultType<EventBoard>))]
+        [ResponseType(typeof(PetterResultType<EventBoardDTO>))]
         public async Task<IHttpActionResult> GetEventBoard(int id)
         {
-            PetterResultType<EventBoard> petterResultType = new PetterResultType<EventBoard>();
-            List<EventBoard> eventBoards = new List<EventBoard>();
+            PetterResultType<EventBoardDTO> petterResultType = new PetterResultType<EventBoardDTO>();
+            List<EventBoardDTO> eventBoards = new List<EventBoardDTO>();
 
-            var eventBoard = await db.EventBoards.FindAsync(id);
+            //var eventBoard = await db.EventBoards.FindAsync(id);
 
-            var pension = await db.EventBoards.Where(p => p.EventBoardNo == id).Select(p => new EventBoardDTO
+            var eventBoard = await db.EventBoards.Where(p => p.EventBoardNo == id).Select(p => new EventBoardDTO
             {
                 EventBoardNo = p.EventBoardNo,
                 MemberNo = p.MemberNo,
