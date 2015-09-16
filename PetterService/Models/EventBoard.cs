@@ -13,6 +13,8 @@ namespace PetterService.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int EventBoardNo { get; set; }
         public int MemberNo { get; set; }
+        [Index("IDX_REVIEWCOUNT")]
+        public int ReviewCount { get; set; }
 
         // Navigation property
         [ForeignKey("MemberNo")]

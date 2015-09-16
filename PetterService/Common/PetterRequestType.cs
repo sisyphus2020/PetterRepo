@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PetterService.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,6 +16,7 @@ namespace PetterService.Common
         public string Search { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public string StateFlag { get; set; }
 
         public int Distance
         {
@@ -32,6 +34,7 @@ namespace PetterService.Common
             this.Latitude = 126.975971;
             this.Longitude = 37.571483;
             this.Distance = 5;
+            this.StateFlag = StateFlags.Use;
         }
     }
 }

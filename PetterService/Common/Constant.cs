@@ -37,7 +37,7 @@ namespace PetterService.Common
         public const string Failure = "F";
     }
 
-    public sealed class StateFlag
+    public sealed class StateFlags
     {
         // 사용
         public const string Use = "U";
@@ -45,6 +45,8 @@ namespace PetterService.Common
         public const string Stop = "S";
         // 삭제
         public const string Delete = "D";
+        // 모두
+        public const string All = "A";
     }
 
     public sealed class Route

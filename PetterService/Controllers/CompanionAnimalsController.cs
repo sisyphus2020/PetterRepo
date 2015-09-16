@@ -173,7 +173,7 @@ namespace PetterService.Controllers
                     }
                 }
 
-                companionAnimal.StateFlag = StateFlag.Use;
+                companionAnimal.StateFlag = StateFlags.Use;
                 companionAnimal.DateModified = DateTime.Now;
                 db.Entry(companionAnimal).State = EntityState.Modified;
                 try
@@ -288,7 +288,7 @@ namespace PetterService.Controllers
                     }
                 }
 
-                companionAnimal.StateFlag = StateFlag.Use;
+                companionAnimal.StateFlag = StateFlags.Use;
                 companionAnimal.DateCreated = DateTime.Now;
                 companionAnimal.DateModified = DateTime.Now;
                 db.CompanionAnimals.Add(companionAnimal);
@@ -327,7 +327,7 @@ namespace PetterService.Controllers
                 return NotFound();
             }
 
-            companionAnimal.StateFlag = StateFlag.Delete;
+            companionAnimal.StateFlag = StateFlags.Delete;
             companionAnimal.DateDeleted = DateTime.Now;
             db.Entry(companionAnimal).State = EntityState.Modified;
 

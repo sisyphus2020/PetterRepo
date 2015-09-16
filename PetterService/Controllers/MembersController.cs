@@ -378,7 +378,7 @@ namespace PetterService.Controllers
 
                 string point = string.Format("POINT({0} {1})", member.Latitude, member.Longitude);
                 member.Coordinate = DbGeography.FromText(point);
-                member.StateFlag = StateFlag.Use;
+                member.StateFlag = StateFlags.Use;
                 member.Route = Route.App;
                 member.DateCreated = DateTime.Now;
                 member.DateModified = DateTime.Now;
@@ -418,7 +418,7 @@ namespace PetterService.Controllers
                 return NotFound();
             }
 
-            member.StateFlag = StateFlag.Delete;
+            member.StateFlag = StateFlags.Delete;
             member.DateDeleted = DateTime.Now;
             db.Entry(member).State = EntityState.Modified;
 

@@ -23,9 +23,71 @@ namespace PetterService.Controllers
         private PetterServiceContext db = new PetterServiceContext();
 
         // GET: api/EventBoards
-        public IQueryable<EventBoard> GetEventBoards()
+        [ResponseType(typeof(PetterResultType<EventBoard>))]
+        public async Task<IHttpActionResult> GetEventBoards([FromUri] PetterRequestType petterRequestType)
         {
-            return db.EventBoards;
+            PetterResultType<EventBoard> petterResultType = new PetterResultType<EventBoard>();
+            List<EventBoard> list = new List<EventBoard>();
+            bool isSearch = false;
+
+            //var EventBoards = await db.EventBoards.ToListAsync();
+
+            // 검색 조건 
+            //if (!String.IsNullOrWhiteSpace(petterRequestType.Search))
+            //{
+            //    //EventBoards = EventBoards.Where(p => p.Title.Contains(petterRequestType.Search));
+            //}
+
+            //// 상태 조건 
+            //if (!String.IsNullOrWhiteSpace(petterRequestType.Search) && petterRequestType.StateFlag != "A")
+            //{
+            //    //EventBoards = EventBoards.Where(p => p.StateFlag == petterRequestType.StateFlag);
+            //}
+
+            // 검색 조건 
+            if (!String.IsNullOrWhiteSpace(petterRequestType.Search))
+            {
+                isSearch = true;
+            }
+
+            #region 정렬 방식
+            switch (petterRequestType.SortBy)
+            {
+                // 리뷰수
+                case "reviewcount":
+                    {
+                        list = await db.EventBoards
+                            .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
+                            .Where(p => isSearch ? p.Title.Contains(petterRequestType.Search) : 1 == 1)
+                            .OrderByDescending(p => p.ReviewCount)
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToListAsync();
+                        break;
+                    }
+                // 기본
+                default:
+                    {
+                        list = await db.EventBoards
+                            .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
+                            .Where(p => isSearch ? p.Title.Contains(petterRequestType.Search) : 1 == 1)
+                            .OrderByDescending(p => p.EventBoardNo)
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToListAsync();
+                        break;
+                    }
+            }
+            #endregion 정렬방식
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = list.ToList();
+            return Ok(petterResultType);
+
+            //return list;
         }
 
         /// <summary>
@@ -154,7 +216,7 @@ namespace PetterService.Controllers
                     }
                 }
 
-                eventBoard.StateFlag = StateFlag.Use;
+                eventBoard.StateFlag = StateFlags.Use;
                 eventBoard.DateModified = DateTime.Now;
 
                 // 이벤트게시판 등록
@@ -187,7 +249,7 @@ namespace PetterService.Controllers
 
         /// <summary>
         /// POST: api/EventBoards
-        /// 이벤트게시판 수정
+        /// 이벤트게시판 등록
         /// </summary>
         /// <returns></returns>
         [ResponseType(typeof(PetterResultType<EventBoard>))]
@@ -259,7 +321,7 @@ namespace PetterService.Controllers
                     }
                 }
 
-                eventBoard.StateFlag = StateFlag.Use;
+                eventBoard.StateFlag = StateFlags.Use;
                 eventBoard.DateCreated = DateTime.Now;
                 eventBoard.DateModified = DateTime.Now;
 
@@ -308,7 +370,7 @@ namespace PetterService.Controllers
                 return NotFound();
             }
 
-            eventBoard.StateFlag = StateFlag.Delete;
+            eventBoard.StateFlag = StateFlags.Delete;
             eventBoard.DateDeleted = DateTime.Now;
             db.Entry(eventBoard).State = EntityState.Modified;
 
