@@ -104,8 +104,6 @@ namespace PetterService.Controllers
                 return BadRequest(ModelState);
             }
 
-            
-
             eventBoardReply.StateFlag = StateFlags.Use;
             eventBoardReply.DateCreated = DateTime.Now;
             eventBoardReply.DateModified = DateTime.Now;

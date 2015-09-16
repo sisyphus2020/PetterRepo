@@ -11,7 +11,8 @@ namespace PetterService.Models
         public int BeautyShopNo { get; set; }
         public string BeautyShopName { get; set; }
         public string BeautyShopAddr { get; set; }
-        
+
+        public List<BeautyShopStats> BeautyShopStats { get; set; }
         public List<BeautyShopService> BeautyShopServices { get; set; }
         public List<BeautyShopHoliday> BeautyShopHolidays { get; set; }
     }

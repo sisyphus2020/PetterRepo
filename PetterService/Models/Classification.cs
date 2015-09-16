@@ -26,12 +26,12 @@ namespace PetterService.Models
         //public DbGeography Coordinate { get; set; }
         //public double Latitude { get; set; }
         //public double Longitude { get; set; }
-        [Index("IDX_GRADE"), Range(0, 10)]
-        public double Grade { get; set; }
-        [Index("IDX_REVIEWCOUNT")]
-        public int ReviewCount { get; set; }
-        [Index("IDX_BOOKMARK")]
-        public int Bookmark { get; set; }
+        //[Index("IDX_GRADE"), Range(0, 10)]
+        //public double Grade { get; set; }
+        //[Index("IDX_REVIEWCOUNT")]
+        //public int ReviewCount { get; set; }
+        //[Index("IDX_BOOKMARK")]
+        //public int Bookmark { get; set; }
         [MaxLength(1), Column("StateFlag", TypeName = "char")]
         public string StateFlag{ get; set; }
         [MaxLength(20)]

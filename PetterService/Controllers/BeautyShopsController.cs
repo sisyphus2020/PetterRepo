@@ -56,7 +56,7 @@ namespace PetterService.Controllers
                     {
                         list = beautyShop
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
-                            .OrderByDescending(p => p.ReviewCount)
+                            //.OrderByDescending(p => p.ReviewCount)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
@@ -66,7 +66,7 @@ namespace PetterService.Controllers
                     {
                         list = beautyShop
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
-                            .OrderByDescending(p => p.Grade)
+                            //.OrderByDescending(p => p.Grade)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
@@ -76,7 +76,7 @@ namespace PetterService.Controllers
                     {
                         list = beautyShop
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
-                            .OrderByDescending(p => p.Bookmark)
+                            //.OrderByDescending(p => p.Bookmark)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
@@ -119,11 +119,9 @@ namespace PetterService.Controllers
                 Coordinate = p.Coordinate,
                 Latitude = p.Latitude,
                 Longitude = p.Longitude,
-                Grade = p.Grade,
-                ReviewCount = p.ReviewCount,
-                Bookmark = p.Bookmark,
                 DateCreated = p.DateCreated,
                 DateModified = p.DateModified,
+                BeautyShopStats = p.BeautyShopStats.ToList(),
                 BeautyShopServices = p.BeautyShopServices.ToList(),
                 BeautyShopHolidays = p.BeautyShopHolidays.ToList()
             }).SingleOrDefaultAsync();
@@ -231,15 +229,15 @@ namespace PetterService.Controllers
                             case "Longitude":
                                 beautyShop.Longitude = Convert.ToDouble(item);
                                 break;
-                            case "Grade":
-                                beautyShop.Grade = Convert.ToDouble(item);
-                                break;
-                            case "ReviewCount":
-                                beautyShop.ReviewCount = int.Parse(item);
-                                break;
-                            case "Bookmark":
-                                beautyShop.Bookmark = int.Parse(item);
-                                break;
+                            //case "Grade":
+                            //    beautyShop.Grade = Convert.ToDouble(item);
+                            //    break;
+                            //case "ReviewCount":
+                            //    beautyShop.ReviewCount = int.Parse(item);
+                            //    break;
+                            //case "Bookmark":
+                            //    beautyShop.Bookmark = int.Parse(item);
+                            //    break;
                             case "BeautyShopServices":
                                 beautyShopService = item;
                                 break;
@@ -382,15 +380,15 @@ namespace PetterService.Controllers
                             case "Longitude":
                                 beautyShop.Longitude = Convert.ToDouble(item);
                                 break;
-                            case "Grade":
-                                beautyShop.Grade = Convert.ToDouble(item);
-                                break;
-                            case "ReviewCount":
-                                beautyShop.ReviewCount = int.Parse(item);
-                                break;
-                            case "Bookmark":
-                                beautyShop.Bookmark = int.Parse(item);
-                                break;
+                            //case "Grade":
+                            //    beautyShop.Grade = Convert.ToDouble(item);
+                            //    break;
+                            //case "ReviewCount":
+                            //    beautyShop.ReviewCount = int.Parse(item);
+                            //    break;
+                            //case "Bookmark":
+                            //    beautyShop.Bookmark = int.Parse(item);
+                            //    break;
                             case "BeautyShopServices":
                                 beautyShopService = item;
                                 break;

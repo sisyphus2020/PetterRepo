@@ -17,6 +17,7 @@ namespace PetterService.Models
         // Navigation property
         [ForeignKey("CompanyNo")]
         public Company Company { get; set; }
+        public ICollection<BeautyShopStats> BeautyShopStats { get; set; }
         public ICollection<BeautyShopService> BeautyShopServices { get; set; }
         public ICollection<BeautyShopHoliday> BeautyShopHolidays { get; set; }
     }

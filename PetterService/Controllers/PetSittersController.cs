@@ -56,7 +56,7 @@ namespace PetterService.Controllers
                     {
                         list = PetSitter
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
-                            .OrderByDescending(p => p.ReviewCount)
+                            //.OrderByDescending(p => p.ReviewCount)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
@@ -66,7 +66,7 @@ namespace PetterService.Controllers
                     {
                         list = PetSitter
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
-                            .OrderByDescending(p => p.Grade)
+                            //.OrderByDescending(p => p.Grade)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
@@ -76,7 +76,7 @@ namespace PetterService.Controllers
                     {
                         list = PetSitter
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
-                            .OrderByDescending(p => p.Bookmark)
+                            //.OrderByDescending(p => p.Bookmark)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
@@ -118,9 +118,9 @@ namespace PetterService.Controllers
                 Coordinate = p.Coordinate,
                 Latitude = p.Latitude,
                 Longitude = p.Longitude,
-                Grade = p.Grade,
-                ReviewCount = p.ReviewCount,
-                Bookmark = p.Bookmark,
+                //Grade = p.Grade,
+                //ReviewCount = p.ReviewCount,
+                //Bookmark = p.Bookmark,
                 DateCreated = p.DateCreated,
                 DateModified = p.DateModified,
                 PetSitterServices = p.PetSitterServices.ToList(),
@@ -233,15 +233,15 @@ namespace PetterService.Controllers
                             case "Longitude":
                                 petSitter.Longitude = Convert.ToDouble(item);
                                 break;
-                            case "Grade":
-                                petSitter.Grade = Convert.ToDouble(item);
-                                break;
-                            case "ReviewCount":
-                                petSitter.ReviewCount = int.Parse(item);
-                                break;
-                            case "Bookmark":
-                                petSitter.Bookmark = int.Parse(item);
-                                break;
+                            //case "Grade":
+                            //    petSitter.Grade = Convert.ToDouble(item);
+                            //    break;
+                            //case "ReviewCount":
+                            //    petSitter.ReviewCount = int.Parse(item);
+                            //    break;
+                            //case "Bookmark":
+                            //    petSitter.Bookmark = int.Parse(item);
+                            //    break;
                             case "PetSitterServices":
                                 pensionService = item;
                                 break;
@@ -381,15 +381,15 @@ namespace PetterService.Controllers
                             case "Longitude":
                                 petSitter.Longitude = Convert.ToDouble(item);
                                 break;
-                            case "Grade":
-                                petSitter.Grade = Convert.ToDouble(item);
-                                break;
-                            case "ReviewCount":
-                                petSitter.ReviewCount = int.Parse(item);
-                                break;
-                            case "Bookmark":
-                                petSitter.Bookmark = int.Parse(item);
-                                break;
+                            //case "Grade":
+                            //    petSitter.Grade = Convert.ToDouble(item);
+                            //    break;
+                            //case "ReviewCount":
+                            //    petSitter.ReviewCount = int.Parse(item);
+                            //    break;
+                            //case "Bookmark":
+                            //    petSitter.Bookmark = int.Parse(item);
+                            //    break;
                             case "PetSitterServices":
                                 pensionService = item;
                                 break;

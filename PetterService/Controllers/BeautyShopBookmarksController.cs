@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PetterService.Models;
+using PetterService.Common;
 
 namespace PetterService.Controllers
 {
@@ -72,18 +73,29 @@ namespace PetterService.Controllers
         }
 
         // POST: api/BeautyShopBookmarks
-        [ResponseType(typeof(BeautyShopBookmark))]
+        [ResponseType(typeof(PetterResultType<BeautyShopBookmark>))]
         public async Task<IHttpActionResult> PostBeautyShopBookmark(BeautyShopBookmark beautyShopBookmark)
         {
+            PetterResultType<BeautyShopBookmark> petterResultType = new PetterResultType<BeautyShopBookmark>();
+            List<BeautyShopBookmark> beautyShopBookmarks = new List<BeautyShopBookmark>();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            //beautyShopBookmark.StateFlag = StateFlags.Use;
+            beautyShopBookmark.DateCreated = DateTime.Now;
+            beautyShopBookmark.DateModified = DateTime.Now;
+
             db.BeautyShopBookmarks.Add(beautyShopBookmark);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = beautyShopBookmark.BeautyShopBookmarkNo }, beautyShopBookmark);
+            beautyShopBookmarks.Add(beautyShopBookmark);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = beautyShopBookmarks;
+
+            return Ok(petterResultType);
         }
 
         // DELETE: api/BeautyShopBookmarks/5

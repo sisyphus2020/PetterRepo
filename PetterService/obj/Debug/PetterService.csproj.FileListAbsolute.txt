@@ -206,4 +206,8 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Ev
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardRelpy6.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardRelpy7.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardRelpy8.resources
-D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShopBookmark.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShopStats.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShopStats1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShopStats2.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShop3.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShopStats3.resources

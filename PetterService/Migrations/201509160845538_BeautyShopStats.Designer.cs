@@ -7,13 +7,13 @@ namespace PetterService.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class BeautyShopBookmark : IMigrationMetadata
+    public sealed partial class BeautyShopStats : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(BeautyShopBookmark));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(BeautyShopStats));
         
         string IMigrationMetadata.Id
         {
-            get { return "201509160628490_BeautyShopBookmark"; }
+            get { return "201509160845538_BeautyShopStats"; }
         }
         
         string IMigrationMetadata.Source

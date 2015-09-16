@@ -57,7 +57,7 @@ namespace PetterService.Controllers
                     {
                         list = Pension
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
-                            .OrderByDescending(p => p.ReviewCount)
+                            //.OrderByDescending(p => p.ReviewCount)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
@@ -67,7 +67,7 @@ namespace PetterService.Controllers
                     {
                         list = Pension
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
-                            .OrderByDescending(p => p.Grade)
+                            //.OrderByDescending(p => p.Grade)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
@@ -77,7 +77,7 @@ namespace PetterService.Controllers
                     {
                         list = Pension
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
-                            .OrderByDescending(p => p.Bookmark)
+                            //.OrderByDescending(p => p.Bookmark)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
                         break;
@@ -119,9 +119,9 @@ namespace PetterService.Controllers
                 Coordinate = p.Coordinate,
                 Latitude = p.Latitude,
                 Longitude = p.Longitude,
-                Grade = p.Grade,
-                ReviewCount = p.ReviewCount,
-                Bookmark = p.Bookmark,
+                //Grade = p.Grade,
+                //ReviewCount = p.ReviewCount,
+                //Bookmark = p.Bookmark,
                 DateCreated = p.DateCreated,
                 DateModified = p.DateModified,
                 PensionServices = p.PensionServices.ToList(),
@@ -228,15 +228,15 @@ namespace PetterService.Controllers
                             case "Longitude":
                                 pension.Longitude = Convert.ToDouble(item);
                                 break;
-                            case "Grade":
-                                pension.Grade = Convert.ToDouble(item);
-                                break;
-                            case "ReviewCount":
-                                pension.ReviewCount = int.Parse(item);
-                                break;
-                            case "Bookmark":
-                                pension.Bookmark = int.Parse(item);
-                                break;
+                            //case "Grade":
+                            //    pension.Grade = Convert.ToDouble(item);
+                            //    break;
+                            //case "ReviewCount":
+                            //    pension.ReviewCount = int.Parse(item);
+                            //    break;
+                            //case "Bookmark":
+                            //    pension.Bookmark = int.Parse(item);
+                            //    break;
                             case "PensionServices":
                                 pensionService = item;
                                 break;
@@ -376,15 +376,15 @@ namespace PetterService.Controllers
                             case "Longitude":
                                 pension.Longitude = Convert.ToDouble(item);
                                 break;
-                            case "Grade":
-                                pension.Grade = Convert.ToDouble(item);
-                                break;
-                            case "ReviewCount":
-                                pension.ReviewCount = int.Parse(item);
-                                break;
-                            case "Bookmark":
-                                pension.Bookmark = int.Parse(item);
-                                break;
+                            //case "Grade":
+                            //    pension.Grade = Convert.ToDouble(item);
+                            //    break;
+                            //case "ReviewCount":
+                            //    pension.ReviewCount = int.Parse(item);
+                            //    break;
+                            //case "Bookmark":
+                            //    pension.Bookmark = int.Parse(item);
+                            //    break;
                             case "PensionServices":
                                 pensionService = item;
                                 break;
