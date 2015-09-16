@@ -21,6 +21,7 @@ namespace PetterService.Models
         public string StateFlag { get; set; }
 
         // Navigation property
+        // 순환참조 오류 발생
         //[ForeignKey("EventBoardNo")]
         //public EventBoard EventBoard { get; set; }
         [ForeignKey("MemberNo")]

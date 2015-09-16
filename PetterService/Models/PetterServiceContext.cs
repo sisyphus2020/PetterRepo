@@ -25,12 +25,12 @@ namespace PetterService.Models
 
             //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
-            //modelBuilder.Entity<EventBoardReply>()
-            //   .HasRequired(f => f.EventBoard)
+            //modelBuilder.Entity<EventBoard>()
+            //   .HasRequired(f => f.Member)
             //   .WithRequiredDependent()
             //   .WillCascadeOnDelete(false);
 
-            //modelBuilder.Entity<EventBoard>()
+            //modelBuilder.Entity<EventBoardReply>()
             //   .HasRequired(f => f.Member)
             //   .WithRequiredDependent()
             //   .WillCascadeOnDelete(false);
@@ -79,6 +79,8 @@ namespace PetterService.Models
         public System.Data.Entity.DbSet<PetterService.Models.EventBoardFile> EventBoardFiles { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.EventBoardReply> EventBoardReplies { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.BeautyShopBookmark> BeautyShopBookmarks { get; set; }
 
         //public System.Data.Entity.DbSet<PetterService.Models.EventBoardReply> EventBoardReplies { get; set; }
     }

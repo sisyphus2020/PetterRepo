@@ -206,3 +206,4 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Ev
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardRelpy6.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardRelpy7.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardRelpy8.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShopBookmark.resources

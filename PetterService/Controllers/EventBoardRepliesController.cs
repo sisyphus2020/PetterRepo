@@ -37,42 +37,62 @@ namespace PetterService.Controllers
             return Ok(eventBoardReply);
         }
 
-        // PUT: api/EventBoardReplies/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutEventBoardReply(int id, EventBoardReply eventBoardReply)
+        /// <summary>
+        /// PUT: api/EventBoardReplies/5
+        /// 이벤트게시판 리뷰 수정
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<EventBoardReply>))]
+        public async Task<IHttpActionResult> PutEventBoardReply(int id, EventBoardReply boardReply)
         {
+            PetterResultType<EventBoardReply> petterResultType = new PetterResultType<EventBoardReply>();
+            List<EventBoardReply> eventBoardReplies = new List<EventBoardReply>();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != eventBoardReply.EventBoardReplyNo)
+            EventBoardReply eventBoardReply = await db.EventBoardReplies.FindAsync(id);
+            if (eventBoardReply == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            db.Entry(eventBoardReply).State = EntityState.Modified;
+            // 수정권한 체크
+            if (eventBoardReply.MemberNo != boardReply.MemberNo)
+            {
+                return BadRequest(ModelState);
+            }
 
+            eventBoardReply.Reply = boardReply.Reply;
+            eventBoardReply.StateFlag = StateFlags.Use;
+            eventBoardReply.DateModified = DateTime.Now;
+            db.Entry(eventBoardReply).State = EntityState.Modified;
             try
             {
                 await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EventBoardReplyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            eventBoardReplies.Add(eventBoardReply);
+
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = eventBoardReplies;
+
+            return Ok(petterResultType);
         }
 
-        // POST: api/EventBoardReplies
+        /// <summary>
+        /// POST: api/EventBoardReplies
+        /// 이벤트게시판 리뷰 등록
+        /// </summary>
+        /// <param name="eventBoardReply"></param>
+        /// <returns></returns>
         [ResponseType(typeof(PetterResultType<EventBoardReply>))]
         public async Task<IHttpActionResult> PostEventBoardReply(EventBoardReply eventBoardReply)
         {
@@ -83,6 +103,8 @@ namespace PetterService.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            
 
             eventBoardReply.StateFlag = StateFlags.Use;
             eventBoardReply.DateCreated = DateTime.Now;
@@ -101,16 +123,26 @@ namespace PetterService.Controllers
         [ResponseType(typeof(EventBoardReply))]
         public async Task<IHttpActionResult> DeleteEventBoardReply(int id)
         {
+            PetterResultType<EventBoardReply> petterResultType = new PetterResultType<EventBoardReply>();
+            List<EventBoardReply> companionAnimals = new List<EventBoardReply>();
             EventBoardReply eventBoardReply = await db.EventBoardReplies.FindAsync(id);
+
             if (eventBoardReply == null)
             {
                 return NotFound();
             }
 
-            db.EventBoardReplies.Remove(eventBoardReply);
+            eventBoardReply.StateFlag = StateFlags.Delete;
+            eventBoardReply.DateDeleted = DateTime.Now;
+            db.Entry(eventBoardReply).State = EntityState.Modified;
+
             await db.SaveChangesAsync();
 
-            return Ok(eventBoardReply);
+            companionAnimals.Add(eventBoardReply);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = companionAnimals;
+
+            return Ok(petterResultType);
         }
 
         protected override void Dispose(bool disposing)
