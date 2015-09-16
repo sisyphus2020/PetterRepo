@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PetterService.Models;
+using PetterService.Common;
 
 namespace PetterService.Controllers
 {
@@ -72,18 +73,28 @@ namespace PetterService.Controllers
         }
 
         // POST: api/EventBoardReplies
-        [ResponseType(typeof(EventBoardReply))]
+        [ResponseType(typeof(PetterResultType<EventBoardReply>))]
         public async Task<IHttpActionResult> PostEventBoardReply(EventBoardReply eventBoardReply)
         {
+            PetterResultType<EventBoardReply> petterResultType = new PetterResultType<EventBoardReply>();
+            List<EventBoardReply> eventBoardReplies = new List<EventBoardReply>();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            eventBoardReply.StateFlag = StateFlags.Use;
+            eventBoardReply.DateCreated = DateTime.Now;
+            eventBoardReply.DateModified = DateTime.Now;
+
             db.EventBoardReplies.Add(eventBoardReply);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = eventBoardReply.EventBoardReplyNo }, eventBoardReply);
+            eventBoardReplies.Add(eventBoardReply);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = eventBoardReplies;
+            return Ok(petterResultType);
         }
 
         // DELETE: api/EventBoardReplies/5

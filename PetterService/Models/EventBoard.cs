@@ -20,5 +20,6 @@ namespace PetterService.Models
         [ForeignKey("MemberNo")]
         public Member Member { get; set; }
         public ICollection<EventBoardFile> EventBoardFiles { get; set; }
+        public ICollection<EventBoardReply> EventBoardReplys { get; set; }
     }
 }

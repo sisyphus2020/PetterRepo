@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Web;
 
@@ -17,6 +18,22 @@ namespace PetterService.Models
     
         public PetterServiceContext() : base("name=PetterServiceContext")
         {
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+
+            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+            //modelBuilder.Entity<EventBoardReply>()
+            //   .HasRequired(f => f.EventBoard)
+            //   .WithRequiredDependent()
+            //   .WillCascadeOnDelete(false);
+
+            //modelBuilder.Entity<EventBoard>()
+            //   .HasRequired(f => f.Member)
+            //   .WithRequiredDependent()
+            //   .WillCascadeOnDelete(false);
         }
 
         public System.Data.Entity.DbSet<PetterService.Models.Pension> Pensions { get; set; }

@@ -202,3 +202,7 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Ev
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardRelpy2.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardRelpy3.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardRelpy4.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardRelpy5.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardRelpy6.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardRelpy7.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardRelpy8.resources

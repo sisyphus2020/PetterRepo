@@ -22,7 +22,12 @@ namespace PetterService.Controllers
     {
         private PetterServiceContext db = new PetterServiceContext();
 
-        // GET: api/EventBoards
+        /// <summary>
+        /// GET: api/EventBoards
+        /// 이벤트게시판 리스트
+        /// </summary>
+        /// <param name="petterRequestType"></param>
+        /// <returns></returns>
         [ResponseType(typeof(PetterResultType<EventBoard>))]
         public async Task<IHttpActionResult> GetEventBoards([FromUri] PetterRequestType petterRequestType)
         {
@@ -114,7 +119,8 @@ namespace PetterService.Controllers
                 DateCreated = p.DateCreated,
                 DateModified = p.DateModified,
                 DateDeleted = p.DateDeleted,
-                EventBoardFiles = p.EventBoardFiles.ToList()
+                EventBoardFiles = p.EventBoardFiles.ToList(),
+                EventBoardReplys = p.EventBoardReplys.ToList()
             }).SingleOrDefaultAsync();
 
 
@@ -356,7 +362,7 @@ namespace PetterService.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ResponseType(typeof(EventBoard))]
+        [ResponseType(typeof(PetterResultType<EventBoard>))]
         public async Task<IHttpActionResult> DeleteEventBoard(int id)
         {
             // 인증 필요
