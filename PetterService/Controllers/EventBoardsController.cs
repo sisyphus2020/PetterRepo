@@ -64,7 +64,8 @@ namespace PetterService.Controllers
                         list = await db.EventBoards
                             .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
                             .Where(p => isSearch ? p.Title.Contains(petterRequestType.Search) : 1 == 1)
-                            .OrderByDescending(p => p.ReviewCount)
+                            //.OrderByDescending(p => p.ReviewCount)
+                            .OrderByDescending(p => p.EventBoardNo)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToListAsync();
                         break;
@@ -119,6 +120,7 @@ namespace PetterService.Controllers
                 DateCreated = p.DateCreated,
                 DateModified = p.DateModified,
                 DateDeleted = p.DateDeleted,
+                EventBoardStats = p.EventBoardStats.ToList(),
                 EventBoardFiles = p.EventBoardFiles.ToList(),
                 EventBoardReplys = p.EventBoardReplys.ToList()
             }).SingleOrDefaultAsync();

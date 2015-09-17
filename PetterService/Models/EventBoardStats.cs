@@ -13,7 +13,7 @@ namespace PetterService.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EventBoardStatsNo { get; set; }
         public int EventBoardNo { get; set; }
-        public int ReviewCount { get; set; }
+        public int ReplyCount { get; set; }
 
         // Navigation property
         [ForeignKey("EventBoardNo")]

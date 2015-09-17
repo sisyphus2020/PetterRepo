@@ -11,6 +11,7 @@ namespace PetterService.Models
         public int MemberNo { get; set; }
 
         // Navigation property
+        public List<EventBoardStats> EventBoardStats { get; set; }
         public List<EventBoardFile> EventBoardFiles { get; set; }
         public List<EventBoardReply> EventBoardReplys { get; set; }
     }
