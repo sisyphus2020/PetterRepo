@@ -192,11 +192,20 @@ namespace PetterService.Controllers
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.EventBoardWidth, FileSize.EventBoardHeight, ImageFormat.Png);
-                        eventBoardFile.EventBoardNo = eventBoard.EventBoardNo;
-                        eventBoardFile.FileName = fileName;
-                        eventBoardFile.FilePath = UploadPath.EventBoardPath;
 
-                        eventBoardFiles.Add(eventBoardFile);
+                        if (fieldName == FieldName.EventFieldName)
+                        {
+                            eventBoard.FileName = fileName;
+                            eventBoard.FilePath = UploadPath.EventBoardPath;
+                        }
+                        else
+                        {
+                            eventBoardFile.EventBoardNo = eventBoard.EventBoardNo;
+                            eventBoardFile.FileName = fileName;
+                            eventBoardFile.FilePath = UploadPath.EventBoardPath;
+
+                            eventBoardFiles.Add(eventBoardFile);
+                        }
                     }
                     else
                     {
@@ -297,10 +306,19 @@ namespace PetterService.Controllers
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.EventBoardWidth, FileSize.EventBoardHeight, ImageFormat.Png);
-                        eventBoardFile.FileName = fileName;
-                        eventBoardFile.FilePath = UploadPath.EventBoardPath;
 
-                        eventBoardFiles.Add(eventBoardFile);
+                        if (fieldName == FieldName.EventFieldName)
+                        {
+                            eventBoard.FileName = fileName;
+                            eventBoard.FilePath = UploadPath.EventBoardPath;
+                        }
+                        else
+                        {
+                            eventBoardFile.FileName = fileName;
+                            eventBoardFile.FilePath = UploadPath.EventBoardPath;
+
+                            eventBoardFiles.Add(eventBoardFile);
+                        }
                     }
                     else
                     {

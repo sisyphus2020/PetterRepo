@@ -70,6 +70,13 @@ namespace PetterService.Common
 
     }
 
+    public sealed class FieldName
+    {
+        public const string EventFieldName = "EventField";
+        public const string NoticeFieldName = "NoticeField";
+        public const string ServiceCenterFieldName = "ServiceCenterField";
+    }
+
     public sealed class FileSize
     {
         public const int BeautyShopWidth = 980;

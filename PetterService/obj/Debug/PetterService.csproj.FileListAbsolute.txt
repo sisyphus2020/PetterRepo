@@ -212,3 +212,6 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Be
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShop3.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShopStats3.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.NoticeFile.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoard1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardStats.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardStats1.resources

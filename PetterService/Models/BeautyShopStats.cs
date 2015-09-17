@@ -13,7 +13,6 @@ namespace PetterService.Models
         public double Grade { get; set; }
         public int ReviewCount { get; set; }
         public int Bookmark { get; set; }
-        //public int BeautyShopStatsNo { get; set; }
 
         // Navigation property
         [ForeignKey("BeautyShopNo")]
