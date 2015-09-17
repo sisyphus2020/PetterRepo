@@ -27,6 +27,7 @@ namespace PetterService.Common
         public static string MemberPath { get { return "/Files" + "/" + "Member" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string CompanionAnimalPath { get { return "/Files" + "/" + "CompanionAnimal" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string EventBoardPath { get { return "/Files" + "/" + "EventBoard" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
+        public static string NoticePath { get { return "/Files" + "/" + "Notice" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
     }
 
     public sealed class AccessResult
@@ -88,6 +89,10 @@ namespace PetterService.Common
         public const int EventBoardWidth = 300;
         public const int EventBoardHeight = 100;
 
+        // Notice
+        public const int NoticeWidth = 300;
+        public const int NoticeHeight = 100;
+
 
     }
 
@@ -99,6 +104,7 @@ namespace PetterService.Common
         public static string[] MemberExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] CompanionAnimalExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] EventBoardExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
+        public static string[] NoticeExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
     }
 
     public static class ResultErrorMessage

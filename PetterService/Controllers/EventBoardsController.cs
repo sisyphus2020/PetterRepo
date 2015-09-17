@@ -147,7 +147,7 @@ namespace PetterService.Controllers
         {
             PetterResultType<EventBoard> petterResultType = new PetterResultType<EventBoard>();
             List<EventBoard> eventBoards = new List<EventBoard>();
-            List<EventBoardFile> eventBoardFiles = new List<Models.EventBoardFile>();
+            List<EventBoardFile> eventBoardFiles = new List<EventBoardFile>();
             //EventBoardFile eventBoardFile = new Models.EventBoardFile();
             //EventBoard eventBoard = new EventBoard();
 
@@ -174,7 +174,7 @@ namespace PetterService.Controllers
                     string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
                     if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
                     {
-                        EventBoardFile eventBoardFile = new Models.EventBoardFile();
+                        EventBoardFile eventBoardFile = new EventBoardFile();
                         var file = await content.ReadAsByteArrayAsync();
 
                         string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
@@ -263,7 +263,7 @@ namespace PetterService.Controllers
         {
             PetterResultType<EventBoard> petterResultType = new PetterResultType<EventBoard>();
             List<EventBoard> eventBoards = new List<EventBoard>();
-            List<EventBoardFile> eventBoardFiles = new List<Models.EventBoardFile>();
+            List<EventBoardFile> eventBoardFiles = new List<EventBoardFile>();
             
             EventBoard eventBoard = new EventBoard();
 
@@ -299,7 +299,6 @@ namespace PetterService.Controllers
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.EventBoardWidth, FileSize.EventBoardHeight, ImageFormat.Png);
                         eventBoardFile.FileName = fileName;
                         eventBoardFile.FilePath = UploadPath.EventBoardPath;
-
 
                         eventBoardFiles.Add(eventBoardFile);
                     }
