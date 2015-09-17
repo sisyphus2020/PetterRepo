@@ -17,7 +17,7 @@ namespace PetterService.Controllers
     public class NoticeRepliesController : ApiController
     {
         private PetterServiceContext db = new PetterServiceContext();
-
+             
         // GET: api/NoticeReplies
         public IQueryable<NoticeReply> GetNoticeReplies()
         {
@@ -29,6 +29,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> GetNoticeReply(int id)
         {
             NoticeReply noticeReply = await db.NoticeReplies.FindAsync(id);
+
             if (noticeReply == null)
             {
                 return NotFound();

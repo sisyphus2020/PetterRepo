@@ -94,6 +94,10 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.NoticeReply> NoticeReplies { get; set; }
 
+        public System.Data.Entity.DbSet<PetterService.Models.BeautyShopReview> BeautyShopReviews { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.BeautyShopReviewFile> BeautyShopReviewFiles { get; set; }
+
         //public System.Data.Entity.DbSet<PetterService.Models.BeautyShopStatistics> BeautyShopStatistics { get; set; }
 
         //public System.Data.Entity.DbSet<PetterService.Models.BeautyShopStatistics> BeautyShopStatistics { get; set; }

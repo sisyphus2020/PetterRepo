@@ -219,3 +219,7 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Ev
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoard2.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.NoticeStats.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.NoticeReply.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShopReview.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShopReviewFile.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShopReview1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.BeautyShopReview2.resources

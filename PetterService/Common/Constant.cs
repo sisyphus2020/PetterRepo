@@ -28,6 +28,7 @@ namespace PetterService.Common
         public static string CompanionAnimalPath { get { return "/Files" + "/" + "CompanionAnimal" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string EventBoardPath { get { return "/Files" + "/" + "EventBoard" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string NoticePath { get { return "/Files" + "/" + "Notice" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
+        public static string BeautyShopReviewPath { get { return "/Files" + "/" + "BeautyShopReview" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
     }
 
     public sealed class AccessResult
@@ -100,6 +101,9 @@ namespace PetterService.Common
         public const int NoticeWidth = 300;
         public const int NoticeHeight = 100;
 
+        // BeautyShopReview
+        public const int BeautyShopReviewWidth = 300;
+        public const int BeautyShopReviewHeight = 100;
 
     }
 
@@ -112,6 +116,7 @@ namespace PetterService.Common
         public static string[] CompanionAnimalExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] EventBoardExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] NoticeExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
+        public static string[] BeautyShopReviewExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
     }
 
     public static class ResultErrorMessage
