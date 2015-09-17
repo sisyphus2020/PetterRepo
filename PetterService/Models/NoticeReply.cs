@@ -22,7 +22,7 @@ namespace PetterService.Models
         // 순환참조 오류 발생
         //[ForeignKey("NoticeNo")]
         //public Notice Notice { get; set; }
-        //[ForeignKey("MemberNo")]
-        //public Member Member { get; set; }
+        [ForeignKey("MemberNo")]
+        public Member Member { get; set; }
     }
 }

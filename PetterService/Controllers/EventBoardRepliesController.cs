@@ -39,7 +39,7 @@ namespace PetterService.Controllers
 
         /// <summary>
         /// PUT: api/EventBoardReplies/5
-        /// 이벤트게시판 리뷰 수정
+        /// 이벤트게시판 댓글 수정
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -89,7 +89,7 @@ namespace PetterService.Controllers
 
         /// <summary>
         /// POST: api/EventBoardReplies
-        /// 이벤트게시판 리뷰 등록
+        /// 이벤트게시판 댓글 등록
         /// </summary>
         /// <param name="eventBoardReply"></param>
         /// <returns></returns>
@@ -117,12 +117,17 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-        // DELETE: api/EventBoardReplies/5
-        [ResponseType(typeof(EventBoardReply))]
+        /// <summary>
+        /// DELETE: api/EventBoardReplies/5
+        /// 이벤트게시판 댓글 삭제
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<EventBoardReply>))]
         public async Task<IHttpActionResult> DeleteEventBoardReply(int id)
         {
             PetterResultType<EventBoardReply> petterResultType = new PetterResultType<EventBoardReply>();
-            List<EventBoardReply> companionAnimals = new List<EventBoardReply>();
+            List<EventBoardReply> eventBoardReplies = new List<EventBoardReply>();
             EventBoardReply eventBoardReply = await db.EventBoardReplies.FindAsync(id);
 
             if (eventBoardReply == null)
@@ -136,9 +141,9 @@ namespace PetterService.Controllers
 
             await db.SaveChangesAsync();
 
-            companionAnimals.Add(eventBoardReply);
+            eventBoardReplies.Add(eventBoardReply);
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = companionAnimals;
+            petterResultType.JsonDataSet = eventBoardReplies;
 
             return Ok(petterResultType);
         }
