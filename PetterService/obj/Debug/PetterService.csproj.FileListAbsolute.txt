@@ -217,3 +217,4 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Ev
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardStats1.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoardStats2.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.EventBoard2.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.NoticeStats.resources
