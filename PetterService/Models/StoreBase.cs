@@ -18,8 +18,6 @@ namespace PetterService.Models
         public string EndTime { get; set; }
         [MaxLength(200)]
         public string Introduction { get; set; }
-        //[MaxLength(1), Column("StateFlag", TypeName = "char")]
-        //public string StateFlag { get; set; }
         [MaxLength(20)]
         public string WriteIP { get; set; }
         [MaxLength(20)]

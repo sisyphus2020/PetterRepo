@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace PetterService.Models
 {
     public class CommonCode
     {
-        [Key, Column(Order = 0), MaxLength(20)]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int CoommonCodeNo { get; set; }
+        //[Key, Column(Order = 0), MaxLength(20)]
+        [MaxLength(20)]
         public string Category { get; set; }
-        [Key, Column(Order = 1, TypeName = "char"), MaxLength(4)]
+        //[Key, Column(Order = 1, TypeName = "char"), MaxLength(4)]
+        [MaxLength(4), Column("Code", TypeName = "char")]
         public string Code { get; set; }
         [MaxLength(50)]
         public string CodeName { get; set; }

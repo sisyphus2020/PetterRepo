@@ -139,12 +139,15 @@ namespace PetterService.Controllers
                             case "MemberNo":
                                 companionAnimal.MemberNo = int.Parse(item);
                                 break;
-                            case "PetCategory":
-                                companionAnimal.PetCategory = item;
+                            case "PetKindNo":
+                                companionAnimal.PetKindNo = int.Parse(item);
                                 break;
-                            case "PetCode":
-                                companionAnimal.PetCode = item;
-                                break;
+                            //case "PetCategory":
+                            //    companionAnimal.PetCategory = item;
+                            //    break;
+                            //case "PetCode":
+                            //    companionAnimal.PetCode = item;
+                            //    break;
                             case "Name":
                                 companionAnimal.Name = item;
                                 break;
@@ -257,12 +260,15 @@ namespace PetterService.Controllers
                             case "MemberNo":
                                 companionAnimal.MemberNo = int.Parse(item);
                                 break;
-                            case "PetCategory":
-                                companionAnimal.PetCategory = item;
+                            case "PetKindNo":
+                                companionAnimal.PetKindNo = int.Parse(item);
                                 break;
-                            case "PetCode":
-                                companionAnimal.PetCode = item;
-                                break;
+                            //case "PetCategory":
+                            //    companionAnimal.PetCategory = item;
+                            //    break;
+                            //case "PetCode":
+                            //    companionAnimal.PetCode = item;
+                            //    break;
                             case "Name":
                                 companionAnimal.Name = item;
                                 break;

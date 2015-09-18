@@ -23,7 +23,7 @@ namespace PetterService.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
-            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
             //modelBuilder.Entity<EventBoard>()
             //   .HasRequired(f => f.Member)
@@ -39,8 +39,6 @@ namespace PetterService.Models
         public System.Data.Entity.DbSet<PetterService.Models.Pension> Pensions { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.Store> Stores { get; set; }
-
-        //public System.Data.Entity.DbSet<PetterService.Models.Company> Companies { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.PensionHoliday> PensionHolidays { get; set; }
 
@@ -62,17 +60,11 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.MemberAccess> MemberAccesses { get; set; }
 
-        //public System.Data.Entity.DbSet<PetterService.Models.PetInfomation> PetInfomations { get; set; }
-
-        public System.Data.Entity.DbSet<PetterService.Models.PetKind> PetKinds { get; set; }
-
-        //public System.Data.Entity.DbSet<PetterService.Models.PetInfomation> PetInfomations { get; set; }
+        //public System.Data.Entity.DbSet<PetterService.Models.PetKind> PetKinds { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.CommonCode> CommonCodes { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.CompanionAnimal> CompanionAnimals { get; set; }
-
-        //public System.Data.Entity.DbSet<PetterService.Models.Event> Events { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.EventBoard> EventBoards { get; set; }
 
@@ -100,10 +92,8 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.StoreReviewStats> StoreReviewStats { get; set; }
 
-        //public System.Data.Entity.DbSet<PetterService.Models.Storestatistics> Storestatistics { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.StoreReviewLike> StoreReviewLikes { get; set; }
 
-        //public System.Data.Entity.DbSet<PetterService.Models.Storestatistics> Storestatistics { get; set; }
-
-        //public System.Data.Entity.DbSet<PetterService.Models.EventBoardReply> EventBoardReplies { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.PetKind> PetKinds { get; set; }
     }
 }

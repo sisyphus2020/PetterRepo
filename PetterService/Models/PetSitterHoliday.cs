@@ -15,7 +15,7 @@ namespace PetterService.Models
         public int PetSitterNo { get; set; }
         public int PetSitterHolidayCode { get; set; }
 
-        //[ForeignKey("PetSitterNo")]
-        //public PetSitter PetSitter { get; set; }
+        [ForeignKey("PetSitterNo")]
+        public PetSitter PetSitter { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace PetterService.Models
 {
-    public class CompanionAnimalDTO : DateDetails
+    public class CompanionAnimalDTO : FileDateBase
     {
         public int CompanionAnimalNo { get; set; }
         public int MemberNo { get; set; }
@@ -19,9 +19,9 @@ namespace PetterService.Models
         public string Marking { get; set; }
         public string Medication { get; set; }
         public string Feature { get; set; }
-        public string FileName { get; set; }
-        public string FilePath { get; set; }
-        public string StateFlag { get; set; }
+        //public string FileName { get; set; }
+        //public string FilePath { get; set; }
+        //public string StateFlag { get; set; }
 
         // Navigation property
         //public Member Member { get; set; }

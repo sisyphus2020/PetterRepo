@@ -157,10 +157,9 @@ D:\12. Repository\PetterRepo\PetterService\bin\Microsoft.Owin.Security.Twitter.x
 D:\12. Repository\PetterRepo\PetterService\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 D:\12. Repository\PetterRepo\PetterService\bin\System.Web.Http.Owin.xml
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.csprojResolveAssemblyReference.cache
-D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Store.resources
-D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Store1.resources
-D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.StoreReviewStats.resources
-D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.StoreReviewStats1.resources
-D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.DateBase.resources
-D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.StoreReviewFile.resources
-D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.CompanionAnimal.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Commoncode.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Commoncode1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetKind.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetKind1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetKind2.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetKind3.resources
