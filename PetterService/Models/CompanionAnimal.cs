@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace PetterService.Models
 {
@@ -40,8 +36,7 @@ namespace PetterService.Models
         // Navigation property
         [ForeignKey("MemberNo")]
         public Member Member { get; set; }
-
-        //[ForeignKey("PetKindNo")]
-        //public PetKind PetKind { get; set; }
+        [ForeignKey("PetKindNo")]
+        public PetKind PetKind { get; set; }
     }
 }
