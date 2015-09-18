@@ -121,7 +121,7 @@ namespace PetterService.Controllers
                         File.WriteAllBytes(fullPath, file);
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
-                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.BeautyShopWidth, FileSize.BeautyShopHeight, ImageFormat.Png);
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreWidth, FileSize.StoreHeight, ImageFormat.Png);
                         companionAnimal.FileName = fileName;
                         companionAnimal.FilePath = UploadPath.CompanionAnimalPath;
                     }
@@ -239,7 +239,7 @@ namespace PetterService.Controllers
                         File.WriteAllBytes(fullPath, file);
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
-                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.BeautyShopWidth, FileSize.BeautyShopHeight, ImageFormat.Png);
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreWidth, FileSize.StoreHeight, ImageFormat.Png);
                         companionAnimal.FileName = fileName;
                         companionAnimal.FilePath = UploadPath.CompanionAnimalPath;
                     }

@@ -21,7 +21,7 @@ namespace PetterService.Common
         public static string Root { get { return HttpContext.Current.Server.MapPath("~/") + "\\"; } }
         public static string Temp { get { return Root + "Temp\\"; } }
         public static string PATH { get { return "~/App_Data" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string BeautyShopPath { get { return "/Files" + "/" + "BeautyShop" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
+        public static string StorePath { get { return "/Files" + "/" + "BeautyShop" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string PetSitterPath { get { return "/Files" + "/" + "PetSitter" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string PensionPath { get { return "/Files" + "/" + "Pension" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string MemberPath { get { return "/Files" + "/" + "Member" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
@@ -80,8 +80,8 @@ namespace PetterService.Common
 
     public sealed class FileSize
     {
-        public const int BeautyShopWidth = 980;
-        public const int BeautyShopHeight = 360;
+        public const int StoreWidth = 980;
+        public const int StoreHeight = 360;
 
         public const int PetSitterWidth = 980;
         public const int PetSitterHeight = 360;
@@ -109,7 +109,7 @@ namespace PetterService.Common
 
     public static class FileExtension
     {
-        public static string[] BeautyShopExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
+        public static string[] StoreExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] PetSitterExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] PensionExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] MemberExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };

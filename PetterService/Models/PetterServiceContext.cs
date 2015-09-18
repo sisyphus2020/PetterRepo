@@ -38,7 +38,7 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.Pension> Pensions { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.BeautyShop> BeautyShops { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.Store> Stores { get; set; }
 
         //public System.Data.Entity.DbSet<PetterService.Models.Company> Companies { get; set; }
 
@@ -46,9 +46,9 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.PensionService> PensionServices { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.BeautyShopService> BeautyShopServices { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.StoreService> StoreServices { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.BeautyShopHoliday> BeautyShopHolidays { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.StoreHoliday> StoreHolidays { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.PetSitterService> PetSitterServices { get; set; }
 
@@ -80,9 +80,9 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.EventBoardReply> EventBoardReplies { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.BeautyShopBookmark> BeautyShopBookmarks { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.StoreBookmark> BeautyShopBookmarks { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.BeautyShopStats> BeautyShopStats { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.StoreStats> StoreStats { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.Notice> Notices { get; set; }
 
@@ -94,13 +94,13 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.NoticeReply> NoticeReplies { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.BeautyShopReview> BeautyShopReviews { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.StoreReview> BeautyShopReviews { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.BeautyShopReviewFile> BeautyShopReviewFiles { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.StoreReviewFile> BeautyShopReviewFiles { get; set; }
 
-        //public System.Data.Entity.DbSet<PetterService.Models.BeautyShopStatistics> BeautyShopStatistics { get; set; }
+        //public System.Data.Entity.DbSet<PetterService.Models.Storestatistics> Storestatistics { get; set; }
 
-        //public System.Data.Entity.DbSet<PetterService.Models.BeautyShopStatistics> BeautyShopStatistics { get; set; }
+        //public System.Data.Entity.DbSet<PetterService.Models.Storestatistics> Storestatistics { get; set; }
 
         //public System.Data.Entity.DbSet<PetterService.Models.EventBoardReply> EventBoardReplies { get; set; }
     }
