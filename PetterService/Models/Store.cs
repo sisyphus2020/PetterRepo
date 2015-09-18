@@ -4,15 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetterService.Models
 {
-    public class Store : Classification
+    public class Store : StoreBase
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int StoreNo { get; set; }
-        [Index("IDX_BEAUTYSHOP_StoreName"), MaxLength(100)]
-        public string StoreName { get; set; }
-        [MaxLength(200)]
-        public string StoreAddress { get; set; }
         
         // Navigation property
         [ForeignKey("CompanyNo")]

@@ -120,6 +120,8 @@ namespace PetterService.Controllers
                 DateCreated = p.DateCreated,
                 DateModified = p.DateModified,
                 DateDeleted = p.DateDeleted,
+                FileName = p.FileName,
+                FilePath = p.FilePath,
                 EventBoardStats = p.EventBoardStats.ToList(),
                 EventBoardFiles = p.EventBoardFiles.ToList(),
                 EventBoardReplys = p.EventBoardReplys.ToList()

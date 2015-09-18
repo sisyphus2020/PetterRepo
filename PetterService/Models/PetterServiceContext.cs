@@ -98,6 +98,8 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.StoreReviewFile> BeautyShopReviewFiles { get; set; }
 
+        public System.Data.Entity.DbSet<PetterService.Models.StoreReviewStats> StoreReviewStats { get; set; }
+
         //public System.Data.Entity.DbSet<PetterService.Models.Storestatistics> Storestatistics { get; set; }
 
         //public System.Data.Entity.DbSet<PetterService.Models.Storestatistics> Storestatistics { get; set; }
