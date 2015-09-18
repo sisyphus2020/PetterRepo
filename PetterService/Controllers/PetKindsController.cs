@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PetterService.Models;
+using PetterService.Common;
 
 namespace PetterService.Controllers
 {
@@ -34,6 +35,49 @@ namespace PetterService.Controllers
             }
 
             return Ok(petKind);
+        }
+
+        // GET: api/PetKinds
+        [Route("api/PetKinds/{petCategory}")]
+        [ResponseType(typeof(PetterResultType<PetKind>))]
+        public async Task<IHttpActionResult> GetPetKinds(string petCategory)
+        {
+            PetterResultType<PetKind> petterResultType = new PetterResultType<PetKind>();
+            //List<PetKind> petKinds = new List<PetKind>();
+
+            var petKinds = await db.PetKinds.Where(p => p.PetCategory == petCategory).ToListAsync();
+
+            if (petKinds == null)
+            {
+                return NotFound();
+            }
+
+            //petKinds.Add(petKind);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = petKinds;
+
+            return Ok(petterResultType);
+        }
+
+        [Route("api/PetKinds/{petCategory}/{petCode}/")]
+        [ResponseType(typeof(PetKind))]
+        public async Task<IHttpActionResult> GetPetKind(string petCategory, string petCode)
+        {
+            PetterResultType<PetKind> petterResultType = new PetterResultType<PetKind>();
+            List<PetKind> petKinds = new List<PetKind>();
+
+            PetKind petKind = await db.PetKinds.Where(p => p.PetCategory == petCategory & p.PetCode == petCode).SingleOrDefaultAsync();
+
+            if (petKind == null)
+            {
+                return NotFound();
+            }
+
+            petKinds.Add(petKind);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = petKinds;
+
+            return Ok(petterResultType);
         }
 
         // PUT: api/PetKinds/5

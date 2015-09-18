@@ -163,3 +163,5 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Pe
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetKind1.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetKind2.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.PetKind3.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.CommondCode.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.CommondCode1.resources
