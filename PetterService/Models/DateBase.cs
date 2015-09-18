@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetterService.Models
 {
@@ -10,5 +9,7 @@ namespace PetterService.Models
         public DateTime? DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
         public DateTime? DateDeleted { get; set; }
+        [MaxLength(1), Column("StateFlag", TypeName = "char")]
+        public string StateFlag { get; set; }
     }
 }

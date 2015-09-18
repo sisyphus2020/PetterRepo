@@ -17,7 +17,7 @@ namespace PetterService.Models
         public string FileName { get; set; }
         [MaxLength(100)]
         public string FilePath { get; set; }
-        [MaxLength(1), Column("StateFlag", TypeName = "char")]
-        public string StateFlag { get; set; }
+        //[MaxLength(1), Column("StateFlag", TypeName = "char")]
+        //public string StateFlag { get; set; }
     }
 }

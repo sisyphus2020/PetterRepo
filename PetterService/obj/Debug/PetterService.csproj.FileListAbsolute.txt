@@ -161,3 +161,6 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.St
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Store1.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.StoreReviewStats.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.StoreReviewStats1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.DateBase.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.StoreReviewFile.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.CompanionAnimal.resources

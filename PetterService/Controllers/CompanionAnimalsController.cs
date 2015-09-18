@@ -157,6 +157,9 @@ namespace PetterService.Controllers
                             case "Gender":
                                 companionAnimal.Gender = item;
                                 break;
+                            case "Neutralization":
+                                companionAnimal.Neutralization = item;
+                                break;
                             case "Marking":
                                 companionAnimal.Marking = item;
                                 break;
@@ -271,6 +274,9 @@ namespace PetterService.Controllers
                                 break;
                             case "Gender":
                                 companionAnimal.Gender = item;
+                                break;
+                            case "Neutralization":
+                                companionAnimal.Neutralization = item;
                                 break;
                             case "Marking":
                                 companionAnimal.Marking = item;

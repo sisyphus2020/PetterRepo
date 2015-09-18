@@ -13,8 +13,8 @@ namespace PetterService.Models
         //[Index("IDX_GRADE"), Range(0, 10)]
         public double Grade { get; set; }
         public string Content { get; set; }
-        [MaxLength(1), Column("StateFlag", TypeName = "char")]
-        public string StateFlag { get; set; }
+        //[MaxLength(1), Column("StateFlag", TypeName = "char")]
+        //public string StateFlag { get; set; }
 
         // Navigation property
         [ForeignKey("MemberNo")]

@@ -17,8 +17,8 @@ namespace PetterService.Models
         public int EventBoardNo { get; set; }
         public int MemberNo { get; set; }
         public string Reply { get; set; }
-        [MaxLength(1), Column("StateFlag", TypeName = "char")]
-        public string StateFlag { get; set; }
+        //[MaxLength(1), Column("StateFlag", TypeName = "char")]
+        //public string StateFlag { get; set; }
 
         // Navigation property
         // 순환참조 오류 발생

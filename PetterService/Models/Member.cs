@@ -16,8 +16,8 @@ namespace PetterService.Models
         public string Password { get; set; }
         [Index("IDX_MEMBER_NICKNAME", IsUnique = true), MaxLength(50)]
         public string NickName { get; set; }
-        [MaxLength(1), Column("StateFlag", TypeName = "char")]
-        public string StateFlag { get; set; }
+        //[MaxLength(1), Column("StateFlag", TypeName = "char")]
+        //public string StateFlag { get; set; }
         [MaxLength(1), Column("Route", TypeName = "char")]
         public string Route { get; set; }
     }

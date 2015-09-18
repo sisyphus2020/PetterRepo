@@ -15,6 +15,7 @@ namespace PetterService.Models
         public byte Age { get; set; }
         public byte Weight { get; set; }
         public string Gender { get; set; }
+        public string Neutralization { get; set; }
         public string Marking { get; set; }
         public string Medication { get; set; }
         public string Feature { get; set; }

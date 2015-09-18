@@ -27,6 +27,8 @@ namespace PetterService.Models
         public byte Weight { get; set; }
         [MaxLength(1), Column("Gender", TypeName = "char")]
         public string Gender { get; set; }
+        [MaxLength(1), Column("Neutralization", TypeName = "char")]
+        public string Neutralization { get; set; }
         [MaxLength(1), Column("Marking", TypeName = "char")]
         public string Marking { get; set; }
         [MaxLength(1), Column("Medication", TypeName = "char")]
