@@ -166,3 +166,4 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Co
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.StoreGallery.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.StoreGallery1.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.StoreGalleryStats.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.StoreGallery2.resources

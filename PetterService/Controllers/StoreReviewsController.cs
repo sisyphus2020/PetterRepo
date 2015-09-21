@@ -24,7 +24,7 @@ namespace PetterService.Controllers
         // 2. 스토어 리뷰 상세 (X)
         // 3. 스토어 리뷰 등록 (O)
         // 4. 스토어 리뷰 수정 (O)
-        // 5. 스토어 리뷰 삭제 (X)
+        // 5. 스토어 리뷰 삭제 (O)
 
         private PetterServiceContext db = new PetterServiceContext();
 
@@ -271,20 +271,37 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-        // DELETE: api/StoreReviews/5
-        [ResponseType(typeof(StoreReview))]
+        /// <summary>
+        /// DELETE: api/StoreReviews/5
+        /// 스토어 리뷰 삭제
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<StoreReview>))]
         public async Task<IHttpActionResult> DeletestoreReview(int id)
         {
+            //인증 필요
+
+            PetterResultType<StoreReview> petterResultType = new PetterResultType<StoreReview>();
+            List<StoreReview> storeReviews = new List<StoreReview>();
             StoreReview storeReview = await db.StoreReviews.FindAsync(id);
+
             if (storeReview == null)
             {
                 return NotFound();
             }
 
-            db.StoreReviews.Remove(storeReview);
+            storeReview.StateFlag = StateFlags.Delete;
+            storeReview.DateDeleted = DateTime.Now;
+            db.Entry(storeReview).State = EntityState.Modified;
+
             await db.SaveChangesAsync();
 
-            return Ok(storeReview);
+            storeReviews.Add(storeReview);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = storeReviews;
+
+            return Ok(petterResultType);
         }
 
         protected override void Dispose(bool disposing)

@@ -24,7 +24,7 @@ namespace PetterService.Controllers
         // 2. 스토어 갤러리 상세 (X)
         // 3. 스토어 갤러리 등록 (O)
         // 4. 스토어 갤러리 수정 (O)
-        // 5. 스토어 갤러리 삭제 (X)
+        // 5. 스토어 갤러리 삭제 (O)
 
         private PetterServiceContext db = new PetterServiceContext();
 
@@ -101,6 +101,14 @@ namespace PetterService.Controllers
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreGalleryWidth, FileSize.StoreGalleryHeight, ImageFormat.Png);
+
+                        // 갤러리 대표 이미지
+                        if (fieldName == FieldName.StoreGalleryFieldName)
+                        {
+                            storeGallery.FileName = fileName;
+                            storeGallery.FilePath = UploadPath.EventBoardPath;
+                        }
+
                         storeGalleryFile.StoreGalleryNo = storeGallery.StoreGalleryNo;
                         storeGalleryFile.FileName = fileName;
                         storeGalleryFile.FilePath = UploadPath.StoreGalleryPath;
@@ -203,6 +211,14 @@ namespace PetterService.Controllers
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreGalleryWidth, FileSize.StoreGalleryHeight, ImageFormat.Png);
+
+                        // 갤러리 대표 이미지
+                        if (fieldName == FieldName.StoreGalleryFieldName)
+                        {
+                            storeGallery.FileName = fileName;
+                            storeGallery.FilePath = UploadPath.EventBoardPath;
+                        }
+
                         storeGalleryFile.FileName = fileName;
                         storeGalleryFile.FilePath = UploadPath.StoreGalleryPath;
 
@@ -259,20 +275,38 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-        // DELETE: api/StoreGalleries/5
-        [ResponseType(typeof(StoreGallery))]
+        /// <summary>
+        /// DELETE: api/StoreGalleries/5
+        /// 스토어 갤러리 삭제
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<StoreGallery>))]
         public async Task<IHttpActionResult> DeleteStoreGallery(int id)
         {
+            // 인증 필요
+
+            PetterResultType<StoreGallery> petterResultType = new PetterResultType<StoreGallery>();
+            List<StoreGallery> storeGalleries = new List<StoreGallery>();
             StoreGallery storeGallery = await db.StoreGalleries.FindAsync(id);
+
             if (storeGallery == null)
             {
                 return NotFound();
             }
 
-            db.StoreGalleries.Remove(storeGallery);
+            storeGallery.StateFlag = StateFlags.Delete;
+            storeGallery.DateDeleted = DateTime.Now;
+            db.Entry(storeGallery).State = EntityState.Modified;
+
             await db.SaveChangesAsync();
 
-            return Ok(storeGallery);
+            storeGalleries.Add(storeGallery);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = storeGalleries;
+
+            return Ok(petterResultType);
+
         }
 
         protected override void Dispose(bool disposing)

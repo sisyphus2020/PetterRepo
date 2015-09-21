@@ -76,9 +76,10 @@ namespace PetterService.Common
 
     public sealed class FieldName
     {
-        public const string EventFieldName = "EventField";
-        public const string NoticeFieldName = "NoticeField";
-        public const string ServiceCenterFieldName = "ServiceCenterField";
+        public const string EventFieldName = "EventMainFile";
+        public const string NoticeFieldName = "NoticeMainFile";
+        public const string StoreGalleryFieldName = "StoreGalleryMainFile";
+        public const string ServiceCenterFieldName = "ServiceCenterMainFile";
     }
 
     public sealed class FileSize

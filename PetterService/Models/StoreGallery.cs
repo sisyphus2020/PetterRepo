@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetterService.Models
 {
-    public class StoreGallery : DateBase
+    public class StoreGallery : FileDateBase
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
