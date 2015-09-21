@@ -93,5 +93,7 @@ namespace PetterService.Models
         public System.Data.Entity.DbSet<PetterService.Models.CompanionAnimal> CompanionAnimals { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.CommonCode> CommonCodes { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.StoreGallery> StoreGalleries { get; set; }
     }
 }

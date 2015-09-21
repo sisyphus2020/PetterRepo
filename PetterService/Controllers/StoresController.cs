@@ -249,15 +249,6 @@ namespace PetterService.Controllers
                             case "Longitude":
                                 store.Longitude = Convert.ToDouble(item);
                                 break;
-                            //case "Grade":
-                            //    store.Grade = Convert.ToDouble(item);
-                            //    break;
-                            //case "ReviewCount":
-                            //    store.ReviewCount = int.Parse(item);
-                            //    break;
-                            //case "Bookmark":
-                            //    store.Bookmark = int.Parse(item);
-                            //    break;
                             case "StoreServices":
                                 storeService = item;
                                 break;
@@ -407,15 +398,6 @@ namespace PetterService.Controllers
                             case "Longitude":
                                 store.Longitude = Convert.ToDouble(item);
                                 break;
-                            //case "Grade":
-                            //    store.Grade = Convert.ToDouble(item);
-                            //    break;
-                            //case "ReviewCount":
-                            //    store.ReviewCount = int.Parse(item);
-                            //    break;
-                            //case "Bookmark":
-                            //    store.Bookmark = int.Parse(item);
-                            //    break;
                             case "StoreServices":
                                 storeService = item;
                                 break;
@@ -492,7 +474,7 @@ namespace PetterService.Controllers
             PetterResultType<StoreDTO> petterResultType = new PetterResultType<StoreDTO>();
             List<StoreDTO> stores = new List<StoreDTO>();
 
-            var idCount = db.Stores.Count(e => e.StoreID == id);
+            var idCount = db.Stores.Count(e => e.StoreID == id.ToLower());
 
             //var store = await db.Stores.Where(p => p.StoreID == id).Select(p => new StoreDTO
             //{
