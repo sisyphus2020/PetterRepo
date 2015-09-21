@@ -13,6 +13,6 @@ namespace PetterService.Models
         // Navigation property
         public List<EventBoardStats> EventBoardStats { get; set; }
         public List<EventBoardFile> EventBoardFiles { get; set; }
-        public List<EventBoardReply> EventBoardReplys { get; set; }
+        public List<EventBoardReply> EventBoardReplies { get; set; }
     }
 }

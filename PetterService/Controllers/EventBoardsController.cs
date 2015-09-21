@@ -124,7 +124,7 @@ namespace PetterService.Controllers
                 FilePath = p.FilePath,
                 EventBoardStats = p.EventBoardStats.ToList(),
                 EventBoardFiles = p.EventBoardFiles.ToList(),
-                EventBoardReplys = p.EventBoardReplys.ToList()
+                EventBoardReplies = p.EventBoardReplys.ToList()
             }).SingleOrDefaultAsync();
 
 

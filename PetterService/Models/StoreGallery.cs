@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetterService.Models
@@ -15,5 +16,8 @@ namespace PetterService.Models
         // Navigation property
         [ForeignKey("StoreNo")]
         public Store Store { get; set; }
+        public ICollection<StoreGalleryStats> StoreGalleryStats { get; set; }
+        public ICollection<StoreGalleryFile> StoreGalleryFiles { get; set; }
+        public ICollection<StoreGalleryReply> StoreGalleryReplies { get; set; }
     }
 }

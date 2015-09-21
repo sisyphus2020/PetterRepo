@@ -21,30 +21,110 @@ namespace PetterService.Controllers
     public class StoreGalleriesController : ApiController
     {
         // 1. 스토어 갤러리 리스트 (X)
-        // 2. 스토어 갤러리 상세 (X)
+        // 2. 스토어 갤러리 상세 (O)
         // 3. 스토어 갤러리 등록 (O)
         // 4. 스토어 갤러리 수정 (O)
         // 5. 스토어 갤러리 삭제 (O)
 
         private PetterServiceContext db = new PetterServiceContext();
 
-        // GET: api/StoreGalleries
-        public IQueryable<StoreGallery> GetStoreGalleries()
+        /// <summary>
+        /// GET: api/StoreGalleries
+        /// 스토어 갤러리 리스트
+        /// </summary>
+        /// <param name="petterRequestType"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<StoreGallery>))]
+        public async Task<IHttpActionResult> GetStoreGalleries([FromUri] PetterRequestType petterRequestType)
         {
-            return db.StoreGalleries;
+            PetterResultType<StoreGallery> petterResultType = new PetterResultType<StoreGallery>();
+            List<StoreGallery> list = new List<StoreGallery>();
+            bool isSearch = false;
+
+            // 검색 조건 
+            if (!String.IsNullOrWhiteSpace(petterRequestType.Search))
+            {
+                isSearch = true;
+            }
+
+            #region 정렬 방식
+            switch (petterRequestType.SortBy)
+            {
+                // 댓글수
+                case "replycount":
+                    {
+                        list = await db.StoreGalleries
+                            .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
+                            .Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
+                            //.OrderByDescending(p => p.ReviewCount)
+                            .OrderByDescending(p => p.StoreGalleryNo)
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToListAsync();
+                        break;
+                    }
+                // 기본
+                default:
+                    {
+                        list = await db.StoreGalleries
+                            .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
+                            .Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
+                            .OrderByDescending(p => p.StoreGalleryNo)
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToListAsync();
+                        break;
+                    }
+            }
+            #endregion 정렬방식
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = list.ToList();
+            return Ok(petterResultType);
         }
 
-        // GET: api/StoreGalleries/5
-        [ResponseType(typeof(StoreGallery))]
+        /// <summary>
+        /// GET: api/StoreGalleries/5
+        /// 스토어 갤러리 상세
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<StoreGalleryDTO>))]
         public async Task<IHttpActionResult> GetStoreGallery(int id)
         {
-            StoreGallery storeGallery = await db.StoreGalleries.FindAsync(id);
+            PetterResultType<StoreGalleryDTO> petterResultType = new PetterResultType<StoreGalleryDTO>();
+            List<StoreGalleryDTO> storeGalleries = new List<StoreGalleryDTO>();
+
+            var storeGallery = await db.StoreGalleries.Where(p => p.StoreGalleryNo == id).Select(p => new StoreGalleryDTO
+            {
+                StoreGalleryNo = p.StoreGalleryNo,
+                StoreNo = p.StoreNo,
+                Content = p.Content,
+                StateFlag = p.StateFlag,
+                DateCreated = p.DateCreated,
+                DateModified = p.DateModified,
+                DateDeleted = p.DateDeleted,
+                FileName = p.FileName,
+                FilePath = p.FilePath,
+                StoreGalleryStats = p.StoreGalleryStats.ToList(),
+                StoreGalleryReplies = p.StoreGalleryReplies.ToList(),
+                StoreGalleryFiles = p.StoreGalleryFiles.ToList()
+            }).SingleOrDefaultAsync();
+
+
             if (storeGallery == null)
             {
                 return NotFound();
             }
 
-            return Ok(storeGallery);
+            storeGalleries.Add(storeGallery);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = storeGalleries;
+
+            return Ok(petterResultType);
         }
 
         /// <summary>
@@ -112,6 +192,8 @@ namespace PetterService.Controllers
                         storeGalleryFile.StoreGalleryNo = storeGallery.StoreGalleryNo;
                         storeGalleryFile.FileName = fileName;
                         storeGalleryFile.FilePath = UploadPath.StoreGalleryPath;
+                        storeGalleryFile.DateModified = DateTime.Now;
+                        storeGalleryFile.StateFlag = StateFlags.Use;
 
                         storeGalleryFiles.Add(storeGalleryFile);
                     }
@@ -221,6 +303,9 @@ namespace PetterService.Controllers
 
                         storeGalleryFile.FileName = fileName;
                         storeGalleryFile.FilePath = UploadPath.StoreGalleryPath;
+                        storeGalleryFile.DateCreated = DateTime.Now;
+                        storeGalleryFile.DateModified = DateTime.Now;
+                        storeGalleryFile.StateFlag = StateFlags.Use;
 
                         storeGalleryFiles.Add(storeGalleryFile);
                     }
