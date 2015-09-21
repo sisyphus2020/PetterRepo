@@ -101,5 +101,7 @@ namespace PetterService.Models
         public System.Data.Entity.DbSet<PetterService.Models.StoreGalleryLike> StoreGalleryLikes { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.StoreGalleryReply> StoreGalleryReplies { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.StoreGalleryFile> StoreGalleryFiles { get; set; }
     }
 }
