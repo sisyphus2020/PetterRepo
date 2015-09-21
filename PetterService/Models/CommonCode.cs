@@ -7,7 +7,7 @@ namespace PetterService.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int CoommonCodeNo { get; set; }
+        public int CommonCodeNo { get; set; }
         //[Key, Column(Order = 0), MaxLength(20)]
         [MaxLength(20)]
         public string Category { get; set; }

@@ -45,7 +45,7 @@ namespace PetterService.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != commonCode.CoommonCodeNo)
+            if (id != commonCode.CommonCodeNo)
             {
                 return BadRequest();
             }
@@ -83,7 +83,7 @@ namespace PetterService.Controllers
             db.CommonCodes.Add(commonCode);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = commonCode.CoommonCodeNo }, commonCode);
+            return CreatedAtRoute("DefaultApi", new { id = commonCode.CommonCodeNo }, commonCode);
         }
 
         // DELETE: api/CommonCodes/5
@@ -113,7 +113,7 @@ namespace PetterService.Controllers
 
         private bool CommonCodeExists(int id)
         {
-            return db.CommonCodes.Count(e => e.CoommonCodeNo == id) > 0;
+            return db.CommonCodes.Count(e => e.CommonCodeNo == id) > 0;
         }
     }
 }

@@ -60,8 +60,6 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.MemberAccess> MemberAccesses { get; set; }
 
-        //public System.Data.Entity.DbSet<PetterService.Models.CompanionAnimal> CompanionAnimals { get; set; }
-
         public System.Data.Entity.DbSet<PetterService.Models.EventBoard> EventBoards { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.EventBoardFile> EventBoardFiles { get; set; }
@@ -92,8 +90,8 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.PetKind> PetKinds { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.CommonCode> CommonCodes { get; set; }
-
         public System.Data.Entity.DbSet<PetterService.Models.CompanionAnimal> CompanionAnimals { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.CommonCode> CommonCodes { get; set; }
     }
 }

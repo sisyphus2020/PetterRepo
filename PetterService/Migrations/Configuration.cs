@@ -82,6 +82,26 @@ namespace PetterService.Migrations
             //);
             //#endregion Company Seed
 
+            //#region CommonCode Seed
+            //context.CommonCodes.AddOrUpdate(
+            //    new Models.CommonCode() { Category = "Store", Code = "S001", CodeName = "펫미용" },
+            //    new Models.CommonCode() { Category = "Store", Code = "S002", CodeName = "펫시터" },
+            //    new Models.CommonCode() { Category = "Store", Code = "S003", CodeName = "숙소" },
+            //    new Models.CommonCode() { Category = "Holiday", Code = "H001", CodeName = "월요일" },
+            //    new Models.CommonCode() { Category = "Holiday", Code = "H002", CodeName = "화요일" },
+            //    new Models.CommonCode() { Category = "Holiday", Code = "H003", CodeName = "수요일" },
+            //    new Models.CommonCode() { Category = "Holiday", Code = "H004", CodeName = "목요일" },
+            //    new Models.CommonCode() { Category = "Holiday", Code = "H005", CodeName = "금요일" },
+            //    new Models.CommonCode() { Category = "Holiday", Code = "H006", CodeName = "토요일" },
+            //    new Models.CommonCode() { Category = "Holiday", Code = "H007", CodeName = "일요일" },
+            //    new Models.CommonCode() { Category = "Service", Code = "S001", CodeName = "스파" },
+            //    new Models.CommonCode() { Category = "Service", Code = "S002", CodeName = "머드팩" },
+            //    new Models.CommonCode() { Category = "Service", Code = "S003", CodeName = "방문미용" },
+            //    new Models.CommonCode() { Category = "Service", Code = "S004", CodeName = "대형견" },
+            //    new Models.CommonCode() { Category = "Service", Code = "S005", CodeName = "셀프목욕" }
+            //);
+            //#endregion CommonCode Seed
+
         }
     }
 }

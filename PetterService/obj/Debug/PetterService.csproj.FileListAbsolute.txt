@@ -159,3 +159,7 @@ D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.dll
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.pdb
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.csprojResolveAssemblyReference.cache
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.CompanionAnimal1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Store.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.CommonCode.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.CommonCode1.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.CommonCode2.resources

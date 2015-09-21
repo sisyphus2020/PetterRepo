@@ -21,6 +21,14 @@ namespace PetterService.Controllers
 {
     public class StoresController : ApiController
     {
+        // 1. 스토어 리스트 (X)
+        // 2. 스토어 상세 (O)
+        // 3. 스토어 등록 (O)
+        // 4. 스토어 수정 (O)
+        // 5. 스토어 삭제 (O)
+        // 6. 스토어 ID 검색
+        // 
+
         private PetterServiceContext db = new PetterServiceContext();
 
         // GET: api/Stores
@@ -108,8 +116,9 @@ namespace PetterService.Controllers
             {
                 StoreNo = p.StoreNo,
                 CompanyNo = p.CompanyNo,
-                Phone = p.Phone,
                 StoreName = p.StoreName,
+                StoreID = p.StoreID,
+                Phone = p.Phone,
                 StoreAddress = p.StoreAddress,
                 FileName = p.FileName,
                 FilePath = p.FilePath,
@@ -137,7 +146,12 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-        // PUT: api/Stores/5
+        /// <summary>
+        /// PUT: api/Stores/5
+        /// 스토어 수정
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ResponseType(typeof(PetterResultType<Store>))]
         public async Task<IHttpActionResult> PutStore(int id)
         {
@@ -205,11 +219,17 @@ namespace PetterService.Controllers
                             case "CompanyNo":
                                 store.CompanyNo = int.Parse(item);
                                 break;
-                            case "Phone":
-                                store.Phone = item;
-                                break;
+                            //case "CommonCodeNo":
+                            //    store.CommonCodeNo = int.Parse(item);
+                            //    break;
                             case "StoreName":
                                 store.StoreName = item;
+                                break;
+                            //case "StoreID":
+                            //    store.StoreID = item;
+                            //    break;
+                            case "Phone":
+                                store.Phone = item;
                                 break;
                             case "StoreAddress":
                                 store.StoreAddress = item;
@@ -292,7 +312,11 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-        // POST: api/Stores
+        /// <summary>
+        /// POST: api/Stores
+        /// 스토어 등록
+        /// </summary>
+        /// <returns></returns>
         [ResponseType(typeof(PetterResultType<Store>))]
         public async Task<IHttpActionResult> PostStore()
         {
@@ -320,7 +344,7 @@ namespace PetterService.Controllers
 
                         string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
 
-                        if (!FileExtension.PensionExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        if (!FileExtension.StoreExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
@@ -344,17 +368,20 @@ namespace PetterService.Controllers
                         #region switch case
                         switch (fieldName)
                         {
-                            case "PensionNo":
-                                store.StoreNo = int.Parse(item);
-                                break;
                             case "CompanyNo":
                                 store.CompanyNo = int.Parse(item);
                                 break;
-                            case "Phone":
-                                store.Phone = item;
+                            case "CommoncodeNo":
+                                store.CommonCodeNo = int.Parse(item);
                                 break;
                             case "StoreName":
                                 store.StoreName = item;
+                                break;
+                            case "StoreID":
+                                store.StoreID = item;
+                                break;
+                            case "Phone":
+                                store.Phone = item;
                                 break;
                             case "StoreAddress":
                                 store.StoreAddress = item;
@@ -450,6 +477,58 @@ namespace PetterService.Controllers
             await db.SaveChangesAsync();
 
             return Ok(store);
+        }
+
+        /// <summary>
+        /// GET: api/Stores/StoreID/SmartPetter
+        /// StoreID 중복 확인
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ActionName("StoreID")]
+        [ResponseType(typeof(PetterResultType<StoreDTO>))]
+        public async Task<IHttpActionResult> GetStoreByStoreID(string id)
+        {
+            PetterResultType<StoreDTO> petterResultType = new PetterResultType<StoreDTO>();
+            List<StoreDTO> stores = new List<StoreDTO>();
+
+            var idCount = db.Stores.Count(e => e.StoreID == id);
+
+            //var store = await db.Stores.Where(p => p.StoreID == id).Select(p => new StoreDTO
+            //{
+            //    StoreNo = p.StoreNo,
+            //    CompanyNo = p.CompanyNo,
+            //    StoreName = p.StoreName,
+            //    StoreID = p.StoreID,
+            //    Phone = p.Phone,
+            //    StoreAddress = p.StoreAddress,
+            //    FileName = p.FileName,
+            //    FilePath = p.FilePath,
+            //    StartTime = p.StartTime,
+            //    EndTime = p.EndTime,
+            //    Introduction = p.Introduction,
+            //    Coordinate = p.Coordinate,
+            //    Latitude = p.Latitude,
+            //    Longitude = p.Longitude,
+            //    DateCreated = p.DateCreated,
+            //    DateModified = p.DateModified,
+            //    StoreStats = p.StoreStats.ToList(),
+            //    StoreServices = p.StoreServices.ToList(),
+            //    StoreHolidays = p.StoreHolidays.ToList()
+            //}).SingleOrDefaultAsync();
+
+            if (idCount == 0)
+            {
+                petterResultType.IsSuccessful = true;
+                petterResultType.ScalarValue = idCount;
+            }
+            else
+            {
+                petterResultType.IsSuccessful = false;
+                petterResultType.ScalarValue = idCount;
+            }
+
+            return Ok(petterResultType);
         }
 
         private async Task<List<StoreService>> AddStoreService(Store store, string service)

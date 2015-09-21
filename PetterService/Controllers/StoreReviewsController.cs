@@ -20,6 +20,12 @@ namespace PetterService.Controllers
 {
     public class StoreReviewsController : ApiController
     {
+        // 1. 스토어 리뷰 리스트 (X)
+        // 2. 스토어 리뷰 상세 (X)
+        // 3. 스토어 리뷰 등록 (O)
+        // 4. 스토어 리뷰 수정 (O)
+        // 5. 스토어 리뷰 삭제 (X)
+
         private PetterServiceContext db = new PetterServiceContext();
 
         // GET: api/BeautyShopReviews
