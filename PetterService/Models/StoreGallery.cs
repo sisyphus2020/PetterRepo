@@ -18,6 +18,7 @@ namespace PetterService.Models
         public Store Store { get; set; }
         public ICollection<StoreGalleryStats> StoreGalleryStats { get; set; }
         public ICollection<StoreGalleryFile> StoreGalleryFiles { get; set; }
+        public ICollection<StoreGalleryLike> StoreGalleryLikes { get; set; }
         public ICollection<StoreGalleryReply> StoreGalleryReplies { get; set; }
     }
 }

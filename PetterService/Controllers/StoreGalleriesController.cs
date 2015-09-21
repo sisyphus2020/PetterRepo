@@ -94,6 +94,7 @@ namespace PetterService.Controllers
         /// <returns></returns>
         [ResponseType(typeof(PetterResultType<StoreGalleryDTO>))]
         public async Task<IHttpActionResult> GetStoreGallery(int id)
+        //public async Task<IHttpActionResult> GetStoreGallery(int id, int memberNo)
         {
             PetterResultType<StoreGalleryDTO> petterResultType = new PetterResultType<StoreGalleryDTO>();
             List<StoreGalleryDTO> storeGalleries = new List<StoreGalleryDTO>();
@@ -110,8 +111,10 @@ namespace PetterService.Controllers
                 FileName = p.FileName,
                 FilePath = p.FilePath,
                 StoreGalleryStats = p.StoreGalleryStats.ToList(),
-                StoreGalleryReplies = p.StoreGalleryReplies.ToList(),
-                StoreGalleryFiles = p.StoreGalleryFiles.ToList()
+                StoreGalleryFiles = p.StoreGalleryFiles.ToList(),
+                StoreGalleryLikes = p.StoreGalleryLikes.ToList(),
+                //isCount = p.StoreGalleryLikes.Where(p.MemberNO == memberNo),
+                StoreGalleryReplies = p.StoreGalleryReplies.ToList()
             }).SingleOrDefaultAsync();
 
 

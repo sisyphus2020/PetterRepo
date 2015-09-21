@@ -11,9 +11,12 @@ namespace PetterService.Models
         public int StoreNo { get; set; }
         public string Content { get; set; }
 
+        //public int isCount { get; set; }
+
         // Navigation property
         public List<StoreGalleryStats> StoreGalleryStats { get; set; }
         public List<StoreGalleryFile> StoreGalleryFiles { get; set; }
+        public List<StoreGalleryLike> StoreGalleryLikes { get; set; }
         public List<StoreGalleryReply> StoreGalleryReplies { get; set; }
     }
 }
