@@ -14,6 +14,7 @@ namespace PetterService.Models
         public int StoreGalleryStatsNo { get; set; }
         public int StoreGalleryNo { get; set; }
         public int LikeCount { get; set; }
+        public int ReplyCount { get; set; }
 
         // Navigation property
         [ForeignKey("StoreGalleryNo")]

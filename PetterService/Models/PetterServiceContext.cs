@@ -80,9 +80,9 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.NoticeReply> NoticeReplies { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.StoreReview> BeautyShopReviews { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.StoreReview> StoreReviews { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.StoreReviewFile> BeautyShopReviewFiles { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.StoreReviewFile> StoreReviewFiles { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.StoreReviewStats> StoreReviewStats { get; set; }
 

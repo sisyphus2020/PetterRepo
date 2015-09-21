@@ -28,52 +28,52 @@ namespace PetterService.Controllers
 
         private PetterServiceContext db = new PetterServiceContext();
 
-        // GET: api/BeautyShopReviews
+        // GET: api/StoreReviews
         public IQueryable<StoreReview> GetStoreReviews()
         {
-            return db.BeautyShopReviews;
+            return db.StoreReviews;
         }
 
-        // GET: api/BeautyShopReviews/5
+        // GET: api/StoreReviews/5
         [ResponseType(typeof(StoreReview))]
         public async Task<IHttpActionResult> GetStoreReview(int id)
         {
-            StoreReview beautyShopReview = await db.BeautyShopReviews.FindAsync(id);
-            if (beautyShopReview == null)
+            StoreReview storeReview = await db.StoreReviews.FindAsync(id);
+            if (storeReview == null)
             {
                 return NotFound();
             }
 
-            return Ok(beautyShopReview);
+            return Ok(storeReview);
         }
 
         /// <summary>
-        /// PUT: api/BeautyShopReviews/5
-        /// 미용리뷰 수정
+        /// PUT: api/StoreReviews/5
+        /// 스토어 리뷰 수정
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [ResponseType(typeof(PetterResultType<StoreReview>))]
-        public async Task<IHttpActionResult> PutBeautyShopReview(int id)
+        public async Task<IHttpActionResult> PutstoreReview(int id)
         {
             PetterResultType<StoreReview> petterResultType = new PetterResultType<StoreReview>();
-            List<StoreReview> beautyShopReviews = new List<StoreReview>();
-            List<StoreReviewFile> beautyShopReviewFiles = new List<StoreReviewFile>();
+            List<StoreReview> storeReviews = new List<StoreReview>();
+            List<StoreReviewFile> storeReviewFiles = new List<StoreReviewFile>();
 
             if (!Request.Content.IsMimeMultipartContent())
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
-            StoreReview beautyShopReview = await db.BeautyShopReviews.FindAsync(id);
-            if (beautyShopReview == null)
+            StoreReview storeReview = await db.StoreReviews.FindAsync(id);
+            if (storeReview == null)
             {
                 return NotFound();
             }
 
             if (Request.Content.IsMimeMultipartContent())
             {
-                string folder = HostingEnvironment.MapPath(UploadPath.BeautyShopReviewPath);
+                string folder = HostingEnvironment.MapPath(UploadPath.StoreReviewPath);
                 Utilities.CreateDirectory(folder);
 
                 var provider = await Request.Content.ReadAsMultipartAsync();
@@ -83,12 +83,12 @@ namespace PetterService.Controllers
                     string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
                     if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
                     {
-                        StoreReviewFile beautyShopReviewFile = new StoreReviewFile();
+                        StoreReviewFile storeReviewFile = new StoreReviewFile();
                         var file = await content.ReadAsByteArrayAsync();
 
                         string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
 
-                        if (!FileExtension.BeautyShopReviewExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        if (!FileExtension.StoreReviewExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
@@ -100,12 +100,12 @@ namespace PetterService.Controllers
                         File.WriteAllBytes(fullPath, file);
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
-                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.BeautyShopReviewWidth, FileSize.BeautyShopReviewHeight, ImageFormat.Png);
-                        beautyShopReviewFile.StoreReviewNo = beautyShopReview.StoreReviewNo;
-                        beautyShopReviewFile.FileName = fileName;
-                        beautyShopReviewFile.FilePath = UploadPath.BeautyShopReviewPath;
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreReviewWidth, FileSize.StoreReviewHeight, ImageFormat.Png);
+                        storeReviewFile.StoreReviewNo = storeReview.StoreReviewNo;
+                        storeReviewFile.FileName = fileName;
+                        storeReviewFile.FilePath = UploadPath.StoreReviewPath;
 
-                        beautyShopReviewFiles.Add(beautyShopReviewFile);
+                        storeReviewFiles.Add(storeReviewFile);
                     }
                     else
                     {
@@ -116,16 +116,16 @@ namespace PetterService.Controllers
                         switch (fieldName)
                         {
                             //case "StoreNo":
-                            //    beautyShopReview.StoreNo = int.Parse(item);
+                            //    storeReview.StoreNo = int.Parse(item);
                             //    break;
                             //case "MemberNo":
-                            //    beautyShopReview.MemberNo = int.Parse(item);
+                            //    storeReview.MemberNo = int.Parse(item);
                             //    break;
                             case "Content":
-                                beautyShopReview.Content = item;
+                                storeReview.Content = item;
                                 break;
                             case "Grade":
-                                beautyShopReview.Grade = Convert.ToDouble(item);
+                                storeReview.Grade = Convert.ToDouble(item);
                                 break;
                             default:
                                 break;
@@ -134,11 +134,11 @@ namespace PetterService.Controllers
                     }
                 }
 
-                beautyShopReview.StateFlag = StateFlags.Use;
-                beautyShopReview.DateModified = DateTime.Now;
+                storeReview.StateFlag = StateFlags.Use;
+                storeReview.DateModified = DateTime.Now;
 
-                // 미용리뷰 수정
-                db.Entry(beautyShopReview).State = EntityState.Modified;
+                // 스토어 리뷰 수정
+                db.Entry(storeReview).State = EntityState.Modified;
                 try
                 {
                     await db.SaveChangesAsync();
@@ -148,13 +148,13 @@ namespace PetterService.Controllers
                     throw;
                 }
 
-                // 미용리뷰 파일 등록
-                db.BeautyShopReviewFiles.AddRange(beautyShopReviewFiles);
+                // 스토어 리뷰 파일 등록
+                db.StoreReviewFiles.AddRange(storeReviewFiles);
                 int num1 = await this.db.SaveChangesAsync();
 
-                beautyShopReviews.Add(beautyShopReview);
+                storeReviews.Add(storeReview);
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = beautyShopReviews;
+                petterResultType.JsonDataSet = storeReviews;
             }
             else
             {
@@ -166,22 +166,22 @@ namespace PetterService.Controllers
         }
 
         /// <summary>
-        /// POST: api/BeautyShopReviews
-        /// 미용리뷰 등록
+        /// POST: api/StoreReviews
+        /// 스토어 리뷰 등록
         /// </summary>
         /// <returns></returns>
         [ResponseType(typeof(PetterResultType<StoreReview>))]
-        public async Task<IHttpActionResult> PostBeautyShopReview()
+        public async Task<IHttpActionResult> PostStoreReview()
         {
             PetterResultType<StoreReview> petterResultType = new PetterResultType<StoreReview>();
-            List<StoreReview> beautyShopReviews = new List<StoreReview>();
-            List<StoreReviewFile> beautyShopReviewFiles = new List<StoreReviewFile>();
+            List<StoreReview> storeReviews = new List<StoreReview>();
+            List<StoreReviewFile> storeReviewFiles = new List<StoreReviewFile>();
 
-            StoreReview beautyShopReview = new StoreReview();
+            StoreReview storeReview = new StoreReview();
 
             if (Request.Content.IsMimeMultipartContent())
             {
-                string folder = HostingEnvironment.MapPath(UploadPath.BeautyShopReviewPath);
+                string folder = HostingEnvironment.MapPath(UploadPath.StoreReviewPath);
                 Utilities.CreateDirectory(folder);
 
                 var provider = await Request.Content.ReadAsMultipartAsync();
@@ -191,12 +191,12 @@ namespace PetterService.Controllers
                     string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
                     if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
                     {
-                        StoreReviewFile beautyShopReviewFile = new StoreReviewFile();
+                        StoreReviewFile storeReviewFile = new StoreReviewFile();
                         var file = await content.ReadAsByteArrayAsync();
 
                         string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
 
-                        if (!FileExtension.BeautyShopReviewExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        if (!FileExtension.StoreReviewExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
@@ -208,11 +208,11 @@ namespace PetterService.Controllers
                         File.WriteAllBytes(fullPath, file);
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
-                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.BeautyShopReviewWidth, FileSize.BeautyShopReviewHeight, ImageFormat.Png);
-                        beautyShopReviewFile.FileName = fileName;
-                        beautyShopReviewFile.FilePath = UploadPath.BeautyShopReviewPath;
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreReviewWidth, FileSize.StoreReviewHeight, ImageFormat.Png);
+                        storeReviewFile.FileName = fileName;
+                        storeReviewFile.FilePath = UploadPath.StoreReviewPath;
 
-                        beautyShopReviewFiles.Add(beautyShopReviewFile);
+                        storeReviewFiles.Add(storeReviewFile);
                     }
                     else
                     {
@@ -223,16 +223,16 @@ namespace PetterService.Controllers
                         switch (fieldName)
                         {
                             case "StoreNo":
-                                beautyShopReview.StoreNo = int.Parse(item);
+                                storeReview.StoreNo = int.Parse(item);
                                 break;
                             case "MemberNo":
-                                beautyShopReview.MemberNo = int.Parse(item);
+                                storeReview.MemberNo = int.Parse(item);
                                 break;
                             case "Content":
-                                beautyShopReview.Content = item;
+                                storeReview.Content = item;
                                 break;
                             case "Grade":
-                                beautyShopReview.Grade = Convert.ToDouble(item);
+                                storeReview.Grade = Convert.ToDouble(item);
                                 break;
                             default:
                                 break;
@@ -241,26 +241,26 @@ namespace PetterService.Controllers
                     }
                 }
 
-                beautyShopReview.StateFlag = StateFlags.Use;
-                beautyShopReview.DateCreated = DateTime.Now;
-                beautyShopReview.DateModified = DateTime.Now;
+                storeReview.StateFlag = StateFlags.Use;
+                storeReview.DateCreated = DateTime.Now;
+                storeReview.DateModified = DateTime.Now;
 
-                // 미용리뷰 등록
-                db.BeautyShopReviews.Add(beautyShopReview);
+                // 스토어 리뷰 등록
+                db.StoreReviews.Add(storeReview);
                 int num = await this.db.SaveChangesAsync();
 
-                // 미용리뷰 파일 등록
-                foreach (var item in beautyShopReviewFiles)
+                // 스토어 리뷰 파일 등록
+                foreach (var item in storeReviewFiles)
                 {
-                    item.StoreReviewNo = beautyShopReview.StoreReviewNo;
+                    item.StoreReviewNo = storeReview.StoreReviewNo;
                 }
 
-                db.BeautyShopReviewFiles.AddRange(beautyShopReviewFiles);
+                db.StoreReviewFiles.AddRange(storeReviewFiles);
                 int num1 = await this.db.SaveChangesAsync();
 
-                beautyShopReviews.Add(beautyShopReview);
+                storeReviews.Add(storeReview);
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = beautyShopReviews;
+                petterResultType.JsonDataSet = storeReviews;
             }
             else
             {
@@ -271,20 +271,20 @@ namespace PetterService.Controllers
             return Ok(petterResultType);
         }
 
-        // DELETE: api/BeautyShopReviews/5
+        // DELETE: api/StoreReviews/5
         [ResponseType(typeof(StoreReview))]
-        public async Task<IHttpActionResult> DeleteBeautyShopReview(int id)
+        public async Task<IHttpActionResult> DeletestoreReview(int id)
         {
-            StoreReview beautyShopReview = await db.BeautyShopReviews.FindAsync(id);
-            if (beautyShopReview == null)
+            StoreReview storeReview = await db.StoreReviews.FindAsync(id);
+            if (storeReview == null)
             {
                 return NotFound();
             }
 
-            db.BeautyShopReviews.Remove(beautyShopReview);
+            db.StoreReviews.Remove(storeReview);
             await db.SaveChangesAsync();
 
-            return Ok(beautyShopReview);
+            return Ok(storeReview);
         }
 
         protected override void Dispose(bool disposing)
@@ -296,9 +296,9 @@ namespace PetterService.Controllers
             base.Dispose(disposing);
         }
 
-        private bool BeautyShopReviewExists(int id)
+        private bool storeReviewExists(int id)
         {
-            return db.BeautyShopReviews.Count(e => e.StoreReviewNo == id) > 0;
+            return db.StoreReviews.Count(e => e.StoreReviewNo == id) > 0;
         }
     }
 }

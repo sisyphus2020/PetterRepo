@@ -20,14 +20,14 @@ namespace PetterService.Controllers
         // GET: api/BeautyShopReviewFiles
         public IQueryable<StoreReviewFile> GetStoreReviewFiles()
         {
-            return db.BeautyShopReviewFiles;
+            return db.StoreReviewFiles;
         }
 
         // GET: api/BeautyShopReviewFiles/5
         [ResponseType(typeof(StoreReviewFile))]
         public async Task<IHttpActionResult> GetStoreReviewFile(int id)
         {
-            StoreReviewFile beautyShopReviewFile = await db.BeautyShopReviewFiles.FindAsync(id);
+            StoreReviewFile beautyShopReviewFile = await db.StoreReviewFiles.FindAsync(id);
             if (beautyShopReviewFile == null)
             {
                 return NotFound();
@@ -80,7 +80,7 @@ namespace PetterService.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.BeautyShopReviewFiles.Add(beautyShopReviewFile);
+            db.StoreReviewFiles.Add(beautyShopReviewFile);
             await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = beautyShopReviewFile.StoreReviewFileNo }, beautyShopReviewFile);
@@ -90,13 +90,13 @@ namespace PetterService.Controllers
         [ResponseType(typeof(StoreReviewFile))]
         public async Task<IHttpActionResult> DeleteBeautyShopReviewFile(int id)
         {
-            StoreReviewFile beautyShopReviewFile = await db.BeautyShopReviewFiles.FindAsync(id);
+            StoreReviewFile beautyShopReviewFile = await db.StoreReviewFiles.FindAsync(id);
             if (beautyShopReviewFile == null)
             {
                 return NotFound();
             }
 
-            db.BeautyShopReviewFiles.Remove(beautyShopReviewFile);
+            db.StoreReviewFiles.Remove(beautyShopReviewFile);
             await db.SaveChangesAsync();
 
             return Ok(beautyShopReviewFile);
@@ -113,7 +113,7 @@ namespace PetterService.Controllers
 
         private bool BeautyShopReviewFileExists(int id)
         {
-            return db.BeautyShopReviewFiles.Count(e => e.StoreReviewFileNo == id) > 0;
+            return db.StoreReviewFiles.Count(e => e.StoreReviewFileNo == id) > 0;
         }
     }
 }

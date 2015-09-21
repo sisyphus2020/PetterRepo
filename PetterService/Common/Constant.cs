@@ -22,6 +22,8 @@ namespace PetterService.Common
         public static string Temp { get { return Root + "Temp\\"; } }
         public static string PATH { get { return "~/App_Data" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string StorePath { get { return "/Files" + "/" + "Store" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
+        public static string StoreReviewPath { get { return "/Files" + "/" + "StoreReview" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
+        public static string StoreGalleryPath { get { return "/Files" + "/" + "StoreReview" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string BeautyShopPath { get { return "/Files" + "/" + "BeautyShop" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string PetSitterPath { get { return "/Files" + "/" + "PetSitter" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string PensionPath { get { return "/Files" + "/" + "Pension" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
@@ -81,8 +83,17 @@ namespace PetterService.Common
 
     public sealed class FileSize
     {
+        // Store
         public const int StoreWidth = 980;
         public const int StoreHeight = 360;
+
+        // StoreReview
+        public const int StoreReviewWidth = 980;
+        public const int StoreReviewHeight = 360;
+
+        // StoreGallery
+        public const int StoreGalleryWidth = 980;
+        public const int StoreGalleryHeight = 360;
 
         public const int PetSitterWidth = 980;
         public const int PetSitterHeight = 360;
@@ -111,6 +122,8 @@ namespace PetterService.Common
     public static class FileExtension
     {
         public static string[] StoreExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
+        public static string[] StoreReviewExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
+        public static string[] StoreGalleryExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] PetSitterExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] PensionExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] MemberExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
