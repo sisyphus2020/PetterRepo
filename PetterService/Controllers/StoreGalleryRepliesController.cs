@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PetterService.Models;
+using PetterService.Common;
 
 namespace PetterService.Controllers
 {
@@ -36,20 +37,39 @@ namespace PetterService.Controllers
             return Ok(storeGalleryReply);
         }
 
-        // PUT: api/StoreGalleryReplies/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutStoreGalleryReply(int id, StoreGalleryReply storeGalleryReply)
+        /// <summary>
+        /// PUT: api/StoreGalleryReplies/5
+        /// 스토어 갤러리 댓글 수정
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="galleryReply"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<StoreGalleryReply>))]
+        public async Task<IHttpActionResult> PutStoreGalleryReply(int id, StoreGalleryReply galleryReply)
         {
+            PetterResultType<StoreGalleryReply> petterResultType = new PetterResultType<StoreGalleryReply>();
+            List<StoreGalleryReply> storeGalleryReplies = new List<StoreGalleryReply>();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != storeGalleryReply.StoreGalleryReplyNo)
+            StoreGalleryReply storeGalleryReply = await db.StoreGalleryReplies.FindAsync(id);
+            if (storeGalleryReply == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
+            // 수정권한 체크
+            if (storeGalleryReply.MemberNo != galleryReply.MemberNo)
+            {
+                return BadRequest(ModelState);
+            }
+
+            storeGalleryReply.Reply = galleryReply.Reply;
+            storeGalleryReply.StateFlag = StateFlags.Use;
+            storeGalleryReply.DateModified = DateTime.Now;
             db.Entry(storeGalleryReply).State = EntityState.Modified;
 
             try
@@ -58,48 +78,77 @@ namespace PetterService.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StoreGalleryReplyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            storeGalleryReplies.Add(storeGalleryReply);
+
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = storeGalleryReplies;
+
+            return Ok(petterResultType);
         }
 
-        // POST: api/StoreGalleryReplies
-        [ResponseType(typeof(StoreGalleryReply))]
+        /// <summary>
+        /// POST: api/StoreGalleryReplies
+        /// 스토어 갤러리 댓글 등록
+        /// </summary>
+        /// <param name="storeGalleryReply"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<StoreGalleryReply>))]
         public async Task<IHttpActionResult> PostStoreGalleryReply(StoreGalleryReply storeGalleryReply)
         {
+            PetterResultType<StoreGalleryReply> petterResultType = new PetterResultType<StoreGalleryReply>();
+            List<StoreGalleryReply> storeGalleryReplies = new List<StoreGalleryReply>();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            storeGalleryReply.StateFlag = StateFlags.Use;
+            storeGalleryReply.DateCreated = DateTime.Now;
+            storeGalleryReply.DateModified = DateTime.Now;
+
             db.StoreGalleryReplies.Add(storeGalleryReply);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = storeGalleryReply.StoreGalleryReplyNo }, storeGalleryReply);
+            storeGalleryReplies.Add(storeGalleryReply);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = storeGalleryReplies;
+
+            return Ok(petterResultType);
         }
 
-        // DELETE: api/StoreGalleryReplies/5
-        [ResponseType(typeof(StoreGalleryReply))]
+        /// <summary>
+        /// DELETE: api/StoreGalleryReplies/5
+        /// 스토어 갤러리 댓글 삭제
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<StoreGalleryReply>))]
         public async Task<IHttpActionResult> DeleteStoreGalleryReply(int id)
         {
+            PetterResultType<StoreGalleryReply> petterResultType = new PetterResultType<StoreGalleryReply>();
+            List<StoreGalleryReply> storeGalleryReplies = new List<StoreGalleryReply>();
             StoreGalleryReply storeGalleryReply = await db.StoreGalleryReplies.FindAsync(id);
+
             if (storeGalleryReply == null)
             {
                 return NotFound();
             }
 
-            db.StoreGalleryReplies.Remove(storeGalleryReply);
+            storeGalleryReply.StateFlag = StateFlags.Delete;
+            storeGalleryReply.DateDeleted = DateTime.Now;
+            db.Entry(storeGalleryReply).State = EntityState.Modified;
+
             await db.SaveChangesAsync();
 
-            return Ok(storeGalleryReply);
+            storeGalleryReplies.Add(storeGalleryReply);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = storeGalleryReplies;
+
+            return Ok(petterResultType);
         }
 
         protected override void Dispose(bool disposing)
