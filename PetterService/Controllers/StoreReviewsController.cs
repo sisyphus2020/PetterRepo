@@ -21,7 +21,7 @@ namespace PetterService.Controllers
     public class StoreReviewsController : ApiController
     {
         // 1. 스토어 리뷰 리스트 (X)
-        // 2. 스토어 리뷰 상세 (X)
+        // 2. 스토어 리뷰 상세 (O)
         // 3. 스토어 리뷰 등록 (O)
         // 4. 스토어 리뷰 수정 (O)
         // 5. 스토어 리뷰 삭제 (O)
@@ -34,17 +34,48 @@ namespace PetterService.Controllers
             return db.StoreReviews;
         }
 
-        // GET: api/StoreReviews/5
-        [ResponseType(typeof(StoreReview))]
+        /// <summary>
+        /// GET: api/StoreReviews/5
+        /// 스토어 리뷰 상세
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<StoreReviewDTO>))]
         public async Task<IHttpActionResult> GetStoreReview(int id)
         {
-            StoreReview storeReview = await db.StoreReviews.FindAsync(id);
+            //StoreReview storeReview = await db.StoreReviews.FindAsync(id);
+            PetterResultType<StoreReviewDTO> petterResultType = new PetterResultType<StoreReviewDTO>();
+            List<StoreReviewDTO> storeReviews = new List<StoreReviewDTO>();
+
+            var storeReview = await db.StoreReviews.Where(p => p.StoreReviewNo == id).Select(p => new StoreReviewDTO
+            {
+                StoreReviewNo = p.StoreReviewNo,
+                StoreNo = p.StoreNo,
+                MemberNo = p.MemberNo,
+                Grade = p.Grade,
+                Content = p.Content,
+                StateFlag = p.StateFlag,
+                DateCreated = p.DateCreated,
+                DateModified = p.DateModified,
+                DateDeleted = p.DateDeleted,
+                //FileName = p.FileName,
+                //FilePath = p.FilePath,
+                StoreReviewStats = p.StoreReviewStats.ToList(),
+                StoreReviewFiles = p.StoreReviewFiles.ToList(),
+                StoreReviewLikes = p.StoreReviewLikes.ToList()
+            }).SingleOrDefaultAsync();
+
+
             if (storeReview == null)
             {
                 return NotFound();
             }
 
-            return Ok(storeReview);
+            storeReviews.Add(storeReview);
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = storeReviews;
+
+            return Ok(petterResultType);
         }
 
         /// <summary>
@@ -104,6 +135,8 @@ namespace PetterService.Controllers
                         storeReviewFile.StoreReviewNo = storeReview.StoreReviewNo;
                         storeReviewFile.FileName = fileName;
                         storeReviewFile.FilePath = UploadPath.StoreReviewPath;
+                        storeReviewFile.DateModified = DateTime.Now;
+                        storeReviewFile.StateFlag = StateFlags.Use;
 
                         storeReviewFiles.Add(storeReviewFile);
                     }
@@ -211,6 +244,9 @@ namespace PetterService.Controllers
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreReviewWidth, FileSize.StoreReviewHeight, ImageFormat.Png);
                         storeReviewFile.FileName = fileName;
                         storeReviewFile.FilePath = UploadPath.StoreReviewPath;
+                        storeReviewFile.DateCreated = DateTime.Now;
+                        storeReviewFile.DateModified = DateTime.Now;
+                        storeReviewFile.StateFlag = StateFlags.Use;
 
                         storeReviewFiles.Add(storeReviewFile);
                     }

@@ -21,5 +21,6 @@ namespace PetterService.Models
         public Store Store { get; set; }
         public ICollection<StoreReviewFile> StoreReviewFiles { get; set; }
         public ICollection<StoreReviewLike> StoreReviewLikes { get; set; }
+        public ICollection<StoreReviewStats> StoreReviewStats { get; set; }
     }
 }
