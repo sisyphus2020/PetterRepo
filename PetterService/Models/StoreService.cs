@@ -9,7 +9,8 @@ namespace PetterService.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int StoreServiceNo { get; set; }
         public int StoreNo { get; set; }
-        public int StoreServiceCode { get; set; }
+        [Index("IX_STORE_CODEID"), MaxLength(6), Column("CodeID", TypeName = "char")]
+        public string CodeID { get; set; }
 
         // Navigation property
         [ForeignKey("StoreNo")]

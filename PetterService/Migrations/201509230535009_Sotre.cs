@@ -3,7 +3,7 @@ namespace PetterService.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class CommonCode2 : DbMigration
+    public partial class Sotre : DbMigration
     {
         public override void Up()
         {

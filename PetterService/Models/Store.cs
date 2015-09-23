@@ -9,10 +9,12 @@ namespace PetterService.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int StoreNo { get; set; }
-        
+
         // Navigation property
         [ForeignKey("CompanyNo")]
         public Company Company { get; set; }
+        //[ForeignKey("CodeID")]
+        //public CommonCode CommonCode { get; set; }
         public ICollection<StoreStats> StoreStats { get; set; }
         public ICollection<StoreService> StoreServices { get; set; }
         public ICollection<StoreHoliday> StoreHolidays { get; set; }

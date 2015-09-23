@@ -92,9 +92,7 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.CompanionAnimal> CompanionAnimals { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.CommonCode> CommonCodes { get; set; }
-
-//        public System.Data.Entity.DbSet<PetterService.Models.StoreNews> StoreGalleries { get; set; }
+        //public System.Data.Entity.DbSet<PetterService.Models.CommonCode> CommonCodes { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.StoreNewsStats> StoreNewsStats { get; set; }
 
@@ -105,5 +103,7 @@ namespace PetterService.Models
         public System.Data.Entity.DbSet<PetterService.Models.StoreNewsFile> StoreNewsFiles { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.StoreNews> StoreNews { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.CommonCode> CommonCodes { get; set; }
     }
 }

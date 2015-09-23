@@ -533,7 +533,7 @@ namespace PetterService.Controllers
                 StoreService storeservice = new StoreService();
 
                 storeservice.StoreNo = store.StoreNo;
-                storeservice.StoreServiceCode = int.Parse(arr[i].ToString());
+                storeservice.CodeID = arr[i].ToString();
 
                 storeServices.Add(storeservice);
             }
@@ -560,7 +560,7 @@ namespace PetterService.Controllers
                 StoreHoliday storeHoliday = new StoreHoliday();
 
                 storeHoliday.StoreNo = store.StoreNo;
-                storeHoliday.StoreHolidayCode = int.Parse(arr[i].ToString());
+                storeHoliday.CodeID = arr[i].ToString();
 
                 storeHolidays.Add(storeHoliday);
             }

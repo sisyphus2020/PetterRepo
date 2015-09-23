@@ -13,7 +13,7 @@ namespace PetterService.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201509210532077_CommonCode2"; }
+            get { return "201509230508327_CommonCode2"; }
         }
         
         string IMigrationMetadata.Source

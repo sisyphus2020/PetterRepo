@@ -3,18 +3,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetterService.Models
 {
-    public class CommonCode
+    public class CommonCode : DateBase
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int CommonCodeNo { get; set; }
-        //[Key, Column(Order = 0), MaxLength(20)]
-        [MaxLength(20)]
-        public string Category { get; set; }
-        //[Key, Column(Order = 1, TypeName = "char"), MaxLength(4)]
-        [MaxLength(4), Column("Code", TypeName = "char")]
-        public string Code { get; set; }
+        public int CodeNo { get; set; }
+        [Index("IX_COMMONCODE_CODEID", IsUnique = true), MaxLength(6), Column("CodeID", TypeName = "char")]
+        public string CodeID { get; set; }
+        [Index("IX_COMMONCODE_PARENTCODEID"), MaxLength(6), Column("ParentCodeID", TypeName = "char")]
+        public string ParentCodeID { get; set; }
         [MaxLength(50)]
         public string CodeName { get; set; }
+        [MaxLength(100)]
+        public string CodeDescription { get; set; }
     }
 }
