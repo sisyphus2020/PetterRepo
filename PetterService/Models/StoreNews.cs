@@ -4,21 +4,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetterService.Models
 {
-    public class StoreGallery : FileDateBase
+    public class StoreNews : FileDateBase
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int StoreGalleryNo { get; set; }
+        public int StoreNewsNo { get; set; }
         public int StoreNo { get; set; }
-        [MaxLength(200)]
+        [MaxLength(4000)]
         public string Content { get; set; }
 
         // Navigation property
         [ForeignKey("StoreNo")]
         public Store Store { get; set; }
-        public ICollection<StoreGalleryStats> StoreGalleryStats { get; set; }
-        public ICollection<StoreGalleryFile> StoreGalleryFiles { get; set; }
-        public ICollection<StoreGalleryLike> StoreGalleryLikes { get; set; }
-        public ICollection<StoreGalleryReply> StoreGalleryReplies { get; set; }
+        public ICollection<StoreNewsStats> StoreNewsStats { get; set; }
+        public ICollection<StoreNewsFile> StoreNewsFiles { get; set; }
+        public ICollection<StoreNewsLike> StoreNewsLikes { get; set; }
+        public ICollection<StoreNewsReply> StoreNewsReplies { get; set; }
     }
 }

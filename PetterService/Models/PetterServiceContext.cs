@@ -94,14 +94,16 @@ namespace PetterService.Models
 
         public System.Data.Entity.DbSet<PetterService.Models.CommonCode> CommonCodes { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.StoreGallery> StoreGalleries { get; set; }
+//        public System.Data.Entity.DbSet<PetterService.Models.StoreNews> StoreGalleries { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.StoreGalleryStats> StoreGalleryStats { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.StoreNewsStats> StoreNewsStats { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.StoreGalleryLike> StoreGalleryLikes { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.StoreNewsLike> StoreNewsLikes { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.StoreGalleryReply> StoreGalleryReplies { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.StoreNewsReply> StoreNewsReplies { get; set; }
 
-        public System.Data.Entity.DbSet<PetterService.Models.StoreGalleryFile> StoreGalleryFiles { get; set; }
+        public System.Data.Entity.DbSet<PetterService.Models.StoreNewsFile> StoreNewsFiles { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.StoreNews> StoreNews { get; set; }
     }
 }

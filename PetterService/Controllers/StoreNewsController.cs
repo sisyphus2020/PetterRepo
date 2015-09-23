@@ -18,27 +18,27 @@ using System.Drawing.Imaging;
 
 namespace PetterService.Controllers
 {
-    public class StoreGalleriesController : ApiController
+    public class StoreNewsController : ApiController
     {
-        // 1. 스토어 갤러리 리스트 (X)
-        // 2. 스토어 갤러리 상세 (O)
-        // 3. 스토어 갤러리 등록 (O)
-        // 4. 스토어 갤러리 수정 (O)
-        // 5. 스토어 갤러리 삭제 (O)
+        // 1. 스토어 소식 리스트 (X)
+        // 2. 스토어 소식 상세 (O)
+        // 3. 스토어 소식 등록 (O)
+        // 4. 스토어 소식 수정 (O)
+        // 5. 스토어 소식 삭제 (O)
 
         private PetterServiceContext db = new PetterServiceContext();
 
         /// <summary>
-        /// GET: api/StoreGalleries
-        /// 스토어 갤러리 리스트
+        /// GET: api/StoreNews
+        /// 스토어 소식 리스트
         /// </summary>
         /// <param name="petterRequestType"></param>
         /// <returns></returns>
-        [ResponseType(typeof(PetterResultType<StoreGallery>))]
-        public async Task<IHttpActionResult> GetStoreGalleries([FromUri] PetterRequestType petterRequestType)
+        [ResponseType(typeof(PetterResultType<StoreNews>))]
+        public async Task<IHttpActionResult> GetStoreNews([FromUri] PetterRequestType petterRequestType)
         {
-            PetterResultType<StoreGallery> petterResultType = new PetterResultType<StoreGallery>();
-            List<StoreGallery> list = new List<StoreGallery>();
+            PetterResultType<StoreNews> petterResultType = new PetterResultType<StoreNews>();
+            List<StoreNews> list = new List<StoreNews>();
             bool isSearch = false;
 
             // 검색 조건 
@@ -53,11 +53,11 @@ namespace PetterService.Controllers
                 // 댓글수
                 case "replycount":
                     {
-                        list = await db.StoreGalleries
+                        list = await db.StoreNews
                             .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
                             .Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
                             //.OrderByDescending(p => p.ReviewCount)
-                            .OrderByDescending(p => p.StoreGalleryNo)
+                            .OrderByDescending(p => p.StoreNewsNo)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToListAsync();
                         break;
@@ -65,10 +65,10 @@ namespace PetterService.Controllers
                 // 기본
                 default:
                     {
-                        list = await db.StoreGalleries
+                        list = await db.StoreNews
                             .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
                             .Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
-                            .OrderByDescending(p => p.StoreGalleryNo)
+                            .OrderByDescending(p => p.StoreNewsNo)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToListAsync();
                         break;
@@ -87,21 +87,21 @@ namespace PetterService.Controllers
         }
 
         /// <summary>
-        /// GET: api/StoreGalleries/5
-        /// 스토어 갤러리 상세
+        /// GET: api/StoreNews/5
+        /// 스토어 소식 상세
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ResponseType(typeof(PetterResultType<StoreGalleryDTO>))]
-        public async Task<IHttpActionResult> GetStoreGallery(int id)
-        //public async Task<IHttpActionResult> GetStoreGallery(int id, int memberNo)
+        [ResponseType(typeof(PetterResultType<StoreNewsDTO>))]
+        public async Task<IHttpActionResult> GetStoreNews(int id)
+        //public async Task<IHttpActionResult> GetStoreNews(int id, int memberNo)
         {
-            PetterResultType<StoreGalleryDTO> petterResultType = new PetterResultType<StoreGalleryDTO>();
-            List<StoreGalleryDTO> storeGalleries = new List<StoreGalleryDTO>();
+            PetterResultType<StoreNewsDTO> petterResultType = new PetterResultType<StoreNewsDTO>();
+            List<StoreNewsDTO> list = new List<StoreNewsDTO>();
 
-            var storeGallery = await db.StoreGalleries.Where(p => p.StoreGalleryNo == id).Select(p => new StoreGalleryDTO
+            var storeNews = await db.StoreNews.Where(p => p.StoreNewsNo == id).Select(p => new StoreNewsDTO
             {
-                StoreGalleryNo = p.StoreGalleryNo,
+                StoreNewsNo = p.StoreNewsNo,
                 StoreNo = p.StoreNo,
                 Content = p.Content,
                 StateFlag = p.StateFlag,
@@ -110,53 +110,53 @@ namespace PetterService.Controllers
                 DateDeleted = p.DateDeleted,
                 FileName = p.FileName,
                 FilePath = p.FilePath,
-                StoreGalleryStats = p.StoreGalleryStats.ToList(),
-                StoreGalleryFiles = p.StoreGalleryFiles.ToList(),
-                StoreGalleryLikes = p.StoreGalleryLikes.ToList(),
-                //isCount = p.StoreGalleryLikes.Where(p.MemberNO == memberNo),
-                StoreGalleryReplies = p.StoreGalleryReplies.ToList()
+                StoreNewsStats = p.StoreNewsStats.ToList(),
+                StoreNewsFiles = p.StoreNewsFiles.ToList(),
+                StoreNewsLikes = p.StoreNewsLikes.ToList(),
+                //isCount = p.StoreNewsLikes.Where(p.MemberNO == memberNo),
+                StoreNewsReplies = p.StoreNewsReplies.ToList()
             }).SingleOrDefaultAsync();
 
 
-            if (storeGallery == null)
+            if (storeNews == null)
             {
                 return NotFound();
             }
 
-            storeGalleries.Add(storeGallery);
+            list.Add(storeNews);
             petterResultType.IsSuccessful = true;
-            petterResultType.JsonDataSet = storeGalleries;
+            petterResultType.JsonDataSet = list;
 
             return Ok(petterResultType);
         }
 
         /// <summary>
-        /// PUT: api/StoreGalleries/5
-        /// 스토어 갤러리 수정
+        /// PUT: api/StoreNews/5
+        /// 스토어 소식 수정
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ResponseType(typeof(PetterResultType<StoreGallery>))]
-        public async Task<IHttpActionResult> PutStoreGallery(int id)
+        [ResponseType(typeof(PetterResultType<StoreNews>))]
+        public async Task<IHttpActionResult> PutStoreNews(int id)
         {
-            PetterResultType<StoreGallery> petterResultType = new PetterResultType<StoreGallery>();
-            List<StoreGallery> storeGalleries = new List<StoreGallery>();
-            List<StoreGalleryFile> storeGalleryFiles = new List<StoreGalleryFile>();
+            PetterResultType<StoreNews> petterResultType = new PetterResultType<StoreNews>();
+            List<StoreNews> list = new List<StoreNews>();
+            List<StoreNewsFile> StoreNewsFiles = new List<StoreNewsFile>();
 
             if (!Request.Content.IsMimeMultipartContent())
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
-            StoreGallery storeGallery = await db.StoreGalleries.FindAsync(id);
-            if (storeGallery == null)
+            StoreNews StoreNews = await db.StoreNews.FindAsync(id);
+            if (StoreNews == null)
             {
                 return NotFound();
             }
 
             if (Request.Content.IsMimeMultipartContent())
             {
-                string folder = HostingEnvironment.MapPath(UploadPath.StoreGalleryPath);
+                string folder = HostingEnvironment.MapPath(UploadPath.StoreNewsPath);
                 Utilities.CreateDirectory(folder);
 
                 var provider = await Request.Content.ReadAsMultipartAsync();
@@ -166,12 +166,12 @@ namespace PetterService.Controllers
                     string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
                     if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
                     {
-                        StoreGalleryFile storeGalleryFile = new StoreGalleryFile();
+                        StoreNewsFile StoreNewsFile = new StoreNewsFile();
                         var file = await content.ReadAsByteArrayAsync();
 
                         string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
 
-                        if (!FileExtension.StoreGalleryExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        if (!FileExtension.StoreNewsExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
@@ -183,22 +183,22 @@ namespace PetterService.Controllers
                         File.WriteAllBytes(fullPath, file);
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
-                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreGalleryWidth, FileSize.StoreGalleryHeight, ImageFormat.Png);
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreNewsWidth, FileSize.StoreNewsHeight, ImageFormat.Png);
 
-                        // 갤러리 대표 이미지
-                        if (fieldName == FieldName.StoreGalleryFieldName)
+                        // 소식 대표 이미지
+                        if (fieldName == FieldName.StoreNewsFieldName)
                         {
-                            storeGallery.FileName = fileName;
-                            storeGallery.FilePath = UploadPath.EventBoardPath;
+                            StoreNews.FileName = fileName;
+                            StoreNews.FilePath = UploadPath.EventBoardPath;
                         }
 
-                        storeGalleryFile.StoreGalleryNo = storeGallery.StoreGalleryNo;
-                        storeGalleryFile.FileName = fileName;
-                        storeGalleryFile.FilePath = UploadPath.StoreGalleryPath;
-                        storeGalleryFile.DateModified = DateTime.Now;
-                        storeGalleryFile.StateFlag = StateFlags.Use;
+                        StoreNewsFile.StoreNewsNo = StoreNews.StoreNewsNo;
+                        StoreNewsFile.FileName = fileName;
+                        StoreNewsFile.FilePath = UploadPath.StoreNewsPath;
+                        StoreNewsFile.DateModified = DateTime.Now;
+                        StoreNewsFile.StateFlag = StateFlags.Use;
 
-                        storeGalleryFiles.Add(storeGalleryFile);
+                        StoreNewsFiles.Add(StoreNewsFile);
                     }
                     else
                     {
@@ -209,10 +209,10 @@ namespace PetterService.Controllers
                         switch (fieldName)
                         {
                             //case "StoreNo":
-                            //    storeGallery.StoreNo = int.Parse(item);
+                            //    StoreNews.StoreNo = int.Parse(item);
                             //    break;
                             case "Content":
-                                storeGallery.Content = item;
+                                StoreNews.Content = item;
                                 break;
                             default:
                                 break;
@@ -221,11 +221,11 @@ namespace PetterService.Controllers
                     }
                 }
 
-                storeGallery.StateFlag = StateFlags.Use;
-                storeGallery.DateModified = DateTime.Now;
+                StoreNews.StateFlag = StateFlags.Use;
+                StoreNews.DateModified = DateTime.Now;
 
-                // 스토어 갤러리 수정
-                db.Entry(storeGallery).State = EntityState.Modified;
+                // 스토어 소식 수정
+                db.Entry(StoreNews).State = EntityState.Modified;
                 try
                 {
                     await db.SaveChangesAsync();
@@ -235,13 +235,13 @@ namespace PetterService.Controllers
                     throw;
                 }
 
-                // 스토어 갤러리 파일 등록
-                db.StoreGalleryFiles.AddRange(storeGalleryFiles);
+                // 스토어 소식 파일 등록
+                db.StoreNewsFiles.AddRange(StoreNewsFiles);
                 int num1 = await this.db.SaveChangesAsync();
 
-                storeGalleries.Add(storeGallery);
+                list.Add(StoreNews);
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = storeGalleries;
+                petterResultType.JsonDataSet = list;
             }
             else
             {
@@ -253,22 +253,22 @@ namespace PetterService.Controllers
         }
 
         /// <summary>
-        /// POST: api/StoreGalleries
-        /// 스토어 갤러리 등록
+        /// POST: api/StoreNews
+        /// 스토어 소식 등록
         /// </summary>
         /// <returns></returns>
-        [ResponseType(typeof(PetterResultType<StoreGallery>))]
-        public async Task<IHttpActionResult> PostStoreGallery()
+        [ResponseType(typeof(PetterResultType<StoreNews>))]
+        public async Task<IHttpActionResult> PostStoreNews()
         {
-            PetterResultType<StoreGallery> petterResultType = new PetterResultType<StoreGallery>();
-            List<StoreGallery> storeGalleries = new List<StoreGallery>();
-            List<StoreGalleryFile> storeGalleryFiles = new List<StoreGalleryFile>();
+            PetterResultType<StoreNews> petterResultType = new PetterResultType<StoreNews>();
+            List<StoreNews> list = new List<StoreNews>();
+            List<StoreNewsFile> StoreNewsFiles = new List<StoreNewsFile>();
 
-            StoreGallery storeGallery = new StoreGallery();
+            StoreNews storeNews = new StoreNews();
 
             if (Request.Content.IsMimeMultipartContent())
             {
-                string folder = HostingEnvironment.MapPath(UploadPath.StoreGalleryPath);
+                string folder = HostingEnvironment.MapPath(UploadPath.StoreNewsPath);
                 Utilities.CreateDirectory(folder);
 
                 var provider = await Request.Content.ReadAsMultipartAsync();
@@ -278,12 +278,12 @@ namespace PetterService.Controllers
                     string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
                     if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
                     {
-                        StoreGalleryFile storeGalleryFile = new StoreGalleryFile();
+                        StoreNewsFile storeNewsFile = new StoreNewsFile();
                         var file = await content.ReadAsByteArrayAsync();
 
                         string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
 
-                        if (!FileExtension.StoreGalleryExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        if (!FileExtension.StoreNewsExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
@@ -295,22 +295,22 @@ namespace PetterService.Controllers
                         File.WriteAllBytes(fullPath, file);
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
-                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreGalleryWidth, FileSize.StoreGalleryHeight, ImageFormat.Png);
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreNewsWidth, FileSize.StoreNewsHeight, ImageFormat.Png);
 
-                        // 갤러리 대표 이미지
-                        if (fieldName == FieldName.StoreGalleryFieldName)
+                        // 소식 대표 이미지
+                        if (fieldName == FieldName.StoreNewsFieldName)
                         {
-                            storeGallery.FileName = fileName;
-                            storeGallery.FilePath = UploadPath.EventBoardPath;
+                            storeNews.FileName = fileName;
+                            storeNews.FilePath = UploadPath.EventBoardPath;
                         }
 
-                        storeGalleryFile.FileName = fileName;
-                        storeGalleryFile.FilePath = UploadPath.StoreGalleryPath;
-                        storeGalleryFile.DateCreated = DateTime.Now;
-                        storeGalleryFile.DateModified = DateTime.Now;
-                        storeGalleryFile.StateFlag = StateFlags.Use;
+                        storeNewsFile.FileName = fileName;
+                        storeNewsFile.FilePath = UploadPath.StoreNewsPath;
+                        storeNewsFile.DateCreated = DateTime.Now;
+                        storeNewsFile.DateModified = DateTime.Now;
+                        storeNewsFile.StateFlag = StateFlags.Use;
 
-                        storeGalleryFiles.Add(storeGalleryFile);
+                        StoreNewsFiles.Add(storeNewsFile);
                     }
                     else
                     {
@@ -321,10 +321,10 @@ namespace PetterService.Controllers
                         switch (fieldName)
                         {
                             case "StoreNo":
-                                storeGallery.StoreNo = int.Parse(item);
+                                storeNews.StoreNo = int.Parse(item);
                                 break;
                             case "Content":
-                                storeGallery.Content = item;
+                                storeNews.Content = item;
                                 break;
                             default:
                                 break;
@@ -333,26 +333,26 @@ namespace PetterService.Controllers
                     }
                 }
 
-                storeGallery.StateFlag = StateFlags.Use;
-                storeGallery.DateCreated = DateTime.Now;
-                storeGallery.DateModified = DateTime.Now;
+                storeNews.StateFlag = StateFlags.Use;
+                storeNews.DateCreated = DateTime.Now;
+                storeNews.DateModified = DateTime.Now;
 
-                // 스토어 갤러리 등록
-                db.StoreGalleries.Add(storeGallery);
+                // 스토어 소식 등록
+                db.StoreNews.Add(storeNews);
                 int num = await this.db.SaveChangesAsync();
 
-                // 스토어 갤러리 파일 등록
-                foreach (var item in storeGalleryFiles)
+                // 스토어 소식 파일 등록
+                foreach (var item in StoreNewsFiles)
                 {
-                    item.StoreGalleryNo = storeGallery.StoreGalleryNo;
+                    item.StoreNewsNo = storeNews.StoreNewsNo;
                 }
 
-                db.StoreGalleryFiles.AddRange(storeGalleryFiles);
+                db.StoreNewsFiles.AddRange(StoreNewsFiles);
                 int num1 = await this.db.SaveChangesAsync();
 
-                storeGalleries.Add(storeGallery);
+                list.Add(storeNews);
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = storeGalleries;
+                petterResultType.JsonDataSet = list;
             }
             else
             {
@@ -364,32 +364,32 @@ namespace PetterService.Controllers
         }
 
         /// <summary>
-        /// DELETE: api/StoreGalleries/5
-        /// 스토어 갤러리 삭제
+        /// DELETE: api/StoreNews/5
+        /// 스토어 소식 삭제
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ResponseType(typeof(PetterResultType<StoreGallery>))]
-        public async Task<IHttpActionResult> DeleteStoreGallery(int id)
+        [ResponseType(typeof(PetterResultType<StoreNews>))]
+        public async Task<IHttpActionResult> DeleteStoreNews(int id)
         {
             // 인증 필요
 
-            PetterResultType<StoreGallery> petterResultType = new PetterResultType<StoreGallery>();
-            List<StoreGallery> storeGalleries = new List<StoreGallery>();
-            StoreGallery storeGallery = await db.StoreGalleries.FindAsync(id);
+            PetterResultType<StoreNews> petterResultType = new PetterResultType<StoreNews>();
+            List<StoreNews> storeGalleries = new List<StoreNews>();
+            StoreNews StoreNews = await db.StoreNews.FindAsync(id);
 
-            if (storeGallery == null)
+            if (StoreNews == null)
             {
                 return NotFound();
             }
 
-            storeGallery.StateFlag = StateFlags.Delete;
-            storeGallery.DateDeleted = DateTime.Now;
-            db.Entry(storeGallery).State = EntityState.Modified;
+            StoreNews.StateFlag = StateFlags.Delete;
+            StoreNews.DateDeleted = DateTime.Now;
+            db.Entry(StoreNews).State = EntityState.Modified;
 
             await db.SaveChangesAsync();
 
-            storeGalleries.Add(storeGallery);
+            storeGalleries.Add(StoreNews);
             petterResultType.IsSuccessful = true;
             petterResultType.JsonDataSet = storeGalleries;
 
@@ -406,9 +406,9 @@ namespace PetterService.Controllers
             base.Dispose(disposing);
         }
 
-        private bool StoreGalleryExists(int id)
+        private bool StoreNewsExists(int id)
         {
-            return db.StoreGalleries.Count(e => e.StoreGalleryNo == id) > 0;
+            return db.StoreNews.Count(e => e.StoreNewsNo == id) > 0;
         }
     }
 }

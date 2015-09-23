@@ -7,15 +7,15 @@ using System.Web;
 
 namespace PetterService.Models
 {
-    public class StoreGalleryFile : FileDateBase
+    public class StoreNewsFile : FileDateBase
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int StoreGalleryFileNo { get; set; }
-        public int StoreGalleryNo { get; set; }
+        public int StoreNewsFileNo { get; set; }
+        public int StoreNewsNo { get; set; }
 
         // Navigation property
-        [ForeignKey("StoreGalleryNo")]
-        public StoreGallery StoreGallery { get; set; }
+        [ForeignKey("StoreNewsNo")]
+        public StoreNews StoreNews { get; set; }
     }
 }
