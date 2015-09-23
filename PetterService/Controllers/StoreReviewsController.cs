@@ -20,7 +20,7 @@ namespace PetterService.Controllers
 {
     public class StoreReviewsController : ApiController
     {
-        // 1. 스토어 리뷰 리스트 (X)
+        // 1. 스토어 리뷰 리스트 (O)
         // 2. 스토어 리뷰 상세 (O)
         // 3. 스토어 리뷰 등록 (O)
         // 4. 스토어 리뷰 수정 (O)
@@ -28,10 +28,62 @@ namespace PetterService.Controllers
 
         private PetterServiceContext db = new PetterServiceContext();
 
-        // GET: api/StoreReviews
-        public IQueryable<StoreReview> GetStoreReviews()
+        /// <summary>
+        /// GET: api/StoreReviews 
+        /// 스토어 리뷰 리스트
+        /// </summary>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<StoreReview>))]
+        public async Task<IHttpActionResult> GetStoreReviews([FromUri] PetterRequestType petterRequestType)
         {
-            return db.StoreReviews;
+            PetterResultType<StoreReview> petterResultType = new PetterResultType<StoreReview>();
+            List<StoreReview> list = new List<StoreReview>();
+            bool isSearch = false;
+
+            // 검색 조건 
+            if (!String.IsNullOrWhiteSpace(petterRequestType.Search))
+            {
+                isSearch = true;
+            }
+
+            #region 정렬 방식
+            switch (petterRequestType.SortBy)
+            {
+                // 평점
+                case "grade":
+                    {
+                        list = await db.StoreReviews
+                            .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
+                            //.Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
+                            //.OrderByDescending(p => p.grade)
+                            .OrderByDescending(p => p.StoreReviewNo)
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToListAsync();
+                        break;
+                    }
+                // 기본
+                default:
+                    {
+                        list = await db.StoreReviews
+                            .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
+                            //.Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
+                            .OrderByDescending(p => p.StoreReviewNo)
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToListAsync();
+                        break;
+                    }
+            }
+            #endregion 정렬방식
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = list.ToList();
+
+            return Ok(petterResultType);
         }
 
         /// <summary>

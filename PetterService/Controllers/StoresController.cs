@@ -31,7 +31,12 @@ namespace PetterService.Controllers
 
         private PetterServiceContext db = new PetterServiceContext();
 
-        // GET: api/Stores
+        /// <summary>
+        /// GET: api/Stores
+        /// 스토어 리스트
+        /// </summary>
+        /// <param name="petterRequestType"></param>
+        /// <returns></returns>
         public IEnumerable<Store> GetStore([FromUri] PetterRequestType petterRequestType)
         {
             List<Store> list = new List<Store>();
@@ -105,7 +110,12 @@ namespace PetterService.Controllers
             return list;
         }
 
-        // GET: api/Stores/5
+        /// <summary>
+        /// GET: api/Stores/5
+        /// 스토어 상세
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ResponseType(typeof(PetterResultType<StoreDTO>))]
         public async Task<IHttpActionResult> GetStore(int id)
         {
