@@ -54,6 +54,7 @@ namespace PetterService.Controllers
                 case "replycount":
                     {
                         list = await db.StoreNews
+                            .Where(p => petterRequestType.CodeID == "A02003" ? p.CodeID == "A02003" : p.CodeID != "A02003" )
                             .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
                             .Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
                             //.OrderByDescending(p => p.ReviewCount)
@@ -66,6 +67,7 @@ namespace PetterService.Controllers
                 default:
                     {
                         list = await db.StoreNews
+                            .Where(p => petterRequestType.CodeID == "A02003" ? p.CodeID == "A02003" : p.CodeID != "A02003")
                             .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
                             .Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
                             .OrderByDescending(p => p.StoreNewsNo)
@@ -103,6 +105,7 @@ namespace PetterService.Controllers
             {
                 StoreNewsNo = p.StoreNewsNo,
                 StoreNo = p.StoreNo,
+                CodeID = p.CodeID,
                 Content = p.Content,
                 StateFlag = p.StateFlag,
                 DateCreated = p.DateCreated,
@@ -189,7 +192,7 @@ namespace PetterService.Controllers
                         if (fieldName == FieldName.StoreNewsFieldName)
                         {
                             StoreNews.FileName = fileName;
-                            StoreNews.FilePath = UploadPath.EventBoardPath;
+                            StoreNews.FilePath = UploadPath.StoreNewsPath;
                         }
 
                         StoreNewsFile.StoreNewsNo = StoreNews.StoreNewsNo;
@@ -301,7 +304,7 @@ namespace PetterService.Controllers
                         if (fieldName == FieldName.StoreNewsFieldName)
                         {
                             storeNews.FileName = fileName;
-                            storeNews.FilePath = UploadPath.EventBoardPath;
+                            storeNews.FilePath = UploadPath.StoreNewsPath;
                         }
 
                         storeNewsFile.FileName = fileName;
@@ -322,6 +325,9 @@ namespace PetterService.Controllers
                         {
                             case "StoreNo":
                                 storeNews.StoreNo = int.Parse(item);
+                                break;
+                            case "CodeID":
+                                storeNews.CodeID = item;
                                 break;
                             case "Content":
                                 storeNews.Content = item;

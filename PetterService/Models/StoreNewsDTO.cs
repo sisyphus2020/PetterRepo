@@ -9,6 +9,7 @@ namespace PetterService.Models
     {
         public int StoreNewsNo { get; set; }
         public int StoreNo { get; set; }
+        public string CodeID { get; set; }
         public string Content { get; set; }
 
         //public int isCount { get; set; }

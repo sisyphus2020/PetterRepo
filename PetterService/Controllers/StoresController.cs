@@ -58,6 +58,7 @@ namespace PetterService.Controllers
                 case "distance":
                     {
                         list = store
+                            .Where(p => petterRequestType.CodeID == petterRequestType.CodeID)
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             .OrderByDescending(p => p.StoreNo)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
@@ -68,6 +69,7 @@ namespace PetterService.Controllers
                 case "reviewcount":
                     {
                         list = store
+                            .Where(p => petterRequestType.CodeID == petterRequestType.CodeID)
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             //.OrderByDescending(p => p.ReviewCount)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
@@ -78,6 +80,7 @@ namespace PetterService.Controllers
                 case "grade":
                     {
                         list = store
+                            .Where(p => petterRequestType.CodeID == petterRequestType.CodeID)
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             //.OrderByDescending(p => p.Grade)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
@@ -88,6 +91,7 @@ namespace PetterService.Controllers
                 case "bookmark":
                     {
                         list = store
+                            .Where(p => petterRequestType.CodeID == petterRequestType.CodeID)
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             //.OrderByDescending(p => p.Bookmark)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
@@ -98,6 +102,7 @@ namespace PetterService.Controllers
                 default:
                     {
                         list = store
+                            .Where(p => petterRequestType.CodeID == petterRequestType.CodeID)
                             .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             .OrderByDescending(p => p.CompanyNo)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace PetterService.Models
 {
-    public class EventBoardFile : FileBase
+    public class EventBoardFile : FileDateBase
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]

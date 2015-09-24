@@ -105,5 +105,9 @@ namespace PetterService.Models
         public System.Data.Entity.DbSet<PetterService.Models.StoreNews> StoreNews { get; set; }
 
         public System.Data.Entity.DbSet<PetterService.Models.CommonCode> CommonCodes { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.StoreQuestion> StoreQuestions { get; set; }
+
+        public System.Data.Entity.DbSet<PetterService.Models.StoreQuestionBoard> StoreQuestionBoards { get; set; }
     }
 }

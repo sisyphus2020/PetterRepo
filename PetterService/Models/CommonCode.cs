@@ -16,5 +16,11 @@ namespace PetterService.Models
         public string CodeName { get; set; }
         [MaxLength(100)]
         public string CodeDescription { get; set; }
+
+
+        // Navigation property
+        //[ForeignKey("ParentCodeID")]
+        //public CommonCode CommonCode { get; set; }
+
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetterService.Models
 {
-    public class NoticeFile : FileBase
+    public class NoticeFile : FileDateBase
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]

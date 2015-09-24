@@ -10,6 +10,8 @@ namespace PetterService.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int StoreNewsNo { get; set; }
         public int StoreNo { get; set; }
+        [Index("IX_STORE_CODEID"), MaxLength(6), Column("CodeID", TypeName = "char")]
+        public string CodeID { get; set; }
         [MaxLength(4000)]
         public string Content { get; set; }
 
