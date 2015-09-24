@@ -16,11 +16,11 @@ namespace PetterService.Controllers
 {
     public class BoardLikesController : ApiController
     {
-        // 1. 스토어 소식 좋아요 리스트 (X)
-        // 2. 스토어 소식 좋아요 상세 (X)
-        // 3. 스토어 소식 좋아요 등록 (O)
-        // 4. 스토어 소식 좋아요 수정 (O)
-        // 5. 스토어 소식 좋아요 삭제 (O)
+        // 1. 게시판 좋아요 리스트 (X)
+        // 2. 게시판 좋아요 상세 (X)
+        // 3. 게시판 좋아요 등록 (O)
+        // 4. 게시판 좋아요 수정 (O)
+        // 5. 게시판 좋아요 삭제 (O)
 
         private PetterServiceContext db = new PetterServiceContext();
 
@@ -45,7 +45,7 @@ namespace PetterService.Controllers
 
         /// <summary>
         /// PUT: api/BoardLikes/5
-        /// 스토어 소식 좋아요 수정
+        /// 게시판 좋아요 수정
         /// </summary>
         /// <param name="id"></param>
         /// <param name="galleryLike"></param>
@@ -98,7 +98,7 @@ namespace PetterService.Controllers
 
         /// <summary>
         /// POST: api/BoardLikes
-        /// 스토어 소식 좋아요 등록
+        /// 게시판 좋아요 등록
         /// </summary>
         /// <param name="BoardLike"></param>
         /// <returns></returns>
@@ -129,7 +129,7 @@ namespace PetterService.Controllers
 
         /// <summary>
         /// DELETE: api/BoardLikes/5
-        /// 스토어 소식 좋아요 삭제
+        /// 게시판 좋아요 삭제
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

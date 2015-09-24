@@ -39,7 +39,7 @@ namespace PetterService.Controllers
 
         /// <summary>
         /// PUT: api/BoardReplies/5
-        /// 스토어 소식 댓글 수정
+        /// 게시판 댓글 수정
         /// </summary>
         /// <param name="id"></param>
         /// <param name="galleryReply"></param>
@@ -91,7 +91,7 @@ namespace PetterService.Controllers
 
         /// <summary>
         /// POST: api/BoardReplies
-        /// 스토어 소식 댓글 등록
+        /// 게시판 댓글 등록
         /// </summary>
         /// <param name="BoardReply"></param>
         /// <returns></returns>
@@ -122,7 +122,7 @@ namespace PetterService.Controllers
 
         /// <summary>
         /// DELETE: api/BoardReplies/5
-        /// 스토어 소식 댓글 삭제
+        /// 게시판 댓글 삭제
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
