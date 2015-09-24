@@ -3,15 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetterService.Models
 {
-    public class StoreNewsFile : FileDateBase
+    public class BoardFile : FileDateBase
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int StoreNewsFileNo { get; set; }
-        public int StoreNewsNo { get; set; }
+        public int BoardFileNo { get; set; }
+        public int BoardNo { get; set; }
 
         // Navigation property
-        [ForeignKey("StoreNewsNo")]
-        public StoreNews StoreNews { get; set; }
+        [ForeignKey("BoardNo")]
+        public Board Board { get; set; }
     }
 }

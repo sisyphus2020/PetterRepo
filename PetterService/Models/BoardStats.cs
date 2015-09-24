@@ -7,17 +7,17 @@ using System.Web;
 
 namespace PetterService.Models
 {
-    public class StoreNewsStats : DateBase
+    public class BoardStats : DateBase
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int StoreNewsStatsNo { get; set; }
-        public int StoreNewsNo { get; set; }
+        public int BoardStatsNo { get; set; }
+        public int BoardNo { get; set; }
         public int LikeCount { get; set; }
         public int ReplyCount { get; set; }
 
         // Navigation property
-        [ForeignKey("StoreNewsNo")]
-        public StoreNews StoreNews { get; set; }
+        [ForeignKey("BoardNo")]
+        public Board Board { get; set; }
     }
 }

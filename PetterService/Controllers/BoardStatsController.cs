@@ -13,44 +13,44 @@ using PetterService.Models;
 
 namespace PetterService.Controllers
 {
-    public class StoreNewsStatsController : ApiController
+    public class BoardStatsController : ApiController
     {
         private PetterServiceContext db = new PetterServiceContext();
 
-        // GET: api/StoreNewsStats
-        public IQueryable<StoreNewsStats> GetStoreNewsStats()
+        // GET: api/BoardStats
+        public IQueryable<BoardStats> GetBoardStats()
         {
-            return db.StoreNewsStats;
+            return db.BoardStats;
         }
 
-        // GET: api/StoreNewsStats/5
-        [ResponseType(typeof(StoreNewsStats))]
-        public async Task<IHttpActionResult> GetStoreNewsStats(int id)
+        // GET: api/BoardStats/5
+        [ResponseType(typeof(BoardStats))]
+        public async Task<IHttpActionResult> GetBoardStats(int id)
         {
-            StoreNewsStats StoreNewsStats = await db.StoreNewsStats.FindAsync(id);
-            if (StoreNewsStats == null)
+            BoardStats BoardStats = await db.BoardStats.FindAsync(id);
+            if (BoardStats == null)
             {
                 return NotFound();
             }
 
-            return Ok(StoreNewsStats);
+            return Ok(BoardStats);
         }
 
-        // PUT: api/StoreNewsStats/5
+        // PUT: api/BoardStats/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutStoreNewsStats(int id, StoreNewsStats StoreNewsStats)
+        public async Task<IHttpActionResult> PutBoardStats(int id, BoardStats BoardStats)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != StoreNewsStats.StoreNewsStatsNo)
+            if (id != BoardStats.BoardStatsNo)
             {
                 return BadRequest();
             }
 
-            db.Entry(StoreNewsStats).State = EntityState.Modified;
+            db.Entry(BoardStats).State = EntityState.Modified;
 
             try
             {
@@ -58,7 +58,7 @@ namespace PetterService.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StoreNewsStatsExists(id))
+                if (!BoardStatsExists(id))
                 {
                     return NotFound();
                 }
@@ -71,35 +71,35 @@ namespace PetterService.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/StoreNewsStats
-        [ResponseType(typeof(StoreNewsStats))]
-        public async Task<IHttpActionResult> PostStoreNewsStats(StoreNewsStats StoreNewsStats)
+        // POST: api/BoardStats
+        [ResponseType(typeof(BoardStats))]
+        public async Task<IHttpActionResult> PostBoardStats(BoardStats BoardStats)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.StoreNewsStats.Add(StoreNewsStats);
+            db.BoardStats.Add(BoardStats);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = StoreNewsStats.StoreNewsStatsNo }, StoreNewsStats);
+            return CreatedAtRoute("DefaultApi", new { id = BoardStats.BoardStatsNo }, BoardStats);
         }
 
-        // DELETE: api/StoreNewsStats/5
-        [ResponseType(typeof(StoreNewsStats))]
-        public async Task<IHttpActionResult> DeleteStoreNewsStats(int id)
+        // DELETE: api/BoardStats/5
+        [ResponseType(typeof(BoardStats))]
+        public async Task<IHttpActionResult> DeleteBoardStats(int id)
         {
-            StoreNewsStats StoreNewsStats = await db.StoreNewsStats.FindAsync(id);
-            if (StoreNewsStats == null)
+            BoardStats BoardStats = await db.BoardStats.FindAsync(id);
+            if (BoardStats == null)
             {
                 return NotFound();
             }
 
-            db.StoreNewsStats.Remove(StoreNewsStats);
+            db.BoardStats.Remove(BoardStats);
             await db.SaveChangesAsync();
 
-            return Ok(StoreNewsStats);
+            return Ok(BoardStats);
         }
 
         protected override void Dispose(bool disposing)
@@ -111,9 +111,9 @@ namespace PetterService.Controllers
             base.Dispose(disposing);
         }
 
-        private bool StoreNewsStatsExists(int id)
+        private bool BoardStatsExists(int id)
         {
-            return db.StoreNewsStats.Count(e => e.StoreNewsStatsNo == id) > 0;
+            return db.BoardStats.Count(e => e.BoardStatsNo == id) > 0;
         }
     }
 }

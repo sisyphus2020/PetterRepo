@@ -23,7 +23,7 @@ namespace PetterService.Common
         public static string PATH { get { return "~/App_Data" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string StorePath { get { return "/Files" + "/" + "Store" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string StoreReviewPath { get { return "/Files" + "/" + "StoreReview" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string StoreNewsPath { get { return "/Files" + "/" + "StoreNews" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
+        public static string BoardPath { get { return "/Files" + "/" + "Board" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string BeautyShopPath { get { return "/Files" + "/" + "BeautyShop" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string PetSitterPath { get { return "/Files" + "/" + "PetSitter" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
         public static string PensionPath { get { return "/Files" + "/" + "Pension" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
@@ -78,7 +78,7 @@ namespace PetterService.Common
     {
         public const string EventFieldName = "EventMainFile";
         public const string NoticeFieldName = "NoticeMainFile";
-        public const string StoreNewsFieldName = "StoreNewsMainFile";
+        public const string BoardFieldName = "BoardMainFile";
         public const string ServiceCenterFieldName = "ServiceCenterMainFile";
     }
 
@@ -92,9 +92,9 @@ namespace PetterService.Common
         public const int StoreReviewWidth = 980;
         public const int StoreReviewHeight = 360;
 
-        // StoreNews
-        public const int StoreNewsWidth = 980;
-        public const int StoreNewsHeight = 360;
+        // Board
+        public const int BoardWidth = 980;
+        public const int BoardHeight = 360;
 
         public const int PetSitterWidth = 980;
         public const int PetSitterHeight = 360;
@@ -124,7 +124,7 @@ namespace PetterService.Common
     {
         public static string[] StoreExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] StoreReviewExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
-        public static string[] StoreNewsExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
+        public static string[] BoardExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] PetSitterExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] PensionExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };
         public static string[] MemberExtensions = { ".jpg", ".jpeg", ".gif", ".bmp", ".png" };

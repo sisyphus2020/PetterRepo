@@ -7,13 +7,13 @@ namespace PetterService.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class CommonCode1 : IMigrationMetadata
+    public sealed partial class Board : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(CommonCode1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Board));
         
         string IMigrationMetadata.Id
         {
-            get { return "201509230459241_CommonCode1"; }
+            get { return "201509241021183_Board"; }
         }
         
         string IMigrationMetadata.Source

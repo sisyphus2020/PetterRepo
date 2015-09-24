@@ -13,44 +13,44 @@ using PetterService.Models;
 
 namespace PetterService.Controllers
 {
-    public class StoreNewsFilesController : ApiController
+    public class BoardFilesController : ApiController
     {
         private PetterServiceContext db = new PetterServiceContext();
 
-        // GET: api/StoreNewsFiles
-        public IQueryable<StoreNewsFile> GetStoreNewsFiles()
+        // GET: api/BoardFiles
+        public IQueryable<BoardFile> GetBoardFiles()
         {
-            return db.StoreNewsFiles;
+            return db.BoardFiles;
         }
 
-        // GET: api/StoreNewsFiles/5
-        [ResponseType(typeof(StoreNewsFile))]
-        public async Task<IHttpActionResult> GetStoreNewsFile(int id)
+        // GET: api/BoardFiles/5
+        [ResponseType(typeof(BoardFile))]
+        public async Task<IHttpActionResult> GetBoardFile(int id)
         {
-            StoreNewsFile StoreNewsFile = await db.StoreNewsFiles.FindAsync(id);
-            if (StoreNewsFile == null)
+            BoardFile BoardFile = await db.BoardFiles.FindAsync(id);
+            if (BoardFile == null)
             {
                 return NotFound();
             }
 
-            return Ok(StoreNewsFile);
+            return Ok(BoardFile);
         }
 
-        // PUT: api/StoreNewsFiles/5
+        // PUT: api/BoardFiles/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutStoreNewsFile(int id, StoreNewsFile StoreNewsFile)
+        public async Task<IHttpActionResult> PutBoardFile(int id, BoardFile BoardFile)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != StoreNewsFile.StoreNewsFileNo)
+            if (id != BoardFile.BoardFileNo)
             {
                 return BadRequest();
             }
 
-            db.Entry(StoreNewsFile).State = EntityState.Modified;
+            db.Entry(BoardFile).State = EntityState.Modified;
 
             try
             {
@@ -58,7 +58,7 @@ namespace PetterService.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StoreNewsFileExists(id))
+                if (!BoardFileExists(id))
                 {
                     return NotFound();
                 }
@@ -71,35 +71,35 @@ namespace PetterService.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/StoreNewsFiles
-        [ResponseType(typeof(StoreNewsFile))]
-        public async Task<IHttpActionResult> PostStoreNewsFile(StoreNewsFile StoreNewsFile)
+        // POST: api/BoardFiles
+        [ResponseType(typeof(BoardFile))]
+        public async Task<IHttpActionResult> PostBoardFile(BoardFile BoardFile)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.StoreNewsFiles.Add(StoreNewsFile);
+            db.BoardFiles.Add(BoardFile);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = StoreNewsFile.StoreNewsFileNo }, StoreNewsFile);
+            return CreatedAtRoute("DefaultApi", new { id = BoardFile.BoardFileNo }, BoardFile);
         }
 
-        // DELETE: api/StoreNewsFiles/5
-        [ResponseType(typeof(StoreNewsFile))]
-        public async Task<IHttpActionResult> DeleteStoreNewsFile(int id)
+        // DELETE: api/BoardFiles/5
+        [ResponseType(typeof(BoardFile))]
+        public async Task<IHttpActionResult> DeleteBoardFile(int id)
         {
-            StoreNewsFile StoreNewsFile = await db.StoreNewsFiles.FindAsync(id);
-            if (StoreNewsFile == null)
+            BoardFile BoardFile = await db.BoardFiles.FindAsync(id);
+            if (BoardFile == null)
             {
                 return NotFound();
             }
 
-            db.StoreNewsFiles.Remove(StoreNewsFile);
+            db.BoardFiles.Remove(BoardFile);
             await db.SaveChangesAsync();
 
-            return Ok(StoreNewsFile);
+            return Ok(BoardFile);
         }
 
         protected override void Dispose(bool disposing)
@@ -111,9 +111,9 @@ namespace PetterService.Controllers
             base.Dispose(disposing);
         }
 
-        private bool StoreNewsFileExists(int id)
+        private bool BoardFileExists(int id)
         {
-            return db.StoreNewsFiles.Count(e => e.StoreNewsFileNo == id) > 0;
+            return db.BoardFiles.Count(e => e.BoardFileNo == id) > 0;
         }
     }
 }

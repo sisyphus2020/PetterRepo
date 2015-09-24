@@ -18,7 +18,7 @@ using System.Drawing.Imaging;
 
 namespace PetterService.Controllers
 {
-    public class StoreNewsController : ApiController
+    public class BoardController : ApiController
     {
         // 1. 스토어 소식 리스트 (X)
         // 2. 스토어 소식 상세 (O)
@@ -29,16 +29,16 @@ namespace PetterService.Controllers
         private PetterServiceContext db = new PetterServiceContext();
 
         /// <summary>
-        /// GET: api/StoreNews
+        /// GET: api/Board
         /// 스토어 소식 리스트
         /// </summary>
         /// <param name="petterRequestType"></param>
         /// <returns></returns>
-        [ResponseType(typeof(PetterResultType<StoreNews>))]
-        public async Task<IHttpActionResult> GetStoreNews([FromUri] PetterRequestType petterRequestType)
+        [ResponseType(typeof(PetterResultType<Board>))]
+        public async Task<IHttpActionResult> GetBoard([FromUri] PetterRequestType petterRequestType)
         {
-            PetterResultType<StoreNews> petterResultType = new PetterResultType<StoreNews>();
-            List<StoreNews> list = new List<StoreNews>();
+            PetterResultType<Board> petterResultType = new PetterResultType<Board>();
+            List<Board> list = new List<Board>();
             bool isSearch = false;
 
             // 검색 조건 
@@ -53,12 +53,12 @@ namespace PetterService.Controllers
                 // 댓글수
                 case "replycount":
                     {
-                        list = await db.StoreNews
+                        list = await db.Boards
                             .Where(p => petterRequestType.CodeID == "A02003" ? p.CodeID == "A02003" : p.CodeID != "A02003" )
                             .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
                             .Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
                             //.OrderByDescending(p => p.ReviewCount)
-                            .OrderByDescending(p => p.StoreNewsNo)
+                            .OrderByDescending(p => p.BoardNo)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToListAsync();
                         break;
@@ -66,11 +66,11 @@ namespace PetterService.Controllers
                 // 기본
                 default:
                     {
-                        list = await db.StoreNews
+                        list = await db.Boards
                             .Where(p => petterRequestType.CodeID == "A02003" ? p.CodeID == "A02003" : p.CodeID != "A02003")
                             .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
                             .Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
-                            .OrderByDescending(p => p.StoreNewsNo)
+                            .OrderByDescending(p => p.BoardNo)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToListAsync();
                         break;
@@ -89,21 +89,21 @@ namespace PetterService.Controllers
         }
 
         /// <summary>
-        /// GET: api/StoreNews/5
+        /// GET: api/Board/5
         /// 스토어 소식 상세
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ResponseType(typeof(PetterResultType<StoreNewsDTO>))]
-        public async Task<IHttpActionResult> GetStoreNews(int id)
-        //public async Task<IHttpActionResult> GetStoreNews(int id, int memberNo)
+        [ResponseType(typeof(PetterResultType<BoardDTO>))]
+        public async Task<IHttpActionResult> GetBoard(int id)
+        //public async Task<IHttpActionResult> GetBoard(int id, int memberNo)
         {
-            PetterResultType<StoreNewsDTO> petterResultType = new PetterResultType<StoreNewsDTO>();
-            List<StoreNewsDTO> list = new List<StoreNewsDTO>();
+            PetterResultType<BoardDTO> petterResultType = new PetterResultType<BoardDTO>();
+            List<BoardDTO> list = new List<BoardDTO>();
 
-            var storeNews = await db.StoreNews.Where(p => p.StoreNewsNo == id).Select(p => new StoreNewsDTO
+            var Board = await db.Boards.Where(p => p.BoardNo == id).Select(p => new BoardDTO
             {
-                StoreNewsNo = p.StoreNewsNo,
+                BoardNo = p.BoardNo,
                 StoreNo = p.StoreNo,
                 CodeID = p.CodeID,
                 Content = p.Content,
@@ -113,20 +113,20 @@ namespace PetterService.Controllers
                 DateDeleted = p.DateDeleted,
                 FileName = p.FileName,
                 FilePath = p.FilePath,
-                StoreNewsStats = p.StoreNewsStats.ToList(),
-                StoreNewsFiles = p.StoreNewsFiles.ToList(),
-                StoreNewsLikes = p.StoreNewsLikes.ToList(),
-                //isCount = p.StoreNewsLikes.Where(p.MemberNO == memberNo),
-                StoreNewsReplies = p.StoreNewsReplies.ToList()
+                BoardStats = p.BoardStats.ToList(),
+                BoardFiles = p.BoardFiles.ToList(),
+                BoardLikes = p.BoardLikes.ToList(),
+                //isCount = p.BoardLikes.Where(p.MemberNO == memberNo),
+                BoardReplies = p.BoardReplies.ToList()
             }).SingleOrDefaultAsync();
 
 
-            if (storeNews == null)
+            if (Board == null)
             {
                 return NotFound();
             }
 
-            list.Add(storeNews);
+            list.Add(Board);
             petterResultType.IsSuccessful = true;
             petterResultType.JsonDataSet = list;
 
@@ -134,32 +134,32 @@ namespace PetterService.Controllers
         }
 
         /// <summary>
-        /// PUT: api/StoreNews/5
+        /// PUT: api/Board/5
         /// 스토어 소식 수정
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ResponseType(typeof(PetterResultType<StoreNews>))]
-        public async Task<IHttpActionResult> PutStoreNews(int id)
+        [ResponseType(typeof(PetterResultType<Board>))]
+        public async Task<IHttpActionResult> PutBoard(int id)
         {
-            PetterResultType<StoreNews> petterResultType = new PetterResultType<StoreNews>();
-            List<StoreNews> list = new List<StoreNews>();
-            List<StoreNewsFile> StoreNewsFiles = new List<StoreNewsFile>();
+            PetterResultType<Board> petterResultType = new PetterResultType<Board>();
+            List<Board> list = new List<Board>();
+            List<BoardFile> BoardFiles = new List<BoardFile>();
 
             if (!Request.Content.IsMimeMultipartContent())
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
-            StoreNews StoreNews = await db.StoreNews.FindAsync(id);
-            if (StoreNews == null)
+            Board Board = await db.Boards.FindAsync(id);
+            if (Board == null)
             {
                 return NotFound();
             }
 
             if (Request.Content.IsMimeMultipartContent())
             {
-                string folder = HostingEnvironment.MapPath(UploadPath.StoreNewsPath);
+                string folder = HostingEnvironment.MapPath(UploadPath.BoardPath);
                 Utilities.CreateDirectory(folder);
 
                 var provider = await Request.Content.ReadAsMultipartAsync();
@@ -169,12 +169,12 @@ namespace PetterService.Controllers
                     string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
                     if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
                     {
-                        StoreNewsFile StoreNewsFile = new StoreNewsFile();
+                        BoardFile BoardFile = new BoardFile();
                         var file = await content.ReadAsByteArrayAsync();
 
                         string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
 
-                        if (!FileExtension.StoreNewsExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        if (!FileExtension.BoardExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
@@ -186,22 +186,22 @@ namespace PetterService.Controllers
                         File.WriteAllBytes(fullPath, file);
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
-                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreNewsWidth, FileSize.StoreNewsHeight, ImageFormat.Png);
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.BoardWidth, FileSize.BoardHeight, ImageFormat.Png);
 
                         // 소식 대표 이미지
-                        if (fieldName == FieldName.StoreNewsFieldName)
+                        if (fieldName == FieldName.BoardFieldName)
                         {
-                            StoreNews.FileName = fileName;
-                            StoreNews.FilePath = UploadPath.StoreNewsPath;
+                            Board.FileName = fileName;
+                            Board.FilePath = UploadPath.BoardPath;
                         }
 
-                        StoreNewsFile.StoreNewsNo = StoreNews.StoreNewsNo;
-                        StoreNewsFile.FileName = fileName;
-                        StoreNewsFile.FilePath = UploadPath.StoreNewsPath;
-                        StoreNewsFile.DateModified = DateTime.Now;
-                        StoreNewsFile.StateFlag = StateFlags.Use;
+                        BoardFile.BoardNo = Board.BoardNo;
+                        BoardFile.FileName = fileName;
+                        BoardFile.FilePath = UploadPath.BoardPath;
+                        BoardFile.DateModified = DateTime.Now;
+                        BoardFile.StateFlag = StateFlags.Use;
 
-                        StoreNewsFiles.Add(StoreNewsFile);
+                        BoardFiles.Add(BoardFile);
                     }
                     else
                     {
@@ -212,10 +212,10 @@ namespace PetterService.Controllers
                         switch (fieldName)
                         {
                             //case "StoreNo":
-                            //    StoreNews.StoreNo = int.Parse(item);
+                            //    Board.StoreNo = int.Parse(item);
                             //    break;
                             case "Content":
-                                StoreNews.Content = item;
+                                Board.Content = item;
                                 break;
                             default:
                                 break;
@@ -224,11 +224,11 @@ namespace PetterService.Controllers
                     }
                 }
 
-                StoreNews.StateFlag = StateFlags.Use;
-                StoreNews.DateModified = DateTime.Now;
+                Board.StateFlag = StateFlags.Use;
+                Board.DateModified = DateTime.Now;
 
                 // 스토어 소식 수정
-                db.Entry(StoreNews).State = EntityState.Modified;
+                db.Entry(Board).State = EntityState.Modified;
                 try
                 {
                     await db.SaveChangesAsync();
@@ -239,10 +239,10 @@ namespace PetterService.Controllers
                 }
 
                 // 스토어 소식 파일 등록
-                db.StoreNewsFiles.AddRange(StoreNewsFiles);
+                db.BoardFiles.AddRange(BoardFiles);
                 int num1 = await this.db.SaveChangesAsync();
 
-                list.Add(StoreNews);
+                list.Add(Board);
                 petterResultType.IsSuccessful = true;
                 petterResultType.JsonDataSet = list;
             }
@@ -256,22 +256,22 @@ namespace PetterService.Controllers
         }
 
         /// <summary>
-        /// POST: api/StoreNews
+        /// POST: api/Board
         /// 스토어 소식 등록
         /// </summary>
         /// <returns></returns>
-        [ResponseType(typeof(PetterResultType<StoreNews>))]
-        public async Task<IHttpActionResult> PostStoreNews()
+        [ResponseType(typeof(PetterResultType<Board>))]
+        public async Task<IHttpActionResult> PostBoard()
         {
-            PetterResultType<StoreNews> petterResultType = new PetterResultType<StoreNews>();
-            List<StoreNews> list = new List<StoreNews>();
-            List<StoreNewsFile> StoreNewsFiles = new List<StoreNewsFile>();
+            PetterResultType<Board> petterResultType = new PetterResultType<Board>();
+            List<Board> list = new List<Board>();
+            List<BoardFile> BoardFiles = new List<BoardFile>();
 
-            StoreNews storeNews = new StoreNews();
+            Board Board = new Board();
 
             if (Request.Content.IsMimeMultipartContent())
             {
-                string folder = HostingEnvironment.MapPath(UploadPath.StoreNewsPath);
+                string folder = HostingEnvironment.MapPath(UploadPath.BoardPath);
                 Utilities.CreateDirectory(folder);
 
                 var provider = await Request.Content.ReadAsMultipartAsync();
@@ -281,12 +281,12 @@ namespace PetterService.Controllers
                     string fieldName = content.Headers.ContentDisposition.Name.Trim('"');
                     if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
                     {
-                        StoreNewsFile storeNewsFile = new StoreNewsFile();
+                        BoardFile BoardFile = new BoardFile();
                         var file = await content.ReadAsByteArrayAsync();
 
                         string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
 
-                        if (!FileExtension.StoreNewsExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
+                        if (!FileExtension.BoardExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
                             petterResultType.IsSuccessful = false;
                             petterResultType.JsonDataSet = null;
@@ -298,22 +298,22 @@ namespace PetterService.Controllers
                         File.WriteAllBytes(fullPath, file);
                         string thumbnamil = Path.GetFileNameWithoutExtension(fileName) + "_thumbnail" + Path.GetExtension(fileName);
 
-                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreNewsWidth, FileSize.StoreNewsHeight, ImageFormat.Png);
+                        Utilities.ResizeImage(fullPath, thumbnamil, FileSize.BoardWidth, FileSize.BoardHeight, ImageFormat.Png);
 
                         // 소식 대표 이미지
-                        if (fieldName == FieldName.StoreNewsFieldName)
+                        if (fieldName == FieldName.BoardFieldName)
                         {
-                            storeNews.FileName = fileName;
-                            storeNews.FilePath = UploadPath.StoreNewsPath;
+                            Board.FileName = fileName;
+                            Board.FilePath = UploadPath.BoardPath;
                         }
 
-                        storeNewsFile.FileName = fileName;
-                        storeNewsFile.FilePath = UploadPath.StoreNewsPath;
-                        storeNewsFile.DateCreated = DateTime.Now;
-                        storeNewsFile.DateModified = DateTime.Now;
-                        storeNewsFile.StateFlag = StateFlags.Use;
+                        BoardFile.FileName = fileName;
+                        BoardFile.FilePath = UploadPath.BoardPath;
+                        BoardFile.DateCreated = DateTime.Now;
+                        BoardFile.DateModified = DateTime.Now;
+                        BoardFile.StateFlag = StateFlags.Use;
 
-                        StoreNewsFiles.Add(storeNewsFile);
+                        BoardFiles.Add(BoardFile);
                     }
                     else
                     {
@@ -324,13 +324,13 @@ namespace PetterService.Controllers
                         switch (fieldName)
                         {
                             case "StoreNo":
-                                storeNews.StoreNo = int.Parse(item);
+                                Board.StoreNo = int.Parse(item);
                                 break;
                             case "CodeID":
-                                storeNews.CodeID = item;
+                                Board.CodeID = item;
                                 break;
                             case "Content":
-                                storeNews.Content = item;
+                                Board.Content = item;
                                 break;
                             default:
                                 break;
@@ -339,24 +339,24 @@ namespace PetterService.Controllers
                     }
                 }
 
-                storeNews.StateFlag = StateFlags.Use;
-                storeNews.DateCreated = DateTime.Now;
-                storeNews.DateModified = DateTime.Now;
+                Board.StateFlag = StateFlags.Use;
+                Board.DateCreated = DateTime.Now;
+                Board.DateModified = DateTime.Now;
 
                 // 스토어 소식 등록
-                db.StoreNews.Add(storeNews);
+                db.Boards.Add(Board);
                 int num = await this.db.SaveChangesAsync();
 
                 // 스토어 소식 파일 등록
-                foreach (var item in StoreNewsFiles)
+                foreach (var item in BoardFiles)
                 {
-                    item.StoreNewsNo = storeNews.StoreNewsNo;
+                    item.BoardNo = Board.BoardNo;
                 }
 
-                db.StoreNewsFiles.AddRange(StoreNewsFiles);
+                db.BoardFiles.AddRange(BoardFiles);
                 int num1 = await this.db.SaveChangesAsync();
 
-                list.Add(storeNews);
+                list.Add(Board);
                 petterResultType.IsSuccessful = true;
                 petterResultType.JsonDataSet = list;
             }
@@ -370,32 +370,32 @@ namespace PetterService.Controllers
         }
 
         /// <summary>
-        /// DELETE: api/StoreNews/5
+        /// DELETE: api/Board/5
         /// 스토어 소식 삭제
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ResponseType(typeof(PetterResultType<StoreNews>))]
-        public async Task<IHttpActionResult> DeleteStoreNews(int id)
+        [ResponseType(typeof(PetterResultType<Board>))]
+        public async Task<IHttpActionResult> DeleteBoard(int id)
         {
             // 인증 필요
 
-            PetterResultType<StoreNews> petterResultType = new PetterResultType<StoreNews>();
-            List<StoreNews> storeGalleries = new List<StoreNews>();
-            StoreNews StoreNews = await db.StoreNews.FindAsync(id);
+            PetterResultType<Board> petterResultType = new PetterResultType<Board>();
+            List<Board> storeGalleries = new List<Board>();
+            Board Board = await db.Boards.FindAsync(id);
 
-            if (StoreNews == null)
+            if (Board == null)
             {
                 return NotFound();
             }
 
-            StoreNews.StateFlag = StateFlags.Delete;
-            StoreNews.DateDeleted = DateTime.Now;
-            db.Entry(StoreNews).State = EntityState.Modified;
+            Board.StateFlag = StateFlags.Delete;
+            Board.DateDeleted = DateTime.Now;
+            db.Entry(Board).State = EntityState.Modified;
 
             await db.SaveChangesAsync();
 
-            storeGalleries.Add(StoreNews);
+            storeGalleries.Add(Board);
             petterResultType.IsSuccessful = true;
             petterResultType.JsonDataSet = storeGalleries;
 
@@ -412,9 +412,9 @@ namespace PetterService.Controllers
             base.Dispose(disposing);
         }
 
-        private bool StoreNewsExists(int id)
+        private bool BoardExists(int id)
         {
-            return db.StoreNews.Count(e => e.StoreNewsNo == id) > 0;
+            return db.Boards.Count(e => e.BoardNo == id) > 0;
         }
     }
 }
