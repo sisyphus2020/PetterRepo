@@ -18,7 +18,7 @@ using System.Drawing.Imaging;
 
 namespace PetterService.Controllers
 {
-    public class BoardController : ApiController
+    public class BoardsController : ApiController
     {
         // 1. 게시판 리스트 (X)
         // 2. 게시판 상세 (O)
@@ -215,6 +215,9 @@ namespace PetterService.Controllers
                             //case "StoreNo":
                             //    Board.StoreNo = int.Parse(item);
                             //    break;
+                            case "Title":
+                                board.Title = item;
+                                break;
                             case "Content":
                                 board.Content = item;
                                 break;
@@ -329,6 +332,12 @@ namespace PetterService.Controllers
                                 break;
                             case "CodeID":
                                 board.CodeID = item;
+                                break;
+                            case "MemberID":
+                                board.MemberID = item;
+                                break;
+                            case "Title":
+                                board.Title = item;
                                 break;
                             case "Content":
                                 board.Content = item;

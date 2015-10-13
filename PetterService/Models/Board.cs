@@ -12,6 +12,10 @@ namespace PetterService.Models
         public int StoreNo { get; set; }
         [Index("IX_STORE_CODEID"), MaxLength(6), Column("CodeID", TypeName = "char")]
         public string CodeID { get; set; }
+        [MaxLength(50)]
+        public string MemberID { get; set; }
+        [MaxLength(200)]
+        public string Title { get; set; }
         [MaxLength(4000)]
         public string Content { get; set; }
 
