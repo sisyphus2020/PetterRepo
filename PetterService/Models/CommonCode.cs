@@ -10,8 +10,9 @@ namespace PetterService.Models
         public int CodeNo { get; set; }
         [Index("IX_COMMONCODE_CODEID", IsUnique = true), MaxLength(6), Column("CodeID", TypeName = "char")]
         public string CodeID { get; set; }
-        [Index("IX_COMMONCODE_PARENTCODEID"), MaxLength(6), Column("ParentCodeID", TypeName = "char")]
+        [Index("IX_COMMONCODE_PARENTCODEID"), MaxLength(3), Column("ParentCodeID", TypeName = "char")]
         public string ParentCodeID { get; set; }
+        public int OrderNo { get; set; }
         [MaxLength(50)]
         public string CodeName { get; set; }
         [MaxLength(100)]

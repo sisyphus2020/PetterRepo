@@ -115,6 +115,7 @@ namespace PetterService.Controllers
             #endregion 정렬방식
 
             petterResultType.IsSuccessful = true;
+            petterResultType.AffectedRow = list.Count();
             petterResultType.JsonDataSet = list.ToList();
             return Ok(petterResultType);
         }
