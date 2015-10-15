@@ -222,7 +222,10 @@ namespace PetterService.Controllers
                 string folder = HostingEnvironment.MapPath(UploadPath.CompanionAnimalPath);
                 Utilities.CreateDirectory(folder);
 
-                var provider = await Request.Content.ReadAsMultipartAsync();
+                var provider = new MultipartMemoryStreamProvider();
+                //var provider = await Request.Content.ReadAsMultipartAsync();
+
+                await Request.Content.ReadAsMultipartAsync(provider);
 
                 foreach (var content in provider.Contents)
                 {
@@ -230,8 +233,9 @@ namespace PetterService.Controllers
                     if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
                     {
                         var file = await content.ReadAsByteArrayAsync();
+                        string oldFileName = HttpUtility.UrlDecode(content.Headers.ContentDisposition.FileName.Trim('"'));
 
-                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+                        string fileName = Utilities.additionFileName(oldFileName);
 
                         if (!FileExtension.CompanionAnimalExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {

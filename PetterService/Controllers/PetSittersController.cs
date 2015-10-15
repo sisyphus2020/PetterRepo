@@ -27,7 +27,7 @@ namespace PetterService.Controllers
         public IEnumerable<PetSitter> GetPensions([FromUri] PetterRequestType petterRequestType)
         {
             List<PetSitter> list = new List<PetSitter>();
-            DbGeography currentLocation = DbGeography.FromText(string.Format("POINT({0} {1})", petterRequestType.Latitude, petterRequestType.Longitude));
+            DbGeography currentLocation = DbGeography.FromText(string.Format("POINT({0} {1})", petterRequestType.Longitude, petterRequestType.Latitude));
             int distance = petterRequestType.Distance;
 
             var PetSitter = db.PetSitters.AsEnumerable();
@@ -255,7 +255,7 @@ namespace PetterService.Controllers
                     }
                 }
 
-                string point = string.Format("POINT({0} {1})", petSitter.Latitude, petSitter.Longitude);
+                string point = string.Format("POINT({0} {1})", petSitter.Longitude, petSitter.Latitude);
                 petSitter.Coordinate = DbGeography.FromText(point);
                 petSitter.DateModified = DateTime.Now;
                 db.Entry(petSitter).State = EntityState.Modified;
@@ -403,7 +403,7 @@ namespace PetterService.Controllers
                     }
                 }
 
-                string point = string.Format("POINT({0} {1})", petSitter.Latitude, petSitter.Longitude);
+                string point = string.Format("POINT({0} {1})", petSitter.Longitude, petSitter.Latitude);
                 petSitter.Coordinate = DbGeography.FromText(point);
                 petSitter.DateCreated = DateTime.Now;
                 petSitter.DateModified = DateTime.Now;

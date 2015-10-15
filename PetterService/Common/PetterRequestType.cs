@@ -34,8 +34,8 @@ namespace PetterService.Common
             this.SortBy = "basic";
             this.Reverse = false;
             this.Search = string.Empty;
-            this.Latitude = 126.975971;
-            this.Longitude = 37.571483;
+            this.Longitude = 126.975971;
+            this.Latitude = 37.571483;
             this.Distance = 5;
             this.StateFlag = StateFlags.Use;
         }

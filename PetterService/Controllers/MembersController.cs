@@ -233,7 +233,7 @@ namespace PetterService.Controllers
                     }
                 }
 
-                string point = string.Format("POINT({0} {1})", member.Latitude, member.Longitude);
+                string point = string.Format("POINT({0} {1})", member.Longitude, member.Latitude);
                 member.Coordinate = DbGeography.FromText(point);
                 member.DateModified = DateTime.Now;
                 db.Entry(member).State = EntityState.Modified;
@@ -376,7 +376,7 @@ namespace PetterService.Controllers
                     }
                 }
 
-                string point = string.Format("POINT({0} {1})", member.Latitude, member.Longitude);
+                string point = string.Format("POINT({0} {1})", member.Longitude, member.Latitude);
                 member.Coordinate = DbGeography.FromText(point);
                 member.StateFlag = StateFlags.Use;
                 member.Route = Route.App;

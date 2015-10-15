@@ -3,8 +3,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web;
 
 namespace PetterService.Common
 {
@@ -230,5 +232,28 @@ namespace PetterService.Common
 
             return name + "_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ext;
         }
+
+        //public string GetClientIp(HttpRequestMessage request = null)
+        //{
+        //    request = request ?? Request;
+
+        //    if (request.Properties.ContainsKey("MS_HttpContext"))
+        //    {
+        //        return ((HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.UserHostAddress;
+        //    }
+        //    else if (request.Properties.ContainsKey(RemoteEndpointMessageProperty.Name))
+        //    {
+        //        RemoteEndpointMessageProperty prop = (RemoteEndpointMessageProperty)request.Properties[RemoteEndpointMessageProperty.Name];
+        //        return prop.Address;
+        //    }
+        //    else if (HttpContext.Current != null)
+        //    {
+        //        return HttpContext.Current.Request.UserHostAddress;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
     }
 }

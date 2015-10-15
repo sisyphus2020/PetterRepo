@@ -16,11 +16,18 @@ namespace PetterService.Controllers
 {
     public class CommonCodesController : ApiController
     {
+        // 1. 공통코드 리스트 (X)
+        // 2. 스토어 상세 (O)
+        // 3. 스토어 등록 (O)
+        // 4. 스토어 수정 (O)
+        // 5. 스토어 삭제 (O)
+        // 6. 스토어 ID 검색
+
         private PetterServiceContext db = new PetterServiceContext();
 
         /// <summary>
         /// GET: api/CommonCodes
-        /// 공통코드 리스트
+        /// 공통코드 리스트(Search : ParentCodeID)
         /// </summary>
         /// <returns></returns>
         [ResponseType(typeof(PetterResultType<CommonCode>))]

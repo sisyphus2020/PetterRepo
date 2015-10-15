@@ -42,7 +42,8 @@ namespace PetterService.Controllers
         {
             PetterResultType<Store> petterResultType = new PetterResultType<Store>();
             List<Store> list = new List<Store>();
-            DbGeography currentLocation = DbGeography.FromText(string.Format("POINT({0} {1})", petterRequestType.Latitude, petterRequestType.Longitude));
+            // 서울 (경도: 126.9784, 위도: 37.5667)
+            DbGeography currentLocation = DbGeography.FromText(string.Format("POINT({0} {1})", petterRequestType.Longitude, petterRequestType.Latitude));
             int distance = petterRequestType.Distance;
 
             var store = db.Stores.AsEnumerable();
@@ -236,11 +237,11 @@ namespace PetterService.Controllers
                             case "StoreNo":
                                 store.StoreNo = int.Parse(item);
                                 break;
-                            case "CompanyNo":
-                                store.CompanyNo = int.Parse(item);
-                                break;
-                            //case "CommonCodeNo":
-                            //    store.CommonCodeNo = int.Parse(item);
+                            //case "CompanyNo":
+                            //    store.CompanyNo = int.Parse(item);
+                            //    break;
+                            //case "CodeID":
+                            //    store.CodeID = item;
                             //    break;
                             case "StoreName":
                                 store.StoreName = item;
@@ -282,7 +283,7 @@ namespace PetterService.Controllers
                     }
                 }
 
-                string point = string.Format("POINT({0} {1})", store.Latitude, store.Longitude);
+                string point = string.Format("POINT({0} {1})", store.Longitude, store.Latitude);
                 store.Coordinate = DbGeography.FromText(point);
                 store.DateModified = DateTime.Now;
                 db.Entry(store).State = EntityState.Modified;
@@ -382,9 +383,9 @@ namespace PetterService.Controllers
                             case "CompanyNo":
                                 store.CompanyNo = int.Parse(item);
                                 break;
-                            //case "CommoncodeNo":
-                            //    store.CommonCodeNo = int.Parse(item);
-                            //    break;
+                            case "CodeID":
+                                store.CodeID = item;
+                                break;
                             case "StoreName":
                                 store.StoreName = item;
                                 break;
@@ -431,7 +432,7 @@ namespace PetterService.Controllers
                     }
                 }
 
-                string point = string.Format("POINT({0} {1})", store.Latitude, store.Longitude);
+                string point = string.Format("POINT({0} {1})", store.Longitude, store.Latitude);
                 store.Coordinate = DbGeography.FromText(point);
                 store.StateFlag = "U";
                 store.WriteIP = "2222.2.22.22";
