@@ -37,8 +37,10 @@ namespace PetterService.Controllers
         /// </summary>
         /// <param name="petterRequestType"></param>
         /// <returns></returns>
-        public IEnumerable<Store> GetStore([FromUri] PetterRequestType petterRequestType)
+        [ResponseType(typeof(PetterResultType<Store>))]
+        public async Task<IHttpActionResult> GetStore([FromUri] PetterRequestType petterRequestType)
         {
+            PetterResultType<Store> petterResultType = new PetterResultType<Store>();
             List<Store> list = new List<Store>();
             DbGeography currentLocation = DbGeography.FromText(string.Format("POINT({0} {1})", petterRequestType.Latitude, petterRequestType.Longitude));
             int distance = petterRequestType.Distance;
@@ -59,7 +61,7 @@ namespace PetterService.Controllers
                     {
                         list = store
                             .Where(p => petterRequestType.CodeID == petterRequestType.CodeID)
-                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
+                            //.Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             .OrderByDescending(p => p.StoreNo)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
@@ -70,7 +72,7 @@ namespace PetterService.Controllers
                     {
                         list = store
                             .Where(p => petterRequestType.CodeID == petterRequestType.CodeID)
-                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
+                            //.Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             //.OrderByDescending(p => p.ReviewCount)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
@@ -81,7 +83,7 @@ namespace PetterService.Controllers
                     {
                         list = store
                             .Where(p => petterRequestType.CodeID == petterRequestType.CodeID)
-                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
+                            //.Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             //.OrderByDescending(p => p.Grade)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
@@ -92,7 +94,7 @@ namespace PetterService.Controllers
                     {
                         list = store
                             .Where(p => petterRequestType.CodeID == petterRequestType.CodeID)
-                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
+                            //.Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             //.OrderByDescending(p => p.Bookmark)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
@@ -103,7 +105,7 @@ namespace PetterService.Controllers
                     {
                         list = store
                             .Where(p => petterRequestType.CodeID == petterRequestType.CodeID)
-                            .Where(p => p.Coordinate.Distance(currentLocation) <= distance)
+                            //.Where(p => p.Coordinate.Distance(currentLocation) <= distance)
                             .OrderByDescending(p => p.CompanyNo)
                             .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
                             .Take(petterRequestType.ItemsPerPage).ToList();
@@ -112,7 +114,9 @@ namespace PetterService.Controllers
             }
             #endregion 정렬방식
 
-            return list;
+            petterResultType.IsSuccessful = true;
+            petterResultType.JsonDataSet = list.ToList();
+            return Ok(petterResultType);
         }
 
         /// <summary>
@@ -377,9 +381,9 @@ namespace PetterService.Controllers
                             case "CompanyNo":
                                 store.CompanyNo = int.Parse(item);
                                 break;
-                            case "CommoncodeNo":
-                                store.CommonCodeNo = int.Parse(item);
-                                break;
+                            //case "CommoncodeNo":
+                            //    store.CommonCodeNo = int.Parse(item);
+                            //    break;
                             case "StoreName":
                                 store.StoreName = item;
                                 break;

@@ -6,7 +6,7 @@ namespace PetterService.Models
     public class StoreBase : GeographyFileDateBase
     {
         public virtual int CompanyNo { get; set; }
-        public virtual int CommonCodeNo { get; set; }
+        //public virtual int CommonCodeNo { get; set; }
         [Index("IX_STORE_STORENAME"), MaxLength(100)]
         public string StoreName { get; set; }
         [Index("IX_STORE_STOREID"), MaxLength(100)]

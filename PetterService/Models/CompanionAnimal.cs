@@ -8,8 +8,11 @@ namespace PetterService.Models
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int CompanionAnimalNo { get; set; }
-        public int MemberNo { get; set; }
-        public int PetKindNo { get; set; }
+        [Index("IX_STORE_MEMBERID"), MaxLength(50), Column("MemberID")]
+        public string MemberID { get; set; }
+        [Index("IX_STORE_CODEID"), MaxLength(6), Column("CodeID", TypeName = "char")]
+        public string CodeID { get; set; }
+        //public int PetKindNo { get; set; }
         //[ForeignKey("PetKind")]
         //[Column(Order = 0)]
         //public string PetCategory { get; set; }
@@ -34,9 +37,9 @@ namespace PetterService.Models
         public string Feature { get; set; }
 
         // Navigation property
-        [ForeignKey("MemberNo")]
-        public Member Member { get; set; }
-        [ForeignKey("PetKindNo")]
-        public PetKind PetKind { get; set; }
+        //[ForeignKey("MemberNo")]
+        //public Member Member { get; set; }
+        //[ForeignKey("PetKindNo")]
+        //public PetKind PetKind { get; set; }
     }
 }

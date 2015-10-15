@@ -32,7 +32,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> GetCompanionAnimals([FromUri] CompanionAnimal companionAnimal)
         {
             PetterResultType<CompanionAnimal> petterResultType = new PetterResultType<CompanionAnimal>();
-            var list = await db.CompanionAnimals.Where(p => p.MemberNo == companionAnimal.MemberNo).ToListAsync();
+            var list = await db.CompanionAnimals.Where(p => p.MemberID == companionAnimal.MemberID).ToListAsync();
 
             if (list == null)
             {
@@ -136,11 +136,11 @@ namespace PetterService.Controllers
                             case "CompanionAnimalNo":
                                 companionAnimal.CompanionAnimalNo = int.Parse(item);
                                 break;
-                            case "MemberNo":
-                                companionAnimal.MemberNo = int.Parse(item);
+                            case "MemberID":
+                                companionAnimal.MemberID = item;
                                 break;
-                            case "PetKindNo":
-                                companionAnimal.PetKindNo = int.Parse(item);
+                            case "CodeID":
+                                companionAnimal.CodeID = item;
                                 break;
                             //case "PetCategory":
                             //    companionAnimal.PetCategory = item;
@@ -257,11 +257,11 @@ namespace PetterService.Controllers
                         #region switch case
                         switch (fieldName)
                         {
-                            case "MemberNo":
-                                companionAnimal.MemberNo = int.Parse(item);
+                            case "MemberID":
+                                companionAnimal.MemberID = item;
                                 break;
-                            case "PetKindNo":
-                                companionAnimal.PetKindNo = int.Parse(item);
+                            case "CodeID":
+                                companionAnimal.CodeID = item;
                                 break;
                             //case "PetCategory":
                             //    companionAnimal.PetCategory = item;
