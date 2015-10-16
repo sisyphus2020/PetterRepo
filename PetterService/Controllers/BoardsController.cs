@@ -172,8 +172,8 @@ namespace PetterService.Controllers
                     {
                         BoardFile boardFile = new BoardFile();
                         var file = await content.ReadAsByteArrayAsync();
-
-                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+                        string oldFileName = HttpUtility.UrlDecode(content.Headers.ContentDisposition.FileName.Trim('"'));
+                        string fileName = Utilities.additionFileName(oldFileName);
 
                         if (!FileExtension.BoardExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
@@ -193,12 +193,12 @@ namespace PetterService.Controllers
                         if (fieldName == FieldName.BoardFieldName)
                         {
                             board.FileName = fileName;
-                            board.FilePath = UploadPath.BoardPath;
+                            board.FilePath = UploadPath.BoardPath.Replace("~", "");
                         }
 
                         boardFile.BoardNo = board.BoardNo;
                         boardFile.FileName = fileName;
-                        boardFile.FilePath = UploadPath.BoardPath;
+                        boardFile.FilePath = UploadPath.BoardPath.Replace("~", "");
                         boardFile.DateModified = DateTime.Now;
                         boardFile.StateFlag = StateFlags.Use;
 
@@ -288,7 +288,8 @@ namespace PetterService.Controllers
                         BoardFile boardFile = new BoardFile();
                         var file = await content.ReadAsByteArrayAsync();
 
-                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+                        string oldFileName = HttpUtility.UrlDecode(content.Headers.ContentDisposition.FileName.Trim('"'));
+                        string fileName = Utilities.additionFileName(oldFileName);
 
                         if (!FileExtension.BoardExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
@@ -308,11 +309,11 @@ namespace PetterService.Controllers
                         if (fieldName == FieldName.BoardFieldName)
                         {
                             board.FileName = fileName;
-                            board.FilePath = UploadPath.BoardPath;
+                            board.FilePath = UploadPath.BoardPath.Replace("~", "");
                         }
 
                         boardFile.FileName = fileName;
-                        boardFile.FilePath = UploadPath.BoardPath;
+                        boardFile.FilePath = UploadPath.BoardPath.Replace("~", "");
                         boardFile.DateCreated = DateTime.Now;
                         boardFile.DateModified = DateTime.Now;
                         boardFile.StateFlag = StateFlags.Use;

@@ -186,7 +186,7 @@ namespace PetterService.Controllers
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreReviewWidth, FileSize.StoreReviewHeight, ImageFormat.Png);
                         storeReviewFile.StoreReviewNo = storeReview.StoreReviewNo;
                         storeReviewFile.FileName = fileName;
-                        storeReviewFile.FilePath = UploadPath.StoreReviewPath;
+                        storeReviewFile.FilePath = UploadPath.StoreReviewPath.Replace("~","");
                         storeReviewFile.DateModified = DateTime.Now;
                         storeReviewFile.StateFlag = StateFlags.Use;
 
@@ -295,7 +295,7 @@ namespace PetterService.Controllers
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreReviewWidth, FileSize.StoreReviewHeight, ImageFormat.Png);
                         storeReviewFile.FileName = fileName;
-                        storeReviewFile.FilePath = UploadPath.StoreReviewPath;
+                        storeReviewFile.FilePath = UploadPath.StoreReviewPath.Replace("~", "");
                         storeReviewFile.DateCreated = DateTime.Now;
                         storeReviewFile.DateModified = DateTime.Now;
                         storeReviewFile.StateFlag = StateFlags.Use;

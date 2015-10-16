@@ -138,7 +138,7 @@ namespace PetterService.Controllers
                 StoreNo = p.StoreNo,
                 CompanyNo = p.CompanyNo,
                 StoreName = p.StoreName,
-                StoreID = p.StoreID,
+                //StoreID = p.StoreID,
                 Phone = p.Phone,
                 StoreAddress = p.StoreAddress,
                 FileName = p.FileName,
@@ -207,8 +207,8 @@ namespace PetterService.Controllers
                     if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
                     {
                         var file = await content.ReadAsByteArrayAsync();
-
-                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+                        string oldFileName = HttpUtility.UrlDecode(content.Headers.ContentDisposition.FileName.Trim('"'));
+                        string fileName = Utilities.additionFileName(oldFileName);
 
                         if (!FileExtension.StoreExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
@@ -224,7 +224,7 @@ namespace PetterService.Controllers
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreWidth, FileSize.StoreHeight, ImageFormat.Png);
                         store.FileName = fileName;
-                        store.FilePath = UploadPath.StorePath;
+                        store.FilePath = UploadPath.StorePath.Replace("~", "");
                     }
                     else
                     {
@@ -234,9 +234,9 @@ namespace PetterService.Controllers
                         #region switch case
                         switch (fieldName)
                         {
-                            case "StoreNo":
-                                store.StoreNo = int.Parse(item);
-                                break;
+                            //case "StoreNo":
+                            //    store.StoreNo = int.Parse(item);
+                            //    break;
                             //case "CompanyNo":
                             //    store.CompanyNo = int.Parse(item);
                             //    break;
@@ -312,6 +312,7 @@ namespace PetterService.Controllers
                 }
 
                 stores.Add(store);
+                petterResultType.AffectedRow = stores.Count();
                 petterResultType.IsSuccessful = true;
                 petterResultType.JsonDataSet = stores;
             }
@@ -353,8 +354,8 @@ namespace PetterService.Controllers
                     if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
                     {
                         var file = await content.ReadAsByteArrayAsync();
-
-                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+                        string oldFileName = HttpUtility.UrlDecode(content.Headers.ContentDisposition.FileName.Trim('"'));
+                        string fileName = Utilities.additionFileName(oldFileName);
 
                         if (!FileExtension.StoreExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
@@ -370,7 +371,7 @@ namespace PetterService.Controllers
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreWidth, FileSize.StoreHeight, ImageFormat.Png);
                         store.FileName = fileName;
-                        store.FilePath = UploadPath.StorePath;
+                        store.FilePath = UploadPath.StorePath.Replace("~", "");
                     }
                     else
                     {
@@ -389,9 +390,9 @@ namespace PetterService.Controllers
                             case "StoreName":
                                 store.StoreName = item;
                                 break;
-                            case "StoreID":
-                                store.StoreID = item;
-                                break;
+                            //case "StoreID":
+                            //    store.StoreID = item;
+                            //    break;
                             case "Phone":
                                 store.Phone = item;
                                 break;
@@ -443,6 +444,7 @@ namespace PetterService.Controllers
 
                 if (!string.IsNullOrWhiteSpace(storeService))
                 {
+                    //List<StoreService> list = await AddStoreService(store, storeService);
                     List<StoreService> list = await AddStoreService(store, storeService);
                     store.StoreServices = list;
                 }
@@ -454,6 +456,7 @@ namespace PetterService.Controllers
                 }
 
                 stores.Add(store);
+                petterResultType.AffectedRow = stores.Count();
                 petterResultType.IsSuccessful = true;
                 petterResultType.JsonDataSet = stores;
             }
@@ -488,14 +491,14 @@ namespace PetterService.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ActionName("StoreID")]
+        [ActionName("StoreNo")]
         [ResponseType(typeof(PetterResultType<StoreDTO>))]
-        public async Task<IHttpActionResult> GetStoreByStoreID(string id)
+        public async Task<IHttpActionResult> GetStoreByStoreID(int id)
         {
             PetterResultType<StoreDTO> petterResultType = new PetterResultType<StoreDTO>();
             List<StoreDTO> stores = new List<StoreDTO>();
 
-            var idCount = db.Stores.Count(e => e.StoreID == id.ToLower());
+            var idCount = db.Stores.Count(e => e.StoreNo == id);
 
             //var store = await db.Stores.Where(p => p.StoreID == id).Select(p => new StoreDTO
             //{
@@ -544,7 +547,7 @@ namespace PetterService.Controllers
                 StoreService storeservice = new StoreService();
 
                 storeservice.StoreNo = store.StoreNo;
-                storeservice.CodeID = arr[i].ToString();
+                storeservice.CodeID = arr[i].ToString().Trim();
 
                 storeServices.Add(storeservice);
             }
@@ -571,7 +574,7 @@ namespace PetterService.Controllers
                 StoreHoliday storeHoliday = new StoreHoliday();
 
                 storeHoliday.StoreNo = store.StoreNo;
-                storeHoliday.CodeID = arr[i].ToString();
+                storeHoliday.CodeID = arr[i].ToString().Trim();
 
                 storeHolidays.Add(storeHoliday);
             }

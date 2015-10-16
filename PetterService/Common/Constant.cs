@@ -18,20 +18,24 @@ namespace PetterService.Common
 
     public static class UploadPath
     {
+        public static string DatePath = DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd");
+
         public static string Root { get { return HttpContext.Current.Server.MapPath("~/") + "\\"; } }
         public static string Temp { get { return Root + "Temp\\"; } }
-        public static string PATH { get { return "~/App_Data" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string StorePath { get { return "/Files" + "/" + "Store" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string StoreReviewPath { get { return "/Files" + "/" + "StoreReview" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string BoardPath { get { return "/Files" + "/" + "Board" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string BeautyShopPath { get { return "/Files" + "/" + "BeautyShop" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string PetSitterPath { get { return "/Files" + "/" + "PetSitter" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string PensionPath { get { return "/Files" + "/" + "Pension" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string MemberPath { get { return "/Files" + "/" + "Member" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string CompanionAnimalPath { get { return "/Files" + "/" + "CompanionAnimal" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string EventBoardPath { get { return "/Files" + "/" + "EventBoard" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string NoticePath { get { return "/Files" + "/" + "Notice" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
-        public static string BeautyShopReviewPath { get { return "/Files" + "/" + "BeautyShopReview" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
+        //public static string PATH { get { return "~/App_Data" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
+        public static string PATH { get { return "~/App_Data" + "/" + DatePath; } }
+        //public static string StorePath { get { return "~/Files" + "/" + "Store" + "/" + DateTime.Now.ToString("yyyy") + "/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.ToString("dd"); } }
+        public static string StorePath { get { return "~/Files" + "/" + "Store" + "/" + DatePath; } }
+        public static string StoreReviewPath { get { return "~/Files" + "/" + "StoreReview" + "/" + DatePath; } }
+        public static string BoardPath { get { return "~/Files" + "/" + "Board" + "/" + DatePath; } }
+        public static string BeautyShopPath { get { return "~/Files" + "/" + "BeautyShop" + "/" + DatePath; } }
+        public static string PetSitterPath { get { return "~/Files" + "/" + "PetSitter" + "/" + DatePath; } }
+        public static string PensionPath { get { return "~/Files" + "/" + "Pension" + "/" + DatePath; } }
+        public static string MemberPath { get { return "~/Files" + "/" + "Member" + "/" + DatePath; } }
+        public static string CompanionAnimalPath { get { return "~/Files" + "/" + "CompanionAnimal" + "/" + DatePath; } }
+        public static string EventBoardPath { get { return "~/Files" + "/" + "EventBoard" + "/" + DatePath; } }
+        public static string NoticePath { get { return "~/Files" + "/" + "Notice" + "/" + DatePath; } }
+        public static string BeautyShopReviewPath { get { return "~/Files" + "/" + "BeautyShopReview" + "/" + DatePath; } }
     }
 
     public sealed class AccessResult

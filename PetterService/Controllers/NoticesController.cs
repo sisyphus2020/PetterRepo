@@ -177,7 +177,7 @@ namespace PetterService.Controllers
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.NoticeWidth, FileSize.NoticeHeight, ImageFormat.Png);
                         noticeFile.NoticeNo = notice.NoticeNo;
                         noticeFile.FileName = fileName;
-                        noticeFile.FilePath = UploadPath.NoticePath;
+                        noticeFile.FilePath = UploadPath.NoticePath.Replace("~", "");
 
                         noticeFiles.Add(noticeFile);
                     }
@@ -281,7 +281,7 @@ namespace PetterService.Controllers
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.NoticeWidth, FileSize.NoticeHeight, ImageFormat.Png);
                         noticeFile.FileName = fileName;
-                        noticeFile.FilePath = UploadPath.NoticePath;
+                        noticeFile.FilePath = UploadPath.NoticePath.Replace("~", "");
 
                         noticeFiles.Add(noticeFile);
                     }

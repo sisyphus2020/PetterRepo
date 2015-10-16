@@ -191,7 +191,7 @@ namespace PetterService.Controllers
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PensionWidth, FileSize.PensionHeight, ImageFormat.Png);
                         pension.FileName = fileName;
-                        pension.FilePath = UploadPath.PensionPath;
+                        pension.FilePath = UploadPath.PensionPath.Replace("~", "");
                     }
                     else
                     {
@@ -333,7 +333,7 @@ namespace PetterService.Controllers
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PensionWidth, FileSize.PensionHeight, ImageFormat.Png);
                         pension.FileName = fileName;
-                        pension.FilePath = UploadPath.PensionPath;
+                        pension.FilePath = UploadPath.PensionPath.Replace("~", "");
                     }
                     else
                     {

@@ -201,12 +201,12 @@ namespace PetterService.Controllers
                         if (fieldName == FieldName.EventFieldName)
                         {
                             eventBoard.FileName = fileName;
-                            eventBoard.FilePath = UploadPath.EventBoardPath;
+                            eventBoard.FilePath = UploadPath.EventBoardPath.Replace("~","");
                         }
                         
                         eventBoardFile.EventBoardNo = eventBoard.EventBoardNo;
                         eventBoardFile.FileName = fileName;
-                        eventBoardFile.FilePath = UploadPath.EventBoardPath;
+                        eventBoardFile.FilePath = UploadPath.EventBoardPath.Replace("~", "");
 
                         eventBoardFiles.Add(eventBoardFile);
                     }
@@ -314,11 +314,11 @@ namespace PetterService.Controllers
                         if (fieldName == FieldName.EventFieldName)
                         {
                             eventBoard.FileName = fileName;
-                            eventBoard.FilePath = UploadPath.EventBoardPath;
+                            eventBoard.FilePath = UploadPath.EventBoardPath.Replace("~", "");
                         }
 
                         eventBoardFile.FileName = fileName;
-                        eventBoardFile.FilePath = UploadPath.EventBoardPath;
+                        eventBoardFile.FilePath = UploadPath.EventBoardPath.Replace("~", "");
 
                         eventBoardFiles.Add(eventBoardFile);
                     }

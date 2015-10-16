@@ -198,7 +198,7 @@ namespace PetterService.Controllers
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.MemberWidth, FileSize.MemberHeight, ImageFormat.Png);
                         member.FileName = fileName;
-                        member.FilePath = UploadPath.MemberPath;
+                        member.FilePath = UploadPath.MemberPath.Replace("~", "");
                     }
                     else
                     {
@@ -341,7 +341,7 @@ namespace PetterService.Controllers
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.MemberWidth, FileSize.MemberHeight, ImageFormat.Png);
                         member.FileName = fileName;
-                        member.FilePath = UploadPath.MemberPath;
+                        member.FilePath = UploadPath.MemberPath.Replace("~", "");
                     }
                     else
                     {

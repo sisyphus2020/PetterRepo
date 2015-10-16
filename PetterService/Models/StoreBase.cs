@@ -9,8 +9,8 @@ namespace PetterService.Models
         //public virtual int CommonCodeNo { get; set; }
         [Index("IX_STORE_STORENAME"), MaxLength(100)]
         public string StoreName { get; set; }
-        [Index("IX_STORE_STOREID"), MaxLength(100)]
-        public string StoreID { get; set; }
+        //[Index("IX_STORE_STOREID"), MaxLength(100)]
+        //public string StoreID { get; set; }
         [Index("IX_STORE_CODEID"), MaxLength(6), Column("CodeID", TypeName = "char")]
         public string CodeID { get; set; }
         [MaxLength(20)]

@@ -190,7 +190,7 @@ namespace PetterService.Controllers
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PetSitterWidth, FileSize.PetSitterHeight, ImageFormat.Png);
                         petSitter.FileName = fileName;
-                        petSitter.FilePath = UploadPath.PetSitterPath;
+                        petSitter.FilePath = UploadPath.PetSitterPath.Replace("~", "");
                     }
                     else
                     {
@@ -338,7 +338,7 @@ namespace PetterService.Controllers
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.PensionWidth, FileSize.PensionHeight, ImageFormat.Png);
                         petSitter.FileName = fileName;
-                        petSitter.FilePath = UploadPath.PetSitterPath;
+                        petSitter.FilePath = UploadPath.PetSitterPath.Replace("~", "");
                     }
                     else
                     {

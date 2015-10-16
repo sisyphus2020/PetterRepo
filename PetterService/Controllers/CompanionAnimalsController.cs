@@ -80,7 +80,7 @@ namespace PetterService.Controllers
         public async Task<IHttpActionResult> PutCompanionAnimal(int id)
         {
             PetterResultType<CompanionAnimal> petterResultType = new PetterResultType<CompanionAnimal>();
-            List<CompanionAnimal> cmpanionAnimals = new List<CompanionAnimal>();
+            List<CompanionAnimal> companionAnimals = new List<CompanionAnimal>();
 
             if (!Request.Content.IsMimeMultipartContent())
             {
@@ -106,8 +106,8 @@ namespace PetterService.Controllers
                     if (!string.IsNullOrEmpty(content.Headers.ContentDisposition.FileName))
                     {
                         var file = await content.ReadAsByteArrayAsync();
-
-                        string fileName = Utilities.additionFileName(content.Headers.ContentDisposition.FileName.Trim('"'));
+                        string oldFileName = HttpUtility.UrlDecode(content.Headers.ContentDisposition.FileName.Trim('"'));
+                        string fileName = Utilities.additionFileName(oldFileName);
 
                         if (!FileExtension.CompanionAnimalExtensions.Any(x => x.Equals(Path.GetExtension(fileName.ToLower()), StringComparison.OrdinalIgnoreCase)))
                         {
@@ -123,7 +123,7 @@ namespace PetterService.Controllers
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreWidth, FileSize.StoreHeight, ImageFormat.Png);
                         companionAnimal.FileName = fileName;
-                        companionAnimal.FilePath = UploadPath.CompanionAnimalPath;
+                        companionAnimal.FilePath = UploadPath.CompanionAnimalPath.Replace("~", "");
                     }
                     else
                     {
@@ -133,21 +133,15 @@ namespace PetterService.Controllers
                         #region switch case
                         switch (fieldName)
                         {
-                            case "CompanionAnimalNo":
-                                companionAnimal.CompanionAnimalNo = int.Parse(item);
-                                break;
-                            case "MemberID":
-                                companionAnimal.MemberID = item;
-                                break;
+                            //case "CompanionAnimalNo":
+                            //    companionAnimal.CompanionAnimalNo = int.Parse(item);
+                            //    break;
+                            //case "MemberID":
+                            //    companionAnimal.MemberID = item;
+                            //    break;
                             case "CodeID":
                                 companionAnimal.CodeID = item;
                                 break;
-                            //case "PetCategory":
-                            //    companionAnimal.PetCategory = item;
-                            //    break;
-                            //case "PetCode":
-                            //    companionAnimal.PetCode = item;
-                            //    break;
                             case "Name":
                                 companionAnimal.Name = item;
                                 break;
@@ -191,10 +185,10 @@ namespace PetterService.Controllers
                     throw;
                 }
 
-                cmpanionAnimals.Add(companionAnimal);
-
+                companionAnimals.Add(companionAnimal);
+                petterResultType.AffectedRow = companionAnimals.Count();
                 petterResultType.IsSuccessful = true;
-                petterResultType.JsonDataSet = cmpanionAnimals;
+                petterResultType.JsonDataSet = companionAnimals;
             }
             else
             {
@@ -251,7 +245,7 @@ namespace PetterService.Controllers
 
                         Utilities.ResizeImage(fullPath, thumbnamil, FileSize.StoreWidth, FileSize.StoreHeight, ImageFormat.Png);
                         companionAnimal.FileName = fileName;
-                        companionAnimal.FilePath = UploadPath.CompanionAnimalPath;
+                        companionAnimal.FilePath = UploadPath.CompanionAnimalPath.Replace("~", "");
                     }
                     else
                     {
@@ -311,6 +305,7 @@ namespace PetterService.Controllers
                 int num = await this.db.SaveChangesAsync();
 
                 companionAnimals.Add(companionAnimal);
+                petterResultType.AffectedRow = companionAnimals.Count();
                 petterResultType.IsSuccessful = true;
                 petterResultType.JsonDataSet = companionAnimals;
             }
