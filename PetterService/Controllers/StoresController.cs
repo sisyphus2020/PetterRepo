@@ -16,6 +16,7 @@ using System.Web.Hosting;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Web;
+//using System.ServiceModel.Channels;
 
 namespace PetterService.Controllers
 {
@@ -436,7 +437,8 @@ namespace PetterService.Controllers
                 string point = string.Format("POINT({0} {1})", store.Longitude, store.Latitude);
                 store.Coordinate = DbGeography.FromText(point);
                 store.StateFlag = "U";
-                store.WriteIP = "2222.2.22.22";
+                //store.WriteIP = "2222.2.22.22";
+                store.WriteIP = Request.GetClientIpAddress();
                 store.DateCreated = DateTime.Now;
                 store.DateModified = DateTime.Now;
                 db.Stores.Add(store);

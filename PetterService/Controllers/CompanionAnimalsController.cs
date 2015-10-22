@@ -216,10 +216,10 @@ namespace PetterService.Controllers
                 string folder = HostingEnvironment.MapPath(UploadPath.CompanionAnimalPath);
                 Utilities.CreateDirectory(folder);
 
-                var provider = new MultipartMemoryStreamProvider();
-                //var provider = await Request.Content.ReadAsMultipartAsync();
+                var provider = await Request.Content.ReadAsMultipartAsync();
 
-                await Request.Content.ReadAsMultipartAsync(provider);
+                //var provider = new MultipartMemoryStreamProvider();
+                //await Request.Content.ReadAsMultipartAsync(provider);
 
                 foreach (var content in provider.Contents)
                 {
