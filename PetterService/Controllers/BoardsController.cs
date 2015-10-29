@@ -433,8 +433,6 @@ namespace PetterService.Controllers
                             case "CodeID":
                                 board.CodeID = item;
                                 break;
-
-
                             case "MemberID":
                                 board.MemberID = item;
                                 break;

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetterService", "PetterService\PetterService.csproj", "{BC546FA6-DB31-4503-A432-9AE8E3969195}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetterService.WebAPI", "PetterService\PetterService.WebAPI.csproj", "{BC546FA6-DB31-4503-A432-9AE8E3969195}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetterService.WebUI", "PetterService.WebUI\PetterService.WebUI.csproj", "{21D225E0-17DD-4C2D-B611-B4B09D9945FE}"
 EndProject

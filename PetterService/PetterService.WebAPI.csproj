@@ -205,6 +205,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Common\Ciphers.cs" />
     <Compile Include="Common\Constant.cs" />
     <Compile Include="Common\Cookies.cs" />
     <Compile Include="Common\EnumHelper.cs" />
@@ -214,10 +215,72 @@
     <Compile Include="Common\UrlEncoder.cs" />
     <Compile Include="Common\Utilities.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\BeautyShopsController.cs" />
-    <Compile Include="Controllers\Company.cs" />
+    <Compile Include="Controllers\CommonCodesController.cs" />
+    <Compile Include="Controllers\CompanionAnimalsController.cs" />
+    <Compile Include="Controllers\PetKindsController.cs" />
+    <Compile Include="Controllers\StoreBookmarksController.cs" />
+    <Compile Include="Controllers\BoardsController.cs" />
+    <Compile Include="Controllers\BoardFilesController.cs" />
+    <Compile Include="Controllers\BoardLikesController.cs" />
+    <Compile Include="Controllers\BoardRepliesController.cs" />
+    <Compile Include="Controllers\BoardStatsController.cs" />
+    <Compile Include="Controllers\StoreHolidaysController.cs" />
+    <Compile Include="Controllers\StoreQuestionBoardsController.cs" />
+    <Compile Include="Controllers\StoreQuestionsController.cs" />
+    <Compile Include="Controllers\StoreReviewFilesController.cs" />
+    <Compile Include="Controllers\StoreReviewLikesController.cs" />
+    <Compile Include="Controllers\StoreReviewsController.cs" />
+    <Compile Include="Controllers\StoreReviewStatsController.cs" />
+    <Compile Include="Controllers\StoresController.cs" />
+    <Compile Include="Controllers\StoreServicesController.cs" />
+    <Compile Include="Controllers\StoreStatsController.cs" />
+    <Compile Include="Controllers\CompaniesController.cs" />
+    <Compile Include="Controllers\EventBoardFilesController.cs" />
+    <Compile Include="Controllers\EventBoardRepliesController.cs" />
+    <Compile Include="Controllers\EventBoardsController.cs" />
+    <Compile Include="Controllers\EventBoardStatsController.cs" />
+    <Compile Include="Controllers\MemberAccessesController.cs" />
+    <Compile Include="Controllers\MembersController.cs" />
+    <Compile Include="Controllers\NoticeFilesController.cs" />
+    <Compile Include="Controllers\NoticeRepliesController.cs" />
+    <Compile Include="Controllers\NoticesController.cs" />
+    <Compile Include="Controllers\NoticeStatsController.cs" />
+    <Compile Include="Migrations\201510160225279_Store.cs" />
+    <Compile Include="Migrations\201510160225279_Store.Designer.cs">
+      <DependentUpon>201510160225279_Store.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BCrypt.cs" />
+    <Compile Include="Models\CommonCode.cs" />
+    <Compile Include="Models\CompanionAnimal.cs" />
+    <Compile Include="Models\httpRequestMessageExtensions.cs" />
+    <Compile Include="Models\PetKind.cs" />
+    <Compile Include="Models\StoreBase.cs" />
+    <Compile Include="Models\StoreBookmark.cs" />
+    <Compile Include="Models\BoardDTO.cs" />
+    <Compile Include="Models\BoardFile.cs" />
+    <Compile Include="Models\BoardLike.cs" />
+    <Compile Include="Models\BoardReply.cs" />
+    <Compile Include="Models\BoardStats.cs" />
+    <Compile Include="Models\Board.cs" />
+    <Compile Include="Models\StoreQuestion.cs" />
+    <Compile Include="Models\StoreQuestionBoard.cs" />
+    <Compile Include="Models\StoreReview.cs" />
+    <Compile Include="Models\StoreReviewDTO.cs" />
+    <Compile Include="Models\StoreReviewFile.cs" />
+    <Compile Include="Models\StoreReviewLike.cs" />
+    <Compile Include="Models\StoreReviewStats.cs" />
+    <Compile Include="Models\StoreStats.cs" />
+    <Compile Include="Models\BoardBase.cs" />
+    <Compile Include="Models\CompanionAnimalDTO.cs" />
+    <Compile Include="Models\Company.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\PensionHolidaysController.cs" />
     <Compile Include="Controllers\PensionsController.cs" />
+    <Compile Include="Controllers\PensionServicesController.cs" />
+    <Compile Include="Controllers\PetSitterHolidaysController.cs" />
+    <Compile Include="Controllers\PetSittersController.cs" />
+    <Compile Include="Controllers\PetSitterServicesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -225,23 +288,44 @@
     <Compile Include="Migrations\201509010411481_Initial.Designer.cs">
       <DependentUpon>201509010411481_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201509010432134_BeautyShop.cs" />
-    <Compile Include="Migrations\201509010432134_BeautyShop.Designer.cs">
-      <DependentUpon>201509010432134_BeautyShop.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\BeautyShop.cs" />
-    <Compile Include="Models\BeautyShopDTO.cs" />
-    <Compile Include="Models\BeautyShopHoliday.cs" />
-    <Compile Include="Models\BeautyShopService.cs" />
-    <Compile Include="Models\Class1.cs" />
+    <Compile Include="Models\Store.cs" />
+    <Compile Include="Models\StoreDTO.cs" />
+    <Compile Include="Models\StoreHoliday.cs" />
+    <Compile Include="Models\StoreService.cs" />
+    <Compile Include="Models\Classification.cs" />
+    <Compile Include="Models\DateBase.cs" />
+    <Compile Include="Models\EventBoard.cs" />
+    <Compile Include="Models\EventBoardDTO.cs" />
+    <Compile Include="Models\EventBoardFile.cs" />
+    <Compile Include="Models\EventBoardReply.cs" />
+    <Compile Include="Models\EventBoardStats.cs" />
+    <Compile Include="Models\FileBase.cs" />
+    <Compile Include="Models\FileDateBase.cs" />
+    <Compile Include="Models\GeographyBase.cs" />
+    <Compile Include="Models\GeographyFileDateBase.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Member.cs" />
+    <Compile Include="Models\MemberAccess.cs" />
+    <Compile Include="Models\MemberDTO.cs" />
+    <Compile Include="Models\Notice.cs" />
+    <Compile Include="Models\NoticeDTO.cs" />
+    <Compile Include="Models\NoticeFile.cs" />
+    <Compile Include="Models\NoticeReply.cs" />
+    <Compile Include="Models\NoticeStats.cs" />
     <Compile Include="Models\Pension.cs" />
+    <Compile Include="Models\PensionDTO.cs" />
     <Compile Include="Models\PensionHoliday.cs" />
     <Compile Include="Models\PensionService.cs" />
+    <Compile Include="Models\PetSitter.cs" />
+    <Compile Include="Models\PetSitterDTO.cs" />
+    <Compile Include="Models\PetSitterHoliday.cs" />
+    <Compile Include="Models\PetSitterService.cs" />
+    <Compile Include="Models\PetterOption.cs" />
     <Compile Include="Models\PetterServiceContext.cs" />
+    <Compile Include="Models\ServiceCenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -306,6 +390,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Files\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -319,8 +404,8 @@
     <EmbeddedResource Include="Migrations\201509010411481_Initial.resx">
       <DependentUpon>201509010411481_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201509010432134_BeautyShop.resx">
-      <DependentUpon>201509010432134_BeautyShop.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201510160225279_Store.resx">
+      <DependentUpon>201510160225279_Store.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
@@ -341,7 +426,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53374</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:53374/</IISUrl>
+          <IISUrl>http://localhost:53374</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
