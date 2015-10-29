@@ -154,7 +154,7 @@ D:\12. Repository\PetterRepo\PetterService\bin\Microsoft.Owin.Security.Microsoft
 D:\12. Repository\PetterRepo\PetterService\bin\System.Web.Http.Owin.xml
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.csprojResolveAssemblyReference.cache
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Initial.resources
+D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Store.resources
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.csproj.GenerateResource.Cache
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.dll
 D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.pdb
-D:\12. Repository\PetterRepo\PetterService\obj\Debug\PetterService.Migrations.Store.resources

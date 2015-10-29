@@ -21,12 +21,69 @@ namespace PetterService.Controllers
 {
     public class MembersController : ApiController
     {
+        // 1. 회원 리스트 (X)
+        // 2. 회원 상세 (X)
+        // 3. 회원 등록 (X)
+        // 4. 회원 수정 (X)
+        // 5. 회원 삭제 (X)
+
         private PetterServiceContext db = new PetterServiceContext();
 
-        // GET: api/Members
-        public IQueryable<Member> GetMembers()
+        /// <summary>
+        /// GET: api/Members
+        /// 회원 리스트
+        /// </summary>
+        /// <returns></returns>
+        [ResponseType(typeof(PetterResultType<Member>))]
+        public async Task<IHttpActionResult> GetMembers([FromUri] PetterRequestType petterRequestType)
         {
-            return db.Members;
+            PetterResultType<Member> petterResultType = new PetterResultType<Member>();
+            List<Member> list = new List<Member>();
+            bool isSearch = false;
+
+            // 검색 조건 
+            if (!String.IsNullOrWhiteSpace(petterRequestType.Search))
+            {
+                isSearch = true;
+            }
+
+            #region 정렬 방식
+            switch (petterRequestType.SortBy)
+            {
+                // 정렬 조건
+                case "조건":
+                    {
+                        list = await db.Members
+                            .Where(p => p.StateFlag == "D")
+                            .Where(p => isSearch ? p.NickName.Contains(petterRequestType.Search) : 1 == 1)
+                            .OrderByDescending(p => p.MemberNo)
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToListAsync();
+                        break;
+                    }
+                // 기본
+                default:
+                    {
+                        list = await db.Members
+                            .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
+                            .Where(p => isSearch ? p.NickName.Contains(petterRequestType.Search) : 1 == 1)
+                            .OrderByDescending(p => p.MemberNo)
+                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+                            .Take(petterRequestType.ItemsPerPage).ToListAsync();
+                        break;
+                    }
+            }
+            #endregion 정렬방식
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            petterResultType.IsSuccessful = true;
+            petterResultType.AffectedRow = list.Count();
+            petterResultType.JsonDataSet = list.ToList();
+            return Ok(petterResultType);
         }
 
         //GET: api/Members/5

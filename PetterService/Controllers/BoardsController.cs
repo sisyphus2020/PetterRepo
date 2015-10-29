@@ -34,17 +34,79 @@ namespace PetterService.Controllers
         /// </summary>
         /// <param name="petterRequestType"></param>
         /// <returns></returns>
-        [ResponseType(typeof(PetterResultType<Board>))]
+        //[ResponseType(typeof(PetterResultType<Board>))]
+        //public async Task<IHttpActionResult> GetBoard([FromUri] PetterRequestType petterRequestType)
+        //{
+        //    PetterResultType<Board> petterResultType = new PetterResultType<Board>();
+        //    List<Board> list = new List<Board>();
+        //    bool isSearch = false;
+
+        //    // 검색 조건 
+        //    if (!String.IsNullOrWhiteSpace(petterRequestType.Search))
+        //    {
+        //        isSearch = true;
+        //    }
+
+        //    #region 정렬 방식
+        //    switch (petterRequestType.SortBy)
+        //    {
+        //        // 댓글수
+        //        case "replycount":
+        //            {
+        //                list = await db.Boards
+        //                    //.Where(p => petterRequestType.CodeID == "A02003" ? p.CodeID == "A02003" : p.CodeID != "A02003" )
+        //                    .Where(p => p.CodeID == petterRequestType.CodeID)
+        //                    .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
+        //                    .Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
+        //                    //.OrderByDescending(p => p.ReviewCount)
+        //                    .OrderByDescending(p => p.BoardNo)
+        //                    .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+        //                    .Take(petterRequestType.ItemsPerPage).ToListAsync();
+        //                break;
+        //            }
+        //        // 기본
+        //        default:
+        //            {
+        //                list = await db.Boards
+        //                    //.Where(p => petterRequestType.CodeID == "A02003" ? p.CodeID == "A02003" : p.CodeID != "A02003")
+        //                    .Where(p => p.CodeID == petterRequestType.CodeID)
+        //                    .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
+        //                    .Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
+        //                    .OrderByDescending(p => p.BoardNo)
+        //                    .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
+        //                    .Take(petterRequestType.ItemsPerPage).ToListAsync();
+        //                break;
+        //            }
+        //    }
+        //    #endregion 정렬방식
+
+        //    if (list == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    petterResultType.IsSuccessful = true;
+        //    petterResultType.AffectedRow = list.Count();
+        //    petterResultType.JsonDataSet = list.ToList();
+        //    return Ok(petterResultType);
+        //}
+
+        [ResponseType(typeof(PetterResultType<BoardDTO>))]
         public async Task<IHttpActionResult> GetBoard([FromUri] PetterRequestType petterRequestType)
         {
-            PetterResultType<Board> petterResultType = new PetterResultType<Board>();
-            List<Board> list = new List<Board>();
+            PetterResultType<BoardDTO> petterResultType = new PetterResultType<BoardDTO>();
+            List<BoardDTO> list = new List<BoardDTO>();
             bool isSearch = false;
 
             // 검색 조건 
             if (!String.IsNullOrWhiteSpace(petterRequestType.Search))
             {
                 isSearch = true;
+            } 
+
+            if (isSearch)
+            {
+                
             }
 
             #region 정렬 방식
@@ -53,26 +115,63 @@ namespace PetterService.Controllers
                 // 댓글수
                 case "replycount":
                     {
-                        list = await db.Boards
-                            .Where(p => petterRequestType.CodeID == "A02003" ? p.CodeID == "A02003" : p.CodeID != "A02003" )
-                            .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
-                            .Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
-                            //.OrderByDescending(p => p.ReviewCount)
-                            .OrderByDescending(p => p.BoardNo)
-                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
-                            .Take(petterRequestType.ItemsPerPage).ToListAsync();
+                        list = await (from board in db.Boards
+                                      join member in db.Members on board.MemberID equals member.MemberID
+                                      join store in db.Stores on board.StoreNo equals store.StoreNo
+                                      where board.CodeID == petterRequestType.CodeID
+                                      orderby board.BoardNo descending
+                                      select new BoardDTO
+                                      {
+                                          BoardNo = board.BoardNo,
+                                          StoreNo = board.StoreNo,
+                                          CodeID = board.CodeID,
+                                          Title = board.Title,
+                                          Content = board.Content,
+                                          NickName = member.NickName,
+                                          StoreName = store.StoreName,
+                                          StateFlag = board.StateFlag,
+                                          DateCreated = board.DateCreated,
+                                          DateModified = board.DateModified,
+                                          DateDeleted = board.DateDeleted,
+                                          FileName = board.FileName,
+                                          FilePath = board.FilePath,
+                                          BoardStats = board.BoardStats.ToList(),
+                                          BoardFiles = board.BoardFiles.ToList(),
+                                          BoardLikes = board.BoardLikes.ToList()
+                                          //isCount = p.BoardLikes.Where(p.MemberNO == memberNo),
+                                          //BoardReplies = board.BoardReplies.ToList()
+                                      }).ToListAsync();
                         break;
                     }
                 // 기본
                 default:
                     {
-                        list = await db.Boards
-                            .Where(p => petterRequestType.CodeID == "A02003" ? p.CodeID == "A02003" : p.CodeID != "A02003")
-                            .Where(p => petterRequestType.StateFlag == "A" ? 1 == 1 : p.StateFlag == petterRequestType.StateFlag)
-                            .Where(p => isSearch ? p.Content.Contains(petterRequestType.Search) : 1 == 1)
-                            .OrderByDescending(p => p.BoardNo)
-                            .Skip((petterRequestType.CurrentPage - 1) * petterRequestType.ItemsPerPage)
-                            .Take(petterRequestType.ItemsPerPage).ToListAsync();
+                        list = await (from board in db.Boards
+                                      join member in db.Members on board.MemberID equals member.MemberID
+                                      join store in db.Stores on board.StoreNo equals store.StoreNo
+                                      where board.CodeID == petterRequestType.CodeID
+                                      orderby board.BoardNo descending
+                                      select new BoardDTO
+                                      {
+                                          BoardNo = board.BoardNo,
+                                          StoreNo = board.StoreNo,
+                                          CodeID = board.CodeID,
+                                          Title = board.Title,
+                                          Content = board.Content,
+                                          NickName = member.NickName,
+                                          StoreName = store.StoreName,
+                                          StateFlag = board.StateFlag,
+                                          DateCreated = board.DateCreated,
+                                          DateModified = board.DateModified,
+                                          DateDeleted = board.DateDeleted,
+                                          FileName = board.FileName,
+                                          FilePath = board.FilePath,
+                                          BoardStats = board.BoardStats.ToList(),
+                                          BoardFiles = board.BoardFiles.ToList(),
+                                          BoardLikes = board.BoardLikes.ToList()
+                                          //isCount = board.BoardLikes.Where(p.MemberNO == memberNo),
+                                          //BoardReplies = board.BoardReplies.ToList()
+                                      }).ToListAsync();
                         break;
                     }
             }

@@ -11,6 +11,9 @@ namespace PetterService.Models
         public int StoreNo { get; set; }
         public string CodeID { get; set; }
         public string Content { get; set; }
+        public string Title { get; set; }
+        public string NickName { get; set; }
+        public string StoreName { get; set; }
 
         //public int isCount { get; set; }
 
