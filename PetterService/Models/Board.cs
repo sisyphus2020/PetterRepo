@@ -6,7 +6,7 @@ namespace PetterService.Models
 {
     public class Board : FileDateBase
     {
-
+        //테스트 용
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BoardNo { get; set; }
