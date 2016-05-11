@@ -6,6 +6,7 @@ namespace PetterService.Models
 {
     public class Board : FileDateBase
     {
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BoardNo { get; set; }
